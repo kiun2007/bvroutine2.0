@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="data" type="com.szxgm.gusustreet.model.dto.CameraMarker" />
+    </data>
+    <LinearLayout
+        style="@style/warp_base"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="3910个设备"
+            tools:visibility="gone"
+            app:html="@string/cameraCount"
+            android:show="@{data.cameraCount > 1}"
+            android:argument="@{data.count()}"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="12dp"
+            android:background="@drawable/shape_marker_carmera"
+            android:textColor="@color/white"
+            style="@style/smallTitle" />
+        <ImageView
+            android:show="@{data.cameraCount == 1}"
+            android:src="@drawable/ic_monitor"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/shape_marker_carmera"
+            android:backgroundTint="@{`1`.equals(data.cameraInfo.status)?@color/blue:@color/gray}"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

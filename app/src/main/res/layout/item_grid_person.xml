@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.other.GridPerson" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:padding="10dp"
+        android:background="@color/wrapBackground"
+        android:gravity="center"
+        android:onClick="@{()->handler.onClick(context, 1, item)}"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            style="@style/barVertical" >
+            <TextView
+                tools:text="马冬梅"
+                android:text="@{item.xm}"
+                android:textColor="#333"
+                android:layout_marginBottom="5dp"
+                style="@style/tvSubtitle" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="地址:"
+                app:nullText="[未填地址]"
+                android:argument="@{MCString.asArray(`地址:`, item.xzzQhnxxdz)}"
+                app:html="@string/doubleDetailed"
+                style="@style/warp_base" />
+        </LinearLayout>
+        <TextView
+            tools:text="选中"
+            android:selected="@{item.checked}"
+            android:drawableLeft="@drawable/sel_check_chose_text"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

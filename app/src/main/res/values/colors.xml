@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorButtonNormal">#38AFFF</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#38AFFF</color>
+    <color name="partTranslucent">#00000000</color>
+    <color name="mainTextColor">#243148</color>
+    <color name="white">#FFF</color>
+    <color name="blue">#38AFFF</color>
+    <color name="org">#FF8000</color>
+    <color name="orgDark">#FFFF821F</color>
+
+    <color name="grass">#228B22</color>
+    <color name="gray">#999</color>
+    <color name="red">#F00</color>
+    <color name="wrapBackground">#FFF</color>
+
+    <color name="danger">#F56C6C</color>
+    <color name="success">#67C23A</color>
+    <color name="warning">#E6A23C</color>
+    <color name="info">#909399</color>
+</resources>

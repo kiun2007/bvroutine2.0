@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.river.RiverProblemActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.AddressChooseActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.DeptListActivity" />
+        <import type="com.szxgm.gusustreet.views.SpinnerHelper" />
+        <import type="com.szxgm.gusustreet.model.dto.OrderType" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.RiverListActivity" />
+
+        <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
+        <variable name="attendanceService" type="com.szxgm.gusustreet.net.services.AttendanceService" />
+        <variable name="fileService" type="com.szxgm.gusustreet.net.services.FileService" />
+
+        <variable name="riverService" type="com.szxgm.gusustreet.net.services.RiverService" />
+        <variable name="riverOrder" type="com.szxgm.gusustreet.model.dto.river.RiverOrder" />
+        <variable name="riverFixed" type="Boolean" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="发现问题"
+            style="@style/navigatorBar" />
+        <ScrollView
+            style="@style/fill_base">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    style="@style/division">
+                    <TextView
+                        android:text="基本信息"
+                        android:layout_marginLeft="8dp"
+                        style="@style/tvSubtitle" />
+                </LinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="河道"
+                    style="@style/rowInput">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        app:activityClz="@{RiverListActivity.clz}"
+                        android:val="@{riverOrder.incidentRiver}"
+                        android:enabled="@{!riverFixed}"
+                        android:text="@{riverOrder.riverName}"
+                        android:textColor="@color/mainTextColor"
+                        android:drawableRight="@{riverFixed?null:@drawable/svg_right_arrow_gray}"
+                        style="@style/rowSelectText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="事项选择"
+                    style="@style/rowInput">
+                    <Spinner
+                        app:original="@{true}"
+                        app:src="@{SpinnerHelper.createSrc(OrderType.labelGet(),OrderType.valueGet(), sysService.getOrderTypes())}"
+                        app:value="@={riverOrder.orderType}"
+                        android:layout_marginLeft="10dp"
+                        style="@style/spinnerBase" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="标题"
+                    app:bottomLine="false"
+                    style="@style/rowInput">
+                    <EditText
+                        android:hint="请填写标题"
+                        android:text="@={riverOrder.title}"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    style="@style/division" >
+                </LinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="详细地址"
+                    app:bottomLine="false"
+                    style="@style/rowInputVertical">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        activityClz="@{AddressChooseActivity.clz}"
+                        android:val="@={riverOrder.chooseAddress}"
+                        android:layout_marginTop="10dp"
+                        android:hint="请选择地址"
+                        style="@style/barVertical" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    style="@style/division" >
+                </LinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="问题描述"
+                    app:bottomLine="false"
+                    style="@style/rowInputVertical">
+                    <EditText
+                        android:layout_marginTop="10dp"
+                        android:hint="请描述你发现的问题"
+                        android:lines="3"
+                        android:text="@={riverOrder.describe}"
+                        style="@style/rowEditMultiline" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    style="@style/division" />
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    style="@style/rowInputVertical"
+                    app:required="false"
+                    app:title="图片"
+                    app:bottomLine="false"
+                    android:orientation="vertical">
+
+                    <kiun.com.bvroutine.views.MultipleImageGrid
+                        android:layout_marginTop="8dp"
+                        app:itemScaleHeight="1"
+                        app:imageLimit="4"
+                        android:val="@={riverOrder.orderImg}"
+                        android:serviceThumb="@{(part,thumb)->fileService.commonUploadThumb(part, thumb)}"
+                        style="@style/multipleUploadGrid" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <Button
+                    android:text="提交"
+                    android:layout_margin="20dp"
+                    android:tag="handler.onComplete(data)"
+                    android:action="@{a->riverService.commitProblem(riverOrder)}"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

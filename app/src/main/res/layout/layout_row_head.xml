@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:gravity="left|center"
+    android:layout_gravity="left|center"
+    android:id="@+id/titleHead"
+    style="@style/warp_base">
+    <TextView
+        android:text="*"
+        android:id="@+id/requiredTextView"
+        android:textSize="15sp"
+        android:textColor="#F84948"
+        style="@style/warp_base" />
+    <TextView
+        android:textSize="15sp"
+        android:id="@+id/titleTextView"
+        android:text="标题说明"
+        android:textColor="#333333"
+        style="@style/warp_base" />
+</LinearLayout>

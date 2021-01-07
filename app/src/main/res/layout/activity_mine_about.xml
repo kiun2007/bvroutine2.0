@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="关于我们"
+            style="@style/navigatorBar" />
+        <ScrollView
+            style="@style/fill_base">
+            <LinearLayout
+                android:padding="20dp"
+                android:orientation="vertical"
+                style="@style/barVertical">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@mipmap/sigma"
+                    style="@style/warp_base" />
+                <TextView
+                    style="@style/tvNormal"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/about_1"/>
+                <TextView
+                    style="@style/tvNormal"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/about_2"/>
+                <TextView
+                    style="@style/tvNormal"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/about_3"/>
+                <TextView
+                    style="@style/tvNormal"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/about_4"/>
+                <TextView
+                    style="@style/tvNormal"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/about_5"/>
+                <TextView
+                    style="@style/tvNormal"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/about_6"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/ic_apply" android:state_checked="true"/>
+    <item android:drawable="@mipmap/ic_normal_apply" android:state_checkable="false"/>
+</selector>

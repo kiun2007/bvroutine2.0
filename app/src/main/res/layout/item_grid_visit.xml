@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="kiun.com.bvroutine.views.text.ArrayIndex" />
+
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.other.GridVisitItem" />
+    </data>
+    <FrameLayout
+        android:layout_marginBottom="10dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/wrapBackground"
+            android:padding="15dp"
+            android:orientation="vertical">
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="任务编码 XC99320"
+                android:argument="@{MCString.asArray(`任务编码`, item.visitNo)}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="6dp"
+                tools:text="任务名称 走访关怀对象"
+                android:argument="@{MCString.asArray(`任务名称`, item.visitName)}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="6dp"
+                tools:text="走访对象 XXX"
+                android:argument="@{MCString.asArray(`走访对象`, item.visitObject)}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="6dp"
+                tools:text="完成时间 2020-10-12"
+                android:show="@{item.finishTime != null}"
+                app:titleArray="@array/patrolPeriod"
+                android:argument="@{MCString.asArray(`完成时间`, MCString.formatDate(`yyyy-MM-dd HH:dd`, item.finishTime))}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+        </LinearLayout>
+
+        <FrameLayout
+            tools:backgroundTint="@color/gray"
+            android:backgroundTint="@{@intArray/colorOfVisitState[item.status-1]}"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/bg_no_complete"
+            android:layout_gravity="right|center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                tools:text="未完成"
+                android:textColor="@{@intArray/colorOfVisitState[item.status-1]}"
+                android:text="@{@stringArray/labelOfVisitState[item.status-1]}"
+                android:layout_gravity="center"
+                android:rotation="-16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+    </FrameLayout>
+</layout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.Address"/>
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/duchaList_item_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="15dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:beforehand="@{MCString.asArray(`是否拨打 ` + item.userName + ` 电话`, `拨打`, `取消`)}"
+            android:onClick="@{()->handler.onClick(context, 0,item)}"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="@{item.userName}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="姓名" />
+                </LinearLayout>
+                <TextView
+                    tools:text="单位名称"
+                    android:text="@{item.deptName}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_marginTop="15dp"
+            android:background="#F4F4F4"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+    </LinearLayout>
+</layout>

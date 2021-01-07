@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.graphics.drawable.Drawable" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.model.base.DictStatic"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.vo.SentinelSurveillance" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:padding="10dp">
+
+        <TextView
+            style="@style/tvSubtitle"
+            android:textSize="13sp"
+            android:text="@{item.createdOn}"
+            tools:text="2020-05-15 10:00:00" />
+
+        <TextView
+            style="@style/tvNormal"
+            android:layout_marginTop="10dp"
+            android:text="@{item.description}"
+            tools:text="问题描述" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/tvNormal"
+                android:drawableLeft="@drawable/ic_location"
+                android:text="@{item.address}"
+                android:drawableTint="#3775FF"
+                android:layout_width="wrap_content"
+                android:textColor="#3775FF"
+                android:layout_weight="1"
+                tools:text="地址" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

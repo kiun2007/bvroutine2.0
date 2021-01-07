@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.other.SpecialAssignVisitActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.list.GridPersonListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.AddressChooseActivity" />
+
+        <variable name="service" type="com.szxgm.gusustreet.net.services.LinkageService" />
+        <variable name="data" type="com.szxgm.gusustreet.model.other.GridVisit" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="指派走访任务"
+            style="@style/navigatorBar" />
+        <ScrollView
+            style="@style/fill_base">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical" >
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="走访名称"
+                    style="@style/rowInput" >
+                    <EditText
+                        android:hint="请输入走访名称"
+                        android:val="@={data.visitName}"
+                        android:verifyField="@{`visitName`}"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="执行对象"
+                    style="@style/rowInput" >
+                    <kiun.com.bvroutine.views.text.GeneralItemText
+                        android:id="@+id/generalTextDealPerson"
+                        android:hint="选择执行人员"
+                        android:verifyField="@{`dealPerson`}"
+                        app:activityClz="@{GridPersonListActivity.clz}"
+                        app:listener="@{data}"
+                        style="@style/rowEditText"/>
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="共同执行人"
+                    android:show="@{data.dealPerson!=null}"
+                    style="@style/rowInput" >
+                    <kiun.com.bvroutine.views.text.GeneralItemText
+                        android:id="@+id/generalTextToGoDealPerson"
+                        android:hint="选择共同执行人员"
+                        android:verifyField="@{`togeDealPerson`}"
+                        app:activityClz="@{GridPersonListActivity.clz}"
+                        app:listener="@{data}"
+                        style="@style/rowEditText"/>
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="服务对象姓名"
+                    style="@style/rowInput" >
+
+                    <EditText
+                        android:val="@={data.visitObject}"
+                        android:verifyField="@{`visitObject`}"
+                        android:hint="请输入对象姓名"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="服务对象地址"
+                    style="@style/rowInput">
+                    <kiun.com.bvroutine.views.text.GeneralItemText
+                        android:val="@={data.chooseAddress}"
+                        android:verifyField="@{`visitAddress`}"
+                        android:layout_marginLeft="15dp"
+                        app:activityClz="@{AddressChooseActivity.clz}"
+                        android:hint="请选择地址"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="联系电话"
+                    style="@style/rowInput" >
+                    <EditText
+                        android:val="@={data.lxdh}"
+                        android:verifyField="@{`lxdh`}"
+                        android:hint="请输入联系电话"
+                        android:inputType="number"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="截止时间"
+                    style="@style/rowInput" >
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        app:returnType="date"
+                        app:type="date"
+                        app:format="yyyy-MM-dd"
+                        android:val="@={data.completeTime}"
+                        android:verifyField="@{`completeTime`}"
+                        android:hint="请选择日期"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="服务内容"
+                    style="@style/rowInput" >
+                    <EditText
+                        android:hint="请输入服务内容"
+                        android:val="@={data.visitProblem}"
+                        android:verifyField="@{`visitProblem`}"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <Button
+                    android:tag="handler.onComplete(data)"
+                    android:verify="@{data}"
+                    android:action="@{a->service.save(data)}"
+                    android:layout_margin="25dp"
+                    android:text="提交"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

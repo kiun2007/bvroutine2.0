@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ui.activity.attendance.OvertimeActivity">
+    <data>
+        <variable name="overtime" type="com.szxgm.gusustreet.model.dto.Overtime" />
+        <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
+        <variable name="attendanceService" type="com.szxgm.gusustreet.net.services.AttendanceService" />
+        <variable name="fileService" type="com.szxgm.gusustreet.net.services.FileService" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="加班"
+            style="@style/navigatorBar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="开始时间"
+                    app:required="true"
+                    style="@style/rowInput">
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        android:val="@={overtime.jbBegin}"
+                        android:greaterLimit="@{overtime.jbEnd}"
+                        android:verifyField="@{`jbBegin`}"
+                        app:format="yyyy-MM-dd HH:mm"
+                        style="@style/rowSelectText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="结束时间"
+                    app:required="true"
+                    style="@style/rowInput">
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        android:val="@={overtime.jbEnd}"
+                        android:verifyField="@{`jbEnd`}"
+                        android:lessLimit="@{overtime.jbBegin}"
+                        app:format="yyyy-MM-dd HH:mm"
+                        style="@style/rowSelectText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="时长(小时)"
+                    app:required="true"
+                    app:bottomLine="false"
+                    style="@style/rowInput">
+                    <TextView
+                        android:text="@{overtime.jbTotal}"
+                        android:maxLength="10"
+                        android:verifyField="@{`jbTotal`}"
+                        android:hint="@string/overtime_count"
+                        android:inputType="numberDecimal"
+                        android:background="@null"
+                        android:textSize="15dp"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:background="#fff3f3f6"
+                    style="@style/barVertical">
+                </LinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="加班原因"
+                    app:required="true"
+                    app:bottomLine="false"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    style="@style/rowInput">
+                    <EditText
+                        android:text="@={overtime.jbReason}"
+                        android:verifyField="@{`jbReason`}"
+                        android:background="@null"
+                        android:hint="请填写加班原因"
+                        android:gravity="right"
+                        android:maxLength="20"
+                        android:textSize="15sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="#fff3f3f6"
+                    style="@style/barVertical">
+                </LinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:required="false"
+                    app:title="图片"
+                    app:bottomLine="false"
+                    android:orientation="vertical"
+                    style="@style/rowInputVertical">
+                    <kiun.com.bvroutine.views.MultipleImageGrid
+                        android:layout_marginTop="10dp"
+                        android:val="@={overtime.jbAnnex}"
+                        android:service="@{part->fileService.commonUpload(part)}"
+                        style="@style/singleUploadGrid" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <Button
+                    android:text="提交"
+                    android:layout_margin="20dp"
+                    android:tag="handler.onComplete(data)"
+                    android:verify="@{overtime}"
+                    android:action="@{a->attendanceService.jbSaveList(overtime)}"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

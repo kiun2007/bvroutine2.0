@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  动作按钮  -->
+    <style name="bt_active" parent="barVertical">
+        <item name="android:background">@drawable/shape_radius_blue_bg</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+    <style name="bt_complete_active" parent="bt_active">
+        <item name="android:tag">handler.onComplete(data)</item>
+    </style>
+
+    <style name="bt_pad" parent="warp_base">
+        <item name="android:background">@drawable/shape_radius_blue_bg</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+    <style name="bt_pad_small" parent="bt_pad">
+        <item name="android:textSize">11sp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:layout_height">35dp</item>
+    </style>
+
+    <style name="bt_hollow_blue" parent="warp_base">
+        <item name="android:background">@drawable/shape_radius_hollow_blue_bg</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:textColor">#ff6794ff</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="bt_hollow_gray" parent="warp_base">
+        <item name="android:background">@drawable/shape_radius_hollow_grey_bg</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/mainTextColor</item>
+    </style>
+
+    <style name="bt_hollow_gray_app" parent="warp_base">
+        <item name="android:background">@drawable/shape_radius_hollow_grey_bg</item>
+        <item name="textSize">16sp</item>
+        <item name="textColor">@color/mainTextColor</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="bt_icon">
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/sel_enabled_text_color</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:drawableTintMode">multiply</item>
+        <item name="android:drawableTint">@color/sel_enabled_tint_color</item>
+    </style>
+
+    <style name="bt_panel" parent="fill_base">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/sel_enabled_text_color_panel</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:backgroundTintMode">multiply</item>
+        <item name="android:backgroundTint">@color/sel_enabled_tint_color</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="AppButtonCheckBox" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:textColor">#333</item>
+        <item name="android:background">@drawable/check_button_bg</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">18dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="bt_text_icon" parent="tvMain">
+        <item name="android:padding">5dp</item>
+        <item name="android:button">@null</item>
+    </style>
+</resources>

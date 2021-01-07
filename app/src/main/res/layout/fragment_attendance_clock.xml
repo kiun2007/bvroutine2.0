@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.fragment.attendance.ClockInFragment">
+    <data>
+        <import type="android.view.View" />
+        <import type="kiun.com.bvroutine.utils.DateUtil"/>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.model.dto.attendance.ClockOfView" />
+
+        <variable name="user" type="com.szxgm.gusustreet.model.dto.user.User" />
+        <variable name="clocks" type="java.util.List&lt;ClockOfView>" />
+        <variable name="attendance" type="com.szxgm.gusustreet.net.services.AttendanceService" />
+        <variable name="req" type="com.szxgm.gusustreet.net.requests.WorkTimeReq" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="考勤打卡"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/shape_bottom_line_bg"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@{user.userName}"
+                        tools:text="姓名"
+                        style="@style/tvTitle" />
+                    <TextView
+                        android:text="@{user.deptName}"
+                        tools:text="部门名称"
+                        android:layout_marginTop="3dp"
+                        style="@style/tvSubtitle" />
+                </LinearLayout>
+                <kiun.com.bvroutine.views.DatePickerLayout
+                    app:format="yyyy-MM-dd"
+                    app:returnType="date"
+                    app:hideArrow="false"
+                    app:type="date"
+                    android:val="@={req.pbStartDate}"
+                    android:greaterLimit="@{DateUtil.nowDay()}"
+                    android:textColor="#191D51"
+                    style="@style/borderAndArrow" />
+            </LinearLayout>
+            <ScrollView
+                style="@style/fill_base">
+                <kiun.com.bvroutine.views.ShortListView
+                    android:val="@{clocks}"
+                    app:emptyLayout="@layout/list_empty_work"
+                    app:itemLayout="@layout/item_clock"
+                    style="@style/barVertical" />
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

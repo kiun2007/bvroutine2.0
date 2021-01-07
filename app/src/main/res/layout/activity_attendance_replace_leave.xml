@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.attendance.ReplaceLeaveActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.list.ColleagueListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.ArriveTimesActivity"/>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="kiun.com.bvroutine.utils.ListUtil" />
+
+        <variable name="replaceLeave" type="com.szxgm.gusustreet.model.dto.ReplaceLeave" />
+
+        <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
+        <variable name="attendanceService" type="com.szxgm.gusustreet.net.services.AttendanceService" />
+        <variable name="fileService" type="com.szxgm.gusustreet.net.services.FileService" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="调班"
+            style="@style/navigatorBar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="调班班次"
+                    app:required="true"
+                    app:bottomLine="true"
+                    style="@style/rowInput">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        app:activityClz="@{ArriveTimesActivity.clz}"
+                        android:val="@={replaceLeave.tbqId}"
+                        android:verifyField="@{`tbqId`}"
+                        app:param="@{ListUtil.keyValues(`type`,`0`)}"
+                        style="@style/rowSelectText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="被调班次"
+                    app:required="true"
+                    app:bottomLine="true"
+                    style="@style/rowInput">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        style="@style/rowSelectText"
+                        android:val="@={replaceLeave.btbId}"
+                        android:verifyField="@{`btbId`}"
+                        app:activityClz="@{ArriveTimesActivity.clz}"
+                        app:param="@{ListUtil.keyValues(`type`,`1`)}" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="被调班次人员"
+                    app:required="true"
+                    app:bottomLine="false"
+                    style="@style/rowInput">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        app:activityClz="@{ColleagueListActivity.clz}"
+                        android:hint="请先选择调换班次"
+                        android:verifyField="@{`tbLaterId`}"
+                        android:val="@={replaceLeave.tbLaterId}"
+                        app:param="@{ListUtil.keyValues(`workTimeId`, replaceLeave.btbId)}"
+                        style="@style/rowSelectText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:background="#fff3f3f6"
+                    style="@style/barVertical">
+                </LinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="调班原因"
+                    app:required="true"
+                    app:bottomLine="false"
+                    style="@style/rowInputVertical">
+                    <EditText
+                        android:text="@={replaceLeave.tbReason}"
+                        android:verifyField="@{`tbReason`}"
+                        android:layout_marginTop="10dp"
+                        android:background="@null"
+                        android:hint="请输入调班原因"
+                        android:gravity="top"
+                        android:textSize="15sp"
+                        android:maxLength="100"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <Button
+                    android:text="提交"
+                    android:layout_margin="20dp"
+                    android:tag="handler.onComplete(data)"
+                    android:verify="@{replaceLeave}"
+                    android:action="@{a->attendanceService.tbSaveList(replaceLeave)}"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

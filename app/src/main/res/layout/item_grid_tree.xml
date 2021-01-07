@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        
+        <variable name="item" type="com.szxgm.gusustreet.model.other.GridDept" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+        <variable name="treeHandler" type="TreeHandler" />
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:background="@drawable/shape_bottom_line_bg"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:onClick="@{()->handler.onClick(context, treeHandler.treeNode.parentLevel(), item)}"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            style="@style/barVertical">
+            <TextView
+                tools:text="网格名称"
+                android:text="@{item.deptName}"
+                style="@style/smallTitle" />
+            <TextView
+                tools:text="网格编号"
+                android:text="@{`网格编号:`+item.wgbm}"
+                android:textSize="12sp"
+                style="@style/warp_base" />
+        </LinearLayout>
+        <TextView
+            tools:text="下拉"
+            android:show="@{item.withChild(treeHandler.treeNode.parentLevel())}"
+            android:padding="10dp"
+            android:selected="@{treeHandler.treeNode.expansion}"
+            android:drawableLeft="@drawable/sel_grid_tree"
+            android:onClick="@{()->treeHandler.onClick(context, TreeHandler.EVENT_EXP, null)}"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="handler"
+            type="kiun.com.bvroutine.handlers.ListHandler" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical"
+        android:padding="8dp">
+        <TextView
+            style="@style/tvNormal"
+            tools:text="2020-05-15 10:00:00" />
+        <TextView
+            style="@style/warp_base"
+            android:layout_marginTop="10dp"
+            tools:text="问题描述..." />
+        <TextView
+            style="@style/tvNormal"
+            android:layout_gravity="right"
+            tools:text="待处理" />
+    </LinearLayout>
+</layout>

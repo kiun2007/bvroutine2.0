@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.views.bind.AppCompatSpinnerBindConvert" />
+        
+        <variable name="data" type="String" />
+        <variable name="orderDelay" type="com.szxgm.gusustreet.model.dto.mobile.OrderDelay" />
+        <variable name="dataService" type="com.szxgm.gusustreet.net.services.MobileService" />
+    </data>
+    <kiun.com.bvroutine.views.cardview.CardView
+        style="@style/cardViewShallow"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingTop="15dp"
+            android:minWidth="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="申请跟踪"
+                android:textColor="@color/mainTextColor"
+                style="@style/barTitle" />
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                style="@style/rowInput"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal"
+                app:bottomLine="true"
+                app:title="申请类型：">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:entries="@array/reasonsForTrack"
+                    android:bindConvertBuilder="@{AppCompatSpinnerBindConvert.create(@stringArray/reasonsForTrackValue)}"
+                    android:val="@={orderDelay.type}"
+                    android:textAlignment="textEnd"
+                    android:layout_height="35dp"
+                    style="@style/spinnerBase" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                style="@style/rowInput"
+                android:orientation="horizontal"
+                app:bottomLine="true"
+                app:title="申请时长(小时):">
+                <TextView
+                    android:text="@{orderDelay.duration}"
+                    android:hint="请选择类型"
+                    style="@style/rowEditText" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                style="@style/rowInputVertical"
+                android:orientation="vertical"
+                app:bottomLine="false"
+                android:paddingBottom="0dp"
+                app:title="申请理由:">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:verifyField="@{`reason`}"
+                    android:lines="4"
+                    android:text="@={orderDelay.reason}"
+                    android:hint="请输入申请理由"
+                    android:maxLength="100"
+                    android:textSize="15sp" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
+
+            <Button
+                android:beforehand="@{MCString.asArray(`确认申请跟踪？`,`确定`, `取消`)}"
+                android:action="@{(a)->dataService.applyOrderDelay(orderDelay.orderId(data))}"
+                android:tag="handler.onComplete(data)"
+                android:layout_margin="15dp"
+                android:text="确认申请"
+                style="@style/bt_active" />
+        </LinearLayout>
+    </kiun.com.bvroutine.views.cardview.CardView>
+</layout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.workbench.WorkOrderDetailActivity">
+
+    <data>
+        <variable name="pagerIndex" type="kiun.com.bvroutine.data.FieldEvent&lt;Integer>" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+
+        <kiun.com.bvroutine.views.NavigatorBar
+            style="@style/navigatorBar"
+            app:barTitle="工单详情" />
+
+        <kiun.com.bvroutine.views.TabViewLayout
+            android:val="@={pagerIndex.value}"
+            app:tabArray="@array/tabOrderTitle"
+            style="@style/tabLayout" />
+        <kiun.com.bvroutine.views.layout.StaticPager
+            android:val="@={pagerIndex.value}"
+            app:noScroll="true"
+            app:maxCachePageSize="3"
+            app:pagesClzName="@array/fragmentOrder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

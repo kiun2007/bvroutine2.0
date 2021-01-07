@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.workbench.ProcessedOrderActivity">
+    <data>
+        <import type="android.graphics.drawable.Drawable" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.model.base.DictStatic"/>
+        <import type="com.szxgm.gusustreet.model.base.TaskStatus" />
+
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.mobile.OrderInfoDetailed" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_line_bg"
+        android:paddingLeft="8dp"
+        android:gravity="center"
+        android:padding="10dp">
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            style="@style/barVertical">
+            <TextView
+                style="@style/tvSubtitle"
+                android:drawableLeft="@drawable/shape_dot_text"
+                android:drawableTint="#999"
+                android:drawablePadding="5dp"
+                android:textColor="#333"
+                android:text="@{item.title}"
+                tools:text="标题" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                style="@style/tvNormal"
+                app:html="@string/doubleDetailed"
+                app:nullText="[未知]"
+                android:argument="@{MCString.asArray(`上报时间:`, item.reportDate)}"
+                android:layout_marginTop="5dp"
+                tools:text="上报时间: 2020-05-15 10:00:00" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                style="@style/tvNormal"
+                app:html="@string/doubleDetailed"
+                app:nullText="[未知]"
+                android:argument="@{MCString.asArray(`截止日期:`, item.shouldEndDate)}"
+                android:layout_marginTop="5dp"
+                tools:text="截止日期: 2020-05-15 10:00:00" />
+        </LinearLayout>
+        <CheckedTextView
+            android:onClick="@{()->handler.onClick(context, 1, item)}"
+            android:background="@drawable/shape_radius_hollow_blue_t_bg"
+            android:backgroundTint="@color/sel_check_text_tint_color"
+            android:drawableRight="@drawable/ic_eye_black_24dp"
+            android:textColor="#FFF"
+            android:layout_marginLeft="10dp"
+            android:padding="6dp"
+            android:text="查看"
+            style="@style/tvMain" />
+    </LinearLayout>
+</layout>

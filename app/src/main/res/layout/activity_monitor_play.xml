@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.monitor.MonitorPlayActivity">
+    <data>
+        <variable name="cameraInfo" type="com.szxgm.gusustreet.model.dto.CameraInfo" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="监控播放"
+            style="@style/navigatorBar" />
+        <veg.mediaplayer.sdk.MediaPlayer
+            android:id="@+id/mediaPlayer"
+            android:val="@{cameraInfo}"
+            style="@style/fill_base" />
+    </LinearLayout>
+</layout>

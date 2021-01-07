@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.ApplyLeaveActivity"/>
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.ReplaceLeaveActivity"/>
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.CommitAttendanceActivity"/>
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.OvertimeActivity"/>
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.MineApplyActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.MineApprovalActivity" />
+
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF"
+        tools:context=".ui.fragment.attendance.ApplyFragment">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="考勤申请"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <GridLayout
+                android:layout_marginTop="25dp"
+                android:columnCount="4"
+                android:useDefaultMargins="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/bt_icon"
+                    android:drawableTop="@mipmap/ic_normal_apply_leave"
+                    android:text="请 假"
+                    android:startActivity="@{ApplyLeaveActivity.clz}"
+                    android:layout_columnWeight="1" />
+
+                <TextView
+                    style="@style/bt_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:drawableTop="@mipmap/ic_normal_overtime"
+                    android:text="加 班"
+                    android:startActivity="@{OvertimeActivity.clz}" />
+                <TextView
+                    style="@style/bt_icon"
+                    android:drawableTop="@mipmap/ic_normal_replace_leave"
+                    android:text="调 班"
+                    android:startActivity="@{ReplaceLeaveActivity.clz}"
+                    android:layout_columnWeight="1" />
+                <TextView
+                    style="@style/bt_icon"
+                    android:drawableTop="@mipmap/ic_normal_apply_attendance"
+                    android:text="考勤申报"
+                    android:startActivity="@{CommitAttendanceActivity.clz}"
+                    android:layout_columnWeight="1" />
+            </GridLayout>
+            <View
+                android:background="#fff3f3f6"
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="@drawable/shape_bottom_line_padding4_bg"
+                android:padding="18dp"
+                android:startActivity="@{MineApplyActivity.clz}"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1"
+                    android:text="我的申请"
+                    style="@style/tvNavigation" />
+                <ImageView
+                    android:src="@drawable/svg_right_arrow_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="@drawable/shape_bottom_line_padding4_bg"
+                android:padding="18dp"
+                android:startActivity="@{MineApprovalActivity.clz}"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1"
+                    android:text="我的审批"
+                    style="@style/tvNavigation" />
+                <ImageView
+                    android:src="@drawable/svg_right_arrow_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

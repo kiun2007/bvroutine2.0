@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+
+def debugLocal = false
+
+android {
+    signingConfigs {
+        debug {
+            storeFile file('gusu-debug.jks')
+            storePassword 'android'
+            keyAlias = 'debug'
+            keyPassword 'android'
+        }
+    }
+
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.szxgm.gusustreet"
+        minSdkVersion 23
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 23
+        versionCode 149
+        versionName "V1.0.49"
+        multiDexEnabled = true
+
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug{
+            buildConfigField("boolean", "Fake", "false")
+            buildConfigField('String', 'Other', '"http://106.14.143.145:8080"')
+            if (debugLocal){
+                buildConfigField("String", "Prefix", "\"http://192.168.2.103:8180/jdpt/\"")
+//                buildConfigField("String", "Prefix", "\"http://"+getIP()+":80\"")
+            }else{
+                buildConfigField('String', 'Prefix', '"http://222.92.48.28:8180/jdpt/"')
+            }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "Fake", "false")
+            buildConfigField('String', 'Other', '"http://106.14.143.145:8080"')
+            buildConfigField("String", "Prefix", "\"http://222.92.48.28:8180/jdpt/\"")
+//            buildConfigField("String", "Prefix", "\"http://139.196.72.26:8080\"")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'okhttp3/internal/publicsuffix/publicsuffixes.gz'
+        exclude 'assets/location_map_gps_locked.png'
+        exclude 'assets/location_map_gps_3d.png'
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+dependencies {
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+
+    implementation 'com.android.support:multidex:1.0.0'
+
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+
+    implementation 'com.amap.api:3dmap:latest.integration'
+    implementation 'com.amap.api:map2d:6.0.0'
+    implementation 'com.amap.api:location:3.3.0'
+    implementation 'com.amap.api:search:5.0.0'
+
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.alibaba:fastjson:1.2.31"
+
+    implementation (project(':bvroutine'))
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    annotationProcessor files('libs/bvroutine_apt.jar')
+
+    implementation 'com.github.mcxtzhang:SuspensionIndexBar:V1.0.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

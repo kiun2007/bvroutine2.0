@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.attendance.AttendanceRoot" />
+        <variable name="handler" type="kiun.com.bvroutine.base.BaseHandler" />
+        <variable name="treeHandler" type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:padding="16dp"
+        android:gravity="center"
+        android:onClick="@{()->treeHandler.onClick(context, 0, null)}"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_weight="1.5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.title}"
+            tools:text="标题"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.value}"
+            android:textAlignment="viewEnd"
+            tools:text="内容"
+            android:textColor="@{item.color}"
+            android:textSize="15sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            tools:src="@drawable/svg_add"
+            android:visibility="@{item.visible?View.VISIBLE:View.INVISIBLE}"
+            android:src="@{treeHandler.treeNode.expansion?@drawable/svg_remove:@drawable/svg_add}"/>
+    </LinearLayout>
+</layout>

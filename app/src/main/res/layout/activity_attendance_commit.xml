@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.attendance.CommitAttendanceActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.views.SpinnerHelper" />
+        <import type="com.szxgm.gusustreet.model.dto.Dict" />
+        <import type="kiun.com.bvroutine.utils.ListUtil" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.BadClockListActivity" />
+
+        <variable name="apply" type="com.szxgm.gusustreet.model.dto.Apply" />
+        <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
+        <variable name="attendanceService" type="com.szxgm.gusustreet.net.services.AttendanceService" />
+        <variable name="fileService" type="com.szxgm.gusustreet.net.services.FileService" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="考勤申报"
+            style="@style/navigatorBar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="申报原因"
+                    app:required="true"
+                    app:bottomLine="true"
+                    style="@style/rowInput">
+                    <Spinner
+                        android:layout_marginLeft="15dp"
+                        app:src="@{SpinnerHelper.createDict(sysService.getDict(Dict.create(`shift_pb_sbyy`)))}"
+                        app:value="@={apply.sbReason}"
+                        android:id="@+id/typeSpinner"
+                        style="@style/spinnerBase" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="异常记录"
+                    app:required="true"
+                    app:bottomLine="false"
+                    style="@style/rowInput">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        style="@style/rowSelectText"
+                        android:val="@={apply.dkid}"
+                        android:verifyField="@{`dkid`}"
+                        app:activityClz="@{BadClockListActivity.clz}"
+                        app:param="@{ListUtil.keyValues(`type`, apply.sbReason)}" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <Button
+                    android:text="提交"
+                    android:layout_margin="20dp"
+                    android:tag="handler.onComplete(data)"
+                    android:verify="@{apply}"
+                    android:action="@{a->attendanceService.sbSaveList(apply)}"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

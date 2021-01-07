@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.Notice" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        android:gravity="left|center"
+        android:layout_width="match_parent"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:text="@{MCString.formatDate(`MM-dd HH:mm`, item.createTime)}"
+            android:textSize="14sp"
+            tools:text="06-12 08:12"
+            style="@style/tvSubtitle" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true"
+            tools:text="标题标题标题标题标题标题标题标题标题标题标题标题"
+            android:textColor="@color/mainTextColor"
+            android:textSize="16dp"
+            android:text="@{item.noticeTitle}"
+            style="@style/warp_base" />
+        <ImageView
+            android:layout_marginLeft="3dp"
+            android:src="@drawable/ic_chevron_right_black_24dp"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

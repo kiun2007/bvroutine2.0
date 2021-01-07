@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tagVerify" type="id" />
+    <item name="tagHasProblem" type="id" />
+    <item name="tagOnLayout" type="id" />
+    <item name="tagDefaultBg" type="id" />
+    <item name="tagVerifyField" type="id" />
+    <item name="tagListPresenter" type="id" />
+    <item name="tagIconGravity" type="id" />
+    <item name="tagBinConvert" type="id" />
+    <item name="tagTint" type="id" />
+    <item name="tagViewListener" type="id" />
+    <item name="tagViewValue" type="id" />
+
+    <item name="actionBarViewBinding" type="id" />
+</resources>

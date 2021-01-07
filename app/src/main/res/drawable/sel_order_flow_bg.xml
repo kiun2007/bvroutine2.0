@@ -1,0 +1,5 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true" android:drawable="@drawable/shape_line_segment_top" />
+    <item android:state_enabled="true" android:drawable="@drawable/shape_line_segment_bottom" />
+    <item android:drawable="@drawable/shape_line_segment_center" />
+</selector>

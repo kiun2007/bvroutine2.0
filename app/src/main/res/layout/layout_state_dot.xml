@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/sel_oval_blue"
+    android:id="@+id/dotLayout"
+    android:layout_width="25mm"
+    android:layout_height="25mm"
+    android:gravity="center">
+    <TextView
+        android:id="@+id/stateTextView"
+        tools:text="打卡"
+        android:textSize="25dp"
+        android:textColor="#FFF"
+        style="@style/warp_base" />
+    <TextView
+        android:id="@+id/dateTextView"
+        android:textSize="18sp"
+        android:textColor="#E0E0E0"
+        tools:text="08:00:00"
+        style="@style/warp_base" />
+</LinearLayout>

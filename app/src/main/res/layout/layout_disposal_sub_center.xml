@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--街道平台-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.szxgm.gusustreet.ui.fragment.order.OrderInfoBaseFragment">
+    <data>
+        <import type="com.szxgm.gusustreet.model.dto.OrderType" />
+        <import type="com.szxgm.gusustreet.ui.activity.workbench.DisposalDepartmentActivity" />
+        <import type="com.szxgm.gusustreet.views.bind.builder.NetSpinnerBuilder" />
+        <import type="kiun.com.bvroutine.utils.ListUtil" />
+        <import type="kiun.com.bvroutine.utils.MapUtil" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.net.requests.mobile.TaskDisposalReq" />
+        <import type="com.szxgm.gusustreet.views.SpinnerHelper" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.RiverAreaOfficeListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.RiverAreaListActivity" />
+
+        <variable name="dataService" type="com.szxgm.gusustreet.net.services.MobileService" />
+        <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
+        <variable name="data" type="com.szxgm.gusustreet.net.requests.mobile.TaskDisposalReq" />
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:orientation="vertical">
+        <com.szxgm.gusustreet.views.RowLinearLayout
+            style="@style/rowInput"
+            android:orientation="horizontal"
+            app:bottomLine="true"
+            app:title="处置时限：">
+            <Spinner
+                style="@style/spinnerBase"
+                android:bindConvertBuilder="@{NetSpinnerBuilder.create(dataService.getLimitTimeList())}"
+                android:val="@={data.timeLimit}"/>
+        </com.szxgm.gusustreet.views.RowLinearLayout>
+        <com.szxgm.gusustreet.views.RowLinearLayout
+            style="@style/rowInput"
+            android:show="@{`1`.equals(data.flag)}"
+            android:orientation="horizontal"
+            app:bottomLine="true"
+            app:title="处理部门：">
+            <kiun.com.bvroutine.views.text.GeneralItemText
+                android:id="@+id/generalTextEventType"
+                app:listener="@{data}"
+                app:activityClz="@{DisposalDepartmentActivity.clz}"
+                app:param="@{ListUtil.keyValues(`taskDefKey`, data.taskDefKey.toString())}"
+                android:verifyField="@{`officeId`}"
+                android:hint="请选择处理部门"
+                style="@style/rowSelectText" />
+        </com.szxgm.gusustreet.views.RowLinearLayout>
+        <LinearLayout
+            android:show="@{`3`.equals(data.flag)&amp;&amp;`30`.equals(data.reportOrderSource)}"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                app:title="所属河道"
+                style="@style/rowInput">
+                <kiun.com.bvroutine.views.text.GeneralItemText
+                    android:id="@+id/generalTextRiver"
+                    app:activityClz="@{RiverAreaListActivity.clz}"
+                    app:listener="@{data}"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/mainTextColor"
+                    style="@style/rowSelectText" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                app:title="事项选择"
+                style="@style/rowInput">
+                <Spinner
+                    app:value="@={data.riverOrderType}"
+                    app:src="@{SpinnerHelper.createSrc(OrderType.labelGet(), OrderType.valueGet(), sysService.getOrderTypes())}"
+                    android:layout_marginLeft="10dp"
+                    style="@style/spinnerBase" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                app:title="指派部门"
+                style="@style/rowInput">
+                <kiun.com.bvroutine.views.text.GeneralItemText
+                    android:id="@+id/generalTextOffice"
+                    android:enabled="@{data.selectComplete}"
+                    app:listener="@{data}"
+                    app:activityClz="@{RiverAreaOfficeListActivity.clz}"
+                    app:param="@{MapUtil.as(`riverId`, data.riverId, `orderType`, data.riverOrderType)}"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/mainTextColor"
+                    android:hint="@{data.selectComplete?`请选择处置部门`:`先选择河段和事项`}"
+                    style="@style/rowSelectText" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
+        </LinearLayout>
+        <com.szxgm.gusustreet.views.RowLinearLayout
+            style="@style/rowInputVertical"
+            android:orientation="vertical"
+            app:bottomLine="false"
+            app:title="处置说明：">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="top"
+                android:verifyField="@{`comment`}"
+                android:lines="4"
+                android:hint="请输入处置说明"
+                android:text="@={data.comment}"
+                android:maxLength="100"
+                android:textSize="15sp" />
+        </com.szxgm.gusustreet.views.RowLinearLayout>
+
+        <RelativeLayout
+            android:layout_margin="15dp"
+            android:orientation="horizontal"
+            style="@style/barVertical">
+            <TextView
+                android:drawableLeft="@drawable/ic_baseline_help_outline_20"
+                android:text="入疑难库"
+                android:tag="handler.onComplete(data)"
+                android:beforehand="@{MCString.asArray(`确定要入疑难工单库？`,`确定`, `取消`)}"
+                android:action="@{(a)->dataService.handleTaskInfo(data.flag(`2`))}"
+                android:drawableTint="@color/danger"
+                android:textColor="@color/danger"
+                style="@style/bt_text_icon" />
+
+            <com.szxgm.gusustreet.views.FlowRadioGroup
+                android:layout_alignParentRight="true"
+                android:val="@={data.flag}"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:flowHorizontalSpacing="15dp"
+                app:enableFlow="true"
+                app:titleArray="@array/labelStreetFlag"
+                app:valueArray="@array/tagStreetFlag"
+                app:itemLayout="@layout/layout_radio_button_normal"
+                style="@style/warp_base" />
+            <Button
+                android:show="@{`1`.equals(data.flag)}"
+                android:beforehand="@{MCString.asArray(`确定提交处理？`,`确定`, `取消`)}"
+                android:action="@{(a)->dataService.handleTaskInfo(data.flag(`1`))}"
+                android:verify="@{data}"
+                android:layout_marginTop="35dp"
+                android:text="下派"
+                android:tag="handler.onComplete(data)"
+                style="@style/bt_complete_active" />
+            <Button
+                android:show="@{!`1`.equals(data.flag)}"
+                android:beforehand="@{MCString.asArray(`确定上报`+(`20`.equals(data.reportOrderSource)?`区联动`:`区河长`)+`处理？`,`确定`, `取消`)}"
+                android:action="@{(a)->dataService.handleTaskInfo(data.flag(data.flag))}"
+                android:verify="@{data}"
+                android:layout_marginTop="35dp"
+                android:text="上报"
+                android:tag="handler.onComplete(data)"
+                style="@style/bt_complete_active" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

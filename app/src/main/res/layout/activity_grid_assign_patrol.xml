@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.other.SpecialAssignPatrolActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.list.GridStepTreeActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.GridPersonListActivity" />
+        <import type="kiun.com.bvroutine.utils.MapUtil" />
+
+        <variable name="service" type="com.szxgm.gusustreet.net.services.LinkageService" />
+        <variable name="data" type="com.szxgm.gusustreet.model.other.GridPatrol" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/wrapBackground"
+        android:orientation="vertical"
+        style="@style/fill_base" >
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="指派巡查任务"
+            style="@style/navigatorBar" />
+        <ScrollView
+            style="@style/fill_base">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical" >
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="网格"
+                    style="@style/rowInput" >
+                    <kiun.com.bvroutine.views.text.GeneralItemText
+                        android:id="@+id/generalTextGrid"
+                        android:hint="请选择网格"
+                        android:layout_marginLeft="10dp"
+                        android:textAlignment="textEnd"
+                        app:activityClz="@{GridStepTreeActivity.clz}"
+                        android:val="@={data.wgbm}"
+                        style="@style/barVertical" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="巡查名称"
+                    style="@style/rowInput" >
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:hint="请输入巡查名称"
+                        android:val="@={data.patrolName}"
+                        android:verifyField="@{`patrolName`}"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="执行对象"
+                    style="@style/rowInput" >
+                    <kiun.com.bvroutine.views.text.GeneralItemText
+                        android:layout_marginLeft="10dp"
+                        android:hint="请选择执行人员"
+                        android:id="@+id/generalTextPerson"
+                        android:verifyField="@{`patrolPerson`}"
+                        app:paramGetter="@{(view)->MapUtil.as(`gridCode`, data.wgbm)}"
+                        app:listener="@{data}"
+                        app:activityClz="@{GridPersonListActivity.clz}"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="巡查时段"
+                    style="@style/rowInput" >
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:entries="@array/patrolPeriod"
+                        android:val="@={data.patrolPeriod}"
+                        android:textAlignment="textEnd"
+                        style="@style/rowEditText"/>
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="巡查日期"
+                    style="@style/rowInput" >
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        app:returnType="date"
+                        app:type="date"
+                        app:format="yyyy-MM-dd"
+                        android:val="@={data.patrolDate}"
+                        android:verifyField="@{`patrolDate`}"
+                        android:hint="请选择日期"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="任务描述"
+                    style="@style/rowInput" >
+                    <EditText
+                        android:hint="请输入描述"
+                        android:layout_marginLeft="10dp"
+                        android:val="@={data.patrolContent}"
+                        android:verifyField="@{`patrolContent`}"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <Button
+                    android:tag="handler.onComplete(data)"
+                    android:action="@{(a)->service.save(data)}"
+                    android:verify="@{data}"
+                    android:layout_margin="25dp"
+                    android:text="提交"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

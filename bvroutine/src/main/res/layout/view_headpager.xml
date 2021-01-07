@@ -1,0 +1,31 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+    </data>
+    <LinearLayout
+        android:id="@+id/mainLinear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/contentPanel"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <kiun.com.bvroutine.views.DrawLinearLayout
+                app:radius="10dp"
+                app:stroke="1dp"
+                android:id="@+id/normalHeader"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </kiun.com.bvroutine.views.DrawLinearLayout>
+        </RelativeLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pagerContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.viewpager.widget.ViewPager>
+    </LinearLayout>
+</layout>

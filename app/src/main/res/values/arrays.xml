@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tabMonitorTypes">
+        <item>列表</item>
+        <item>地图</item>
+    </string-array>
+
+    <string-array name="tabSpecial">
+        <item>专项巡查</item>
+        <item>专项走访</item>
+    </string-array>
+    
+    <string-array name="tabOrderTitle">
+        <item>基础信息</item>
+        <item>流转信息</item>
+        <item>地图信息</item>
+    </string-array>
+
+    <string-array name="fragmentOrder">
+        <item>com.szxgm.gusustreet.ui.fragment.order.OrderInfoBaseFragment</item>
+        <item>com.szxgm.gusustreet.ui.fragment.order.OrderInfoProcessFragment</item>
+        <item>com.szxgm.gusustreet.ui.fragment.order.OrderInfoMapFragment</item>
+    </string-array>
+
+    <string-array name="fragmentSpecial">
+        <item>com.szxgm.gusustreet.ui.fragment.other.GridPatrolFragment</item>
+        <item>com.szxgm.gusustreet.ui.fragment.other.GridVisitFragment</item>
+    </string-array>
+
+    <string-array name="patrolPeriod">
+        <item>上午段</item>
+        <item>下午段</item>
+        <item>全时段</item>
+    </string-array>
+
+    <string-array name="degreeTypes">
+        <item>非常紧急</item>
+        <item>紧急</item>
+        <item>不紧急</item>
+    </string-array>
+
+    <string-array name="degreeValues">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+
+    <string-array name="reasonsForDelay">
+        <item>办结延期</item>
+        <item>拒绝延期</item>
+        <item>跟踪延期</item>
+    </string-array>
+
+    <!--办结延期:1,拒绝延期:2,跟踪：3，跟踪延期:4-->
+    <string-array name="reasonsForDelayValue">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="reasonsForTrack">
+        <item>跟踪</item>
+    </string-array>
+
+    <string-array name="reasonsForTrackValue">
+        <item>3</item>
+    </string-array>
+
+    <!--1未开始 2开始中 3完成 4暂停-->
+    <integer-array name="colorOfPatrolState">
+        <!--1未开始-->
+        <item>@color/red</item>
+        <!--2巡查中-->
+        <item>@color/org</item>
+        <!--3完成-->
+        <item>@color/grass</item>
+        <!--4暂停-->
+        <item>@color/red</item>
+    </integer-array>
+
+    <string-array name="labelOfPatrolState">
+        <!--1未开始-->
+        <item>未开始</item>
+        <!--2巡查中-->
+        <item>巡查中</item>
+        <!--3完成-->
+        <item>完成</item>
+        <!--4暂停-->
+        <item>暂停</item>
+    </string-array>
+
+    <integer-array name="colorOfVisitState">
+        <!--未完成-->
+        <item>@color/gray</item>
+        <!--如期完成-->
+        <item>@color/grass</item>
+    </integer-array>
+
+    <string-array name="labelOfVisitState">
+        <!--1-->
+        <item>未完成</item>
+        <!--2-->
+        <item>如期完成</item>
+    </string-array>
+
+    <string-array name="labelStreetFlag">
+        <item>派单</item>
+        <item>区联动</item>
+        <item>区河长</item>
+    </string-array>
+
+    <string-array name="tagStreetFlag">
+        <item>1</item>
+        <item>3A</item>
+        <item>3B</item>
+    </string-array>
+
+    <integer-array name="colorOfApplyState">
+        <item>@color/gray</item>
+        <item>@color/orgDark</item>
+        <item>@color/grass</item>
+        <item>@color/red</item>
+    </integer-array>
+
+    <string-array name="titleOfApplyState">
+        <item>未提交</item>
+        <item>待审批</item>
+        <item>已通过</item>
+        <item>已驳回</item>
+    </string-array>
+</resources>

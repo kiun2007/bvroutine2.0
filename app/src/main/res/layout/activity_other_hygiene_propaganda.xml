@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.AddressChooseActivity" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="宣传资料上报"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                app:title="活动地址"
+                style="@style/rowInputVertical" >
+                <com.szxgm.gusustreet.views.GeneralItemText
+                    app:activityClz="@{AddressChooseActivity.clz}"
+                    android:layout_marginTop="10dp"
+                    android:hint="请选择地址"
+                    style="@style/barVertical" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
+            <com.szxgm.gusustreet.views.RowLinearLayout style="@style/rowInput" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

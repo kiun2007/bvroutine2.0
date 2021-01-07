@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="lte.trunk.tapp.sdk.video.VideoConstants" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.IMList"/>
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/duchaList_item_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:padding="16dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:text="@{item.userName}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="姓名" />
+                <TextView
+                    tools:text="单位名称"
+                    android:text="@{item.deptName}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <ImageView
+                android:onClick="@{()->handler.onClick(context, VideoConstants.VIDEO_CALL, item)}"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_im_audio"
+                style="@style/warp_base" />
+            <ImageView
+                android:visibility="gone"
+                android:onClick="@{()->handler.onClick(context, VideoConstants.AUDIO_CALL, item)}"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_im_video"
+                style="@style/warp_base" />
+            <ImageView
+                android:onClick="@{()->handler.onClick(context, VideoConstants.VIDEO_MONITOR, item)}"
+                android:src="@mipmap/ic_im_monitor"
+                style="@style/warp_base" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

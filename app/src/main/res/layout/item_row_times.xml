@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.statistics.WorkTimesRow" />
+        <variable name="handler" type="kiun.com.bvroutine.base.BaseHandler"/>
+        <variable name="treeHandler" type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center"
+        android:onClick="@{()->treeHandler.onClick(context, 0, null)}"
+        android:orientation="vertical">
+        <TextView
+            style="@style/barVertical"
+            android:text="@{item.name}"
+            tools:text="标题"
+            android:textColor="#666"
+            android:textSize="16sp" />
+        <TextView
+            style="@style/barVertical"
+            android:text="@{item.times}"
+            tools:text="标题"
+            android:textColor="#999"
+            android:textSize="13sp" />
+    </LinearLayout>
+</layout>

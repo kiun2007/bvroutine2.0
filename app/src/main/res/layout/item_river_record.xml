@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.river.RiverPatrol" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:orientation="horizontal">
+        <com.szxgm.gusustreet.views.RadiusImageView
+            android:src="@drawable/svg_river"
+            app:imgUrl="@{item.image}"
+            android:layout_marginRight="8dp"
+            android:layout_width="95dp"
+            android:layout_height="70dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                tools:text="干将河"
+                android:text="@{item.riverName}"
+                style="@style/smallTitle" />
+            <TextView
+                android:layout_marginTop="5dp"
+                tools:text="开始时间: 2020-04-14 16:40"
+                android:text="@{`开始时间: `+ MCString.formatDate(`yyyy-MM-dd HH:mm`,item.createDate)}"
+                android:textSize="11sp"
+                style="@style/warp_base" />
+            <TextView
+                android:layout_marginTop="5dp"
+                tools:text="结束时间: 2020-04-14 16:40"
+                android:text="@{`结束时间: `+ MCString.formatDate(`yyyy-MM-dd HH:mm`, item.endTime)}"
+                android:textSize="11sp"
+                style="@style/warp_base" />
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="right"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:paddingLeft="25dp"
+                android:paddingBottom="10dp"
+                android:text="查看详细"
+                android:textSize="12sp"
+                android:onClick="@{()->handler.onClick(context, 1, item)}"
+                style="@style/tvButton" />
+            <View
+                android:layout_weight="1"
+                style="@style/warp_base" />
+            <TextView
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:show="@{item.updateDate == null}"
+                android:onClick="@{()->handler.onClick(context, 2, item)}"
+                android:text="修改记录"
+                android:textSize="12sp"
+                style="@style/tvButton" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

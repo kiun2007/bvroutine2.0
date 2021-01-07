@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="gridWidth" format="dimension" />
+    <attr name="progressBarColor" format="color"/>
+    <attr name="paintColor" format="color" />
+    <attr name="loadMore" format="string" />
+    <attr name="iconColor" format="color" />
+    <attr name="icon" format="reference" />
+
+    <attr name="flowHorizontalSpacing" format="dimension"/>
+    <attr name="flowVerticalSpacing" format="dimension" />
+
+    <declare-styleable name="NavigatorBar">
+        <attr name="barNoback" format="boolean"/>
+        <attr name="barTitle" format="string"/>
+        <attr name="barStyle" format="enum">
+            <enum name="normalBar" value="0"/>
+            <enum name="transparentBar" value="1"/>
+            <enum name="transparentBlack" value="2"/>
+        </attr>
+        <attr name="barWithStatus" format="boolean" />
+        <attr name="barLeftTitle" format="string"/>
+        <attr name="barRightImage" format="reference"/>
+        <attr name="barRightTitle" format="string"/>
+        <attr name="barLeftImage" format="reference"/>
+        <attr name="titleImage" format="reference"/>
+        <attr name="barBackground" format="color" />
+        <attr name="rightTag" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="HeadViewPager">
+        <attr name="titles" format="string" />
+        <attr name="itemWidth" format="dimension" />
+        <attr name="headPadding" format="dimension" />
+        <attr name="bottomPadding" format="dimension" />
+        <attr name="itemPadding" format="dimension"/>
+        <attr name="paintColor" />
+        <attr name="textSeletedColor" format="color" />
+        <attr name="unselectColor" format="color" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="DrawLinearLayout">
+        <attr name="radius" format="dimension" />
+        <attr name="paintColor" />
+        <attr name="gradientColor" format="color" />
+        <attr name="stroke" format="dimension" />
+        <attr name="drawPadding" format="dimension"/>
+        <attr name="paintStyle" format="enum">
+            <enum name="fill" value="0" />
+            <enum name="stroke" value="1" />
+            <enum name="fillAndStroke" value="2"/>
+        </attr>
+        <attr name="childDraw" format="boolean" />
+        <attr name="shadow" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="DatePickerLayout">
+        <attr name="format" format="string"/>
+        <attr name="hideArrow" format="boolean"/>
+        <attr name="returnType" format="enum">
+            <enum name="date" value="0"/>
+            <enum name="longDate" value="1"/>
+            <enum name="formatDate" value="2"/>
+            <enum name="stringDate" value="3"/>
+        </attr>
+        <attr name="selectionType" format="flags">
+            <flag name="all" value="31"/>
+            <flag name="year" value="1"/>
+            <flag name="month" value="2" />
+            <flag name="day" value="4" />
+            <flag name="hour" value="8" />
+            <flag name="minute" value="16" />
+        </attr>
+        <attr name="type" format="flags">
+            <flag name="date" value="0x10" />
+            <flag name="time" value="0x1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="UploadImageView">
+    </declare-styleable>
+
+    <declare-styleable name="AutoGridLayout">
+        <attr name="itemMargin" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MonthSwitchView">
+        <attr name="format" />
+    </declare-styleable>
+
+    <declare-styleable name="MapContainer">
+        <attr name="scrollView" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="MultipleImageGrid">
+        <attr name="imageLimit" format="integer" />
+        <attr name="itemScaleHeight" format="float" />
+        <attr name="commitMode" format="boolean" />
+
+        <attr name="audioRecorder" format="string" />
+        <attr name="videoRecorder" format="string" />
+        <attr name="maxAudioDuration" format="integer" />
+        <attr name="maxVideoDuration" format="integer" />
+        <attr name="videoLayoutId" format="reference" />
+        <attr name="audioLayoutId" format="reference" />
+        <attr name="videoQuality" format="float" />
+        <attr name="afterMode" format="boolean" />
+        <attr name="filePartName" format="string" />
+        <attr name="thumbPartName" format="string" />
+        <attr name="gridItemLayout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CameraButton">
+        <attr name="duration" format="integer"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="innerCircleColor" format="color"/>
+        <attr name="outCircleColor" format="color" />
+        <attr name="progressColor" format="color"/>
+        <attr name="progressWidth" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="CalendarView">
+
+        <attr name="calendar_padding" format="dimension" /><!--日历内部左右padding-->
+
+        <attr name="week_background" format="color" /><!--周背景-->
+        <attr name="week_line_background" format="color" /><!--线条颜色-->
+        <attr name="week_text_color" format="color" /><!--周栏字体颜色-->
+        <attr name="week_text_size" format="dimension" /><!--周栏字体大小-->
+        <attr name="week_line_margin" format="dimension" /><!--线条margin-->
+
+        <attr name="month_view" format="string" /><!--完全自定义月视图-->
+        <attr name="week_view" format="string" /> <!--完全自定义周视图-->
+        <attr name="year_view" format="string" /> <!--完全自定义年视图-->
+        <attr name="week_bar_height" format="dimension" /> <!--星期栏的高度-->
+        <attr name="week_bar_view" format="string" /> <!--如果需要的话使用自定义星期栏-->
+
+        <attr name="scheme_text" format="string" />
+        <attr name="day_text_size" format="dimension" />
+        <attr name="lunar_text_size" format="dimension" />
+        <attr name="calendar_height" format="dimension" />
+        <attr name="calendar_match_parent" format="boolean" /> <!-- 全屏日历 -->
+        <attr name="scheme_text_color" format="color" />
+        <attr name="scheme_month_text_color" format="color" />
+        <attr name="scheme_lunar_text_color" format="color" />
+        <attr name="scheme_theme_color" format="color" />
+
+        <attr name="selected_theme_color" format="color" />
+        <attr name="selected_text_color" format="color" />
+        <attr name="selected_lunar_text_color" format="color" />
+
+        <attr name="current_day_text_color" format="color" />
+        <attr name="current_day_lunar_text_color" format="color" />
+        <attr name="current_month_text_color" format="color" />
+        <attr name="other_month_text_color" format="color" />
+        <attr name="current_month_lunar_text_color" format="color" />
+        <attr name="other_month_lunar_text_color" format="color" />
+
+
+        <!-- 年视图相关 -->
+        <attr name="year_view_month_text_size" format="dimension" />
+        <attr name="year_view_day_text_size" format="dimension" />
+        <attr name="year_view_month_text_color" format="color" />
+        <attr name="year_view_current_day_text_color" format="color" />
+        <attr name="year_view_day_text_color" format="color" />
+        <attr name="year_view_select_text_color" format="color" />
+        <attr name="year_view_scheme_color" format="color" />
+        <attr name="year_view_background" format="color" />
+        <attr name="year_view_month_height" format="dimension" />
+        <attr name="year_view_week_height" format="dimension" />
+        <attr name="year_view_week_text_size" format="dimension" />
+        <attr name="year_view_week_text_color" format="color" />
+        <attr name="year_view_padding" format="dimension" />
+        <attr name="year_view_month_margin_top" format="dimension" />
+        <attr name="year_view_month_margin_bottom" format="dimension" />
+
+        <!--日期范围-->
+        <attr name="min_year" format="integer" />
+        <attr name="max_year" format="integer" />
+        <attr name="min_year_month" format="integer" />
+        <attr name="max_year_month" format="integer" />
+        <attr name="min_year_day" format="integer" />
+        <attr name="max_year_day" format="integer" />
+
+
+        <!--月视图是否可滚动-->
+        <attr name="month_view_scrollable" format="boolean" />
+        <!--周视图是否可滚动-->
+        <attr name="week_view_scrollable" format="boolean" />
+        <!--年视图是否可滚动-->
+        <attr name="year_view_scrollable" format="boolean" />
+
+        <!-- 月份显示模式 -->
+        <attr name="month_view_show_mode">
+            <enum name="mode_all" value="0" />
+            <enum name="mode_only_current" value="1" />
+            <enum name="mode_fix" value="2" />
+        </attr>
+
+        <!-- 自定义周起始 -->
+        <attr name="week_start_with">
+            <enum name="sun" value="1" />
+            <enum name="mon" value="2" />
+            <enum name="sat" value="7" />
+        </attr>
+
+        <!-- 自定义选择模式 -->
+        <attr name="select_mode">
+            <enum name="default_mode" value="0" />
+            <enum name="single_mode" value="1" />
+            <enum name="range_mode" value="2" />
+            <enum name="multi_mode" value="3" />
+        </attr>
+
+        <!-- when select_mode = multi_mode -->
+        <attr name="max_multi_select_size" format="integer" />
+
+        <!-- when select_mode = range_mode -->
+        <attr name="min_select_range" format="integer" />
+        <attr name="max_select_range" format="integer" />
+
+        <!-- auto select day -->
+        <attr name="month_view_auto_select_day">
+            <enum name="first_day_of_month" value="0" />
+            <enum name="last_select_day" value="1" />
+            <enum name="last_select_day_ignore_current" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="CalendarLayout">
+        <attr name="default_status">
+            <enum name="expand" value="0" />
+            <enum name="shrink" value="1" />
+        </attr>
+        <!-- 手势模式 -->
+        <attr name="gesture_mode">
+            <enum name="default_mode" value="0" />
+            <!--<enum name="only_calendar" value="1" />-->
+            <enum name="disabled" value="2" />
+        </attr>
+        <attr name="calendar_show_mode">
+            <enum name="both_month_week_view" value="0" />
+            <enum name="only_week_view" value="1" />
+            <enum name="only_month_view" value="2" />
+        </attr>
+        <attr name="calendar_content_view_id" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ShortListView">
+        <attr name="itemLayout" format="reference" />
+        <attr name="emptyLayout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="TabViewLayout">
+        <attr name="tabArray" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="AutoFitLayout">
+        <attr name="scaleHeight" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="FlowGroupDelegate">
+        <attr name="flowHorizontalSpacing" />
+        <attr name="flowVerticalSpacing" />
+        <attr name="itemHeight" format="dimension" />
+        <!--将子控件均分成若干一行-->
+        <attr name="columnOfAverage" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="NavigationRow">
+        <attr name="icon" />
+        <attr name="title" />
+    </declare-styleable>
+
+    <declare-styleable name="TbsView">
+    </declare-styleable>
+
+    <declare-styleable name="StaticPager">
+        <!--是否禁止滑动-->
+        <attr name="noScroll" format="boolean" />
+        <attr name="pagesClzName" format="reference" />
+        <!--最大缓存页面数-->
+        <attr name="maxCachePageSize" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="LoadingView">
+        <attr name="loading_renderer">
+            <!--circle rotate-->
+            <enum name="MaterialLoadingRenderer" value="0"/>
+            <enum name="LevelLoadingRenderer" value="1"/>
+            <enum name="WhorlLoadingRenderer" value="2"/>
+            <enum name="GearLoadingRenderer" value="3"/>
+            <!--circle jump-->
+            <enum name="SwapLoadingRenderer" value="4"/>
+            <enum name="GuardLoadingRenderer" value="5"/>
+            <enum name="DanceLoadingRenderer" value="6"/>
+            <enum name="CollisionLoadingRenderer" value="7"/>
+            <!--Scenery-->
+            <enum name="DayNightLoadingRenderer" value="8"/>
+            <enum name="ElectricFanLoadingRenderer" value="9"/>
+            <!--Animal-->
+            <enum name="FishLoadingRenderer" value="10"/>
+            <enum name="GhostsEyeLoadingRenderer" value="11"/>
+            <!--Goods-->
+            <enum name="BalloonLoadingRenderer" value="12"/>
+            <enum name="WaterBottleLoadingRenderer" value="13"/>
+            <!--ShapeChange-->
+            <enum name="CircleBroodLoadingRenderer" value="14"/>
+            <enum name="CoolWaitLoadingRenderer" value="15"/>
+        </attr>
+    </declare-styleable>
+</resources>

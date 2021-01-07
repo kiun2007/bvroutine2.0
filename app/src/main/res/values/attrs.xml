@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="title" format="string" />
+    <attr name="enableFlow" format="boolean" />
+
+    <declare-styleable name="AutoIndexBar">
+        <attr name="showTextId" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RadiusImageView">
+        <attr name="radiusValue" format="dimension" />
+        <attr name="defaultImage" format="reference" />
+        <attr name="photoNormal" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RowLinearLayout">
+        <attr name="title" />
+        <attr name="required" format="boolean" />
+        <attr name="bottomLine" format="boolean" />
+        <attr name="titleWidth" format="dimension|enum">
+            <enum name="fill" value="-1" />
+            <enum name="wrap" value="-2" />
+        </attr>
+        <attr name="titleColor" format="color" />
+        <attr name="titleSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="StateDotLayout">
+        <attr name="stateLabel" format="string" />
+        <attr name="lessBackground" format="reference" />
+        <attr name="greaterBackground" format="reference" />
+        <attr name="lessTitle" format="string" />
+        <attr name="greaterTitle" format="string" />
+        <attr name="invalidTitle" format="string" />
+    </declare-styleable>
+    <declare-styleable name="GeneralItemText">
+        <attr name="tableName" format="string" />
+        <attr name="fieldName" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="FlowRadioGroup">
+        <attr name="itemLayout" />
+        <attr name="enableFlow" />
+        <attr name="titleArray" />
+        <attr name="valueArray" />
+    </declare-styleable>
+</resources>

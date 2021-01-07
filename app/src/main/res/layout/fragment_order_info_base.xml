@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.szxgm.gusustreet.ui.fragment.order.OrderInfoBaseFragment">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="android.view.View" />
+        <import type="com.szxgm.gusustreet.base.TaskDisposalType" />
+        <import type="com.szxgm.gusustreet.net.requests.mobile.TaskDisposalReq" />
+
+        <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
+        <variable name="service" type="com.szxgm.gusustreet.net.services.MobileService" />
+        <variable name="fileService" type="com.szxgm.gusustreet.net.services.FileService" />
+        <variable name="order" type="com.szxgm.gusustreet.model.dto.mobile.OrderInfoDetailed" />
+        <variable name="type" type="TaskDisposalType" />
+        <variable name="data" type="Object" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:text="基本信息"
+                        style="@style/tvSeparate" />
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:required="false"
+                        app:title="事件标题:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:textColor="@color/mainTextColor"
+                            android:text="@{order.title}"
+                            tools:text="标题" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:required="false"
+                        app:title="上报时间:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:textColor="@color/mainTextColor"
+                            android:text="@{order.reportDate}"
+                            tools:text="2020-05-15 10:00:00" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:required="false"
+                        app:title="事件来源:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:text="@{order.reportPerson}"
+                            android:textColor="@color/mainTextColor"
+                            tools:text="某某某" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+                    <TextView
+                        android:text="详细描述"
+                        style="@style/tvSeparate" />
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:required="false"
+                        app:title="问题描述:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:background="@null"
+                            android:gravity="top"
+                            android:textColor="@color/mainTextColor"
+                            android:text="@{order.description}"
+                            tools:text="小区周边违规占道" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:bottomLine="false"
+                        app:required="false"
+                        app:title="所属事项:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:text="@{order.ascription}"
+                            tools:text="事件类型" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:bottomLine="false"
+                        app:required="false"
+                        app:title="诉求类型:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:text="@{order.appealTypeName}"
+                            tools:text="投诉" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:bottomLine="false"
+                        app:required="false"
+                        app:title="严重程度:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:layout_width="wrap_content"
+                            android:text="@{order.seriousDegreeName}"
+                            tools:text="一般" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                    <TextView
+                        android:text="位置信息"
+                        style="@style/tvSeparate" />
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:required="false"
+                        app:title="所属网络:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:text="@{order.partyGridName}"
+                            android:textColor="@color/mainTextColor"
+                            tools:text="姑苏区平江路" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+                    <com.szxgm.gusustreet.views.RowLinearLayout
+                        style="@style/rowInput"
+                        app:titleWidth="80dp"
+                        app:required="false"
+                        app:title="位置说明:">
+                        <TextView
+                            style="@style/tvMain"
+                            android:text="@{order.position}"
+                            android:textColor="@color/mainTextColor"
+                            tools:text="平江路110号" />
+                    </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                    <LinearLayout
+                        android:show="@{order.imageList != null}"
+                        android:orientation="vertical"
+                        style="@style/barVertical">
+                        <LinearLayout
+                            android:padding="8dp"
+                            android:background="#fff3f3f6"
+                            style="@style/barVertical">
+                            <TextView
+                                android:text="事件照片"
+                                android:layout_marginLeft="8dp"
+                                style="@style/tvSubtitle" />
+                        </LinearLayout>
+                        <kiun.com.bvroutine.views.ShortListView
+                            android:val="@{order.imageList}"
+                            android:padding="8dp"
+                            app:itemLayout="@layout/item_picture_big"
+                            app:flowHorizontalSpacing="12dp"
+                            android:orientation="horizontal"
+                            style="@style/barVertical" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:show="@{type != null}"
+                        android:orientation="vertical"
+                        style="@style/barVertical">
+                        <TextView
+                            android:text="处理信息"
+                            style="@style/tvSeparate" />
+                        <ViewStub
+                            style="@style/barVertical"
+                            android:id="@+id/viewStub"
+                            android:sysService="@{sysService}"
+                            android:dataService="@{service}"
+                            android:fileService="@{fileService}"
+                            android:data="@{data}"
+                            android:layout="@{type.layoutId}"
+                            android:visibility="@{type!=null?View.VISIBLE:View.GONE}"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

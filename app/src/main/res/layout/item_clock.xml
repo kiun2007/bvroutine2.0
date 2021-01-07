@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.fragment.attendance.ClockInFragment">
+    <data>
+        <import type="android.view.View" />
+        <import type="kiun.com.bvroutine.utils.DateUtil"/>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="android.view.Gravity" />
+
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.attendance.ClockOfView" />
+        <variable name="service" type="com.szxgm.gusustreet.net.services.AttendanceService" />
+        <variable name="trailService" type="com.szxgm.gusustreet.service.TrailService" />
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/fill_base">
+        <TextView
+            tools:text="早班"
+            android:text="@{item.workTime.title}"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            style="@style/tvTitle" />
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            tools:background="@drawable/shape_dot_third_bg"
+            android:background="@{item.getLeftDrawable(context)}"
+            android:layout_width="match_parent"
+            android:paddingStart="25dp"
+            android:layout_height="wrap_content">
+            <TextView
+                tools:text="上班时间 09:00"
+                android:text="@{`上班时间 `+ item.workTime.pbBegin}"
+                style="@style/tvMain" />
+
+            <LinearLayout
+                style="@style/dotLayout">
+                <TextView
+                    style="@style/tvNormal"
+                    android:layout_gravity="left"
+                    android:show="@{item.arriveShow}"
+                    android:text="@{item.lackArrive?`上班缺卡`:MCString.formatDate(`HH:mm 打卡上班`, item.clock.dkBegin)}"
+                    android:textStyle="normal"
+                    tools:text="打卡上班" />
+
+                <com.szxgm.gusustreet.views.StateDotLayout
+                    style="@style/bigDotArrive"
+                    android:action="@{(a)->service.dakaBeginSaveList(item.arrive(trailService.lastLocation))}"
+                    android:show="@{!item.arriveShow}"
+                    android:tag="handler.onComplete(data)"
+                    app:compareTime="@{item.workTime.pbBegin}" />
+
+                <TextView
+                    style="@style/tvNormal"
+                    android:drawableStart="@drawable/ic_location"
+                    android:ellipsize="middle"
+                    android:show="@{!item.arriveShow||!item.lackArrive}"
+                    android:singleLine="true"
+                    android:text="@{item.clock.dkBeginaddress??trailService.lastLocation.address}"
+                    tools:text="地址" />
+            </LinearLayout>
+
+            <TextView
+                tools:text="下班时间 18:00"
+                android:gravity="bottom"
+                android:text="@{`下班时间 `+ item.workTime.pbEnd}"
+                android:layout_marginBottom="3dp"
+                style="@style/tvMain" />
+        </LinearLayout>
+        <LinearLayout
+            android:paddingStart="35dp"
+            android:show="@{item.clock!=null||item.his}"
+            style="@style/barVertical">
+            <LinearLayout
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="10dp"
+                style="@style/dotLayout">
+                <TextView
+                    tools:text="打卡下班"
+                    style="@style/tvNormal"
+                    android:layout_gravity="left"
+                    android:show="@{item.leaveShow}"
+                    android:textStyle="normal"
+                    android:text="@{item.lackLeave?`下班缺卡`:MCString.formatDate(`HH:mm打卡下班`,item.clock.dkEnd)}" />
+                <com.szxgm.gusustreet.views.StateDotLayout
+                    app:compareTime="@{item.workTime.pbEnd}"
+                    android:show="@{!item.leaveShow}"
+                    android:beforeAction="@{()->item.leaveEarlyMessage}"
+                    android:tag="handler.onComplete(data)"
+                    android:action="@{(a)->service.dakaEndSaveList(item.clock.leave(trailService.lastLocation))}"
+                    style="@style/bigDotLeave" />
+                <TextView
+                    android:show="@{!item.lackLeave}"
+                    style="@style/tvNormal"
+                    tools:text="地址"
+                    android:drawableStart="@drawable/ic_location"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:text="@{item.clock.dkEndaddress??trailService.lastLocation.address}" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.other.SpecialTaskActivity">
+    <data>
+        <variable name="pagerIndex" type="kiun.com.bvroutine.data.FieldEvent&lt;Integer>" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="专项任务"
+            app:barRightTitle="指派"
+            app:barRightImage="@drawable/ic_baseline_touch_app_18"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <kiun.com.bvroutine.views.TabViewLayout
+                android:val="@={pagerIndex.value}"
+                app:tabArray="@array/tabSpecial"
+                style="@style/tabLayout" />
+            <kiun.com.bvroutine.views.layout.StaticPager
+                android:val="@={pagerIndex.value}"
+                app:pagesClzName="@array/fragmentSpecial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

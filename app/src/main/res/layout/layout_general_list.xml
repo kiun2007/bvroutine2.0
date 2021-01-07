@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.GeneralListActivity">
+    <data>
+        <variable name="trailService" type="com.szxgm.gusustreet.service.TrailService" />
+        <variable name="query" type="com.szxgm.gusustreet.model.query.GeneralListQuery" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="通用列表"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                style="@style/barVertical">
+                <LinearLayout
+                    android:id="@+id/generalSearch"
+                    android:gravity="center|left"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shape_radius_grey_bg"
+                    android:layout_width="match_parent"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:layout_height="36dp">
+                    <ImageView
+                        android:src="@mipmap/ic_search"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp" />
+                    <EditText
+                        android:id="@+id/generalSearchText"
+                        android:layout_marginStart="5dp"
+                        android:hint="搜索"
+                        android:textSize="16sp"
+                        android:imeOptions="actionSearch"
+                        android:singleLine="true"
+                        android:background="@null"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/filterBtn"
+                    android:onClick="onFilter"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/check_filter_button_bg"
+                    style="@style/warp_base" />
+            </LinearLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:visibility="gone"
+                app:tabIndicatorColor="@color/blue"
+                app:tabSelectedTextColor="@color/blue"
+                app:tabIndicator="@drawable/shape_bar_30x2"
+                app:tabMode="scrollable"
+                android:id="@+id/classifyTabLayout"
+                android:textSize="13sp"
+                android:background="@drawable/shape_bottom_line_bg"
+                style="@style/barVertical" />
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/mainRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

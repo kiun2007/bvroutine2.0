@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.ListUtil" />
+        <import type="com.szxgm.gusustreet.model.base.PoiChooseItem" />
+        <variable name="item" type="PoiChooseItem" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler&lt;PoiChooseItem>"/>
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center|left"
+        android:onClick="@{()->handler.onClick(context,0,item)}"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:orientation="horizontal">
+        <com.szxgm.gusustreet.views.RadiusImageView
+            imgUrl="@{item.poiItem.photos.empty?null:item.poiItem.photos.get(0).url}"
+            app:photoNormal="@drawable/ic_vector_photo_normal"
+            app:defaultImage="@drawable/ic_vector_photo_normal"
+            android:background="#F4F4F4"
+            android:layout_marginRight="8dp"
+            android:layout_width="60dp"
+            android:layout_height="50dp" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            style="@style/fill_base">
+            <TextView
+                android:text="@{item.poiItem.title}"
+                tools:text = "地址标题"
+                android:textColor="#333"
+                android:textSize="12sp"
+                android:layout_marginBottom="4dp"
+                style="@style/warp_base" />
+            <TextView
+                android:text="@{item.poiItem.snippet}"
+                tools:text = "详细地址"
+                android:textSize="11sp"
+                style="@style/warp_base" />
+        </LinearLayout>
+        <CheckBox
+            tools:checked="true"
+            android:button="@drawable/sel_check_chose"
+            android:checked="@{handler.itemChose(item)||item.chose}"
+            android:enabled="false"
+            android:layout_marginLeft="5dp"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

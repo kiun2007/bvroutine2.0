@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.mobile.AreaRiverOffice" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:padding="16dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:orientation="vertical">
+        <TextView
+            tools:text="处置部门"
+            android:text="@{item.disposeOffice.officeName}"
+            style="@style/smallTitle" />
+        <LinearLayout
+            android:show="@{`1`.equals(item.disposeOffice.isUnderclass)}"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:gravity="left|bottom"
+            style="@style/barVertical">
+            <TextView
+                android:textSize="13sp"
+                android:text="请从下列街道选取处置"
+                style="@style/tvSubtitle" />
+            <kiun.com.bvroutine.views.ShortListView
+                android:val="@{item.streets}"
+                android:listHandler="@{handler}"
+                app:itemLayout="@layout/item_general"
+                style="@style/barVertical" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

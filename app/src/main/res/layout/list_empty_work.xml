@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+    </data>
+    <LinearLayout
+        android:padding="15dp"
+        android:gravity="center"
+        style="@style/barVertical">
+        <TextView
+            android:drawableTop="@drawable/ic_baseline_insert_invitation_48"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="未找到排班信息"
+            style="@style/tvNormal"/>
+    </LinearLayout>
+</layout>

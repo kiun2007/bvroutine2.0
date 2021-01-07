@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.other.SubmitSentinelActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.AddressChooseActivity" />
+        <variable name="otherService" type="com.szxgm.gusustreet.net.services.OtherService" />
+        <variable name="data" type="com.szxgm.gusustreet.net.requests.SentinelReq" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="非法行医上报"
+            style="@style/navigatorBar" />
+        <ScrollView
+            android:background="@color/wrapBackground"
+            style="@style/fill_base">
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@color/wrapBackground"
+                style="@style/barVertical">
+                <LinearLayout
+                    style="@style/division" />
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="事件发生地址"
+                    style="@style/rowInputVertical">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        app:activityClz="@{AddressChooseActivity.clz}"
+                        android:val="@={data.chooseAddress}"
+                        android:verifyField="@{`address`}"
+                        android:layout_marginTop="10dp"
+                        android:hint="请选择地址"
+                        style="@style/barVertical" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="上报人"
+                    style="@style/rowInput">
+                    <EditText
+                        android:text="@{data.reportMan}"
+                        android:hint="上报人"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="上报时间"
+                    style="@style/rowInput">
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        app:format="yyyy-MM-dd HH:mm:ss"
+                        app:returnType="formatDate"
+                        android:val="@={data.createdOn}"
+                        android:hint="上报时间"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="所在哨点"
+                    style="@style/rowInput">
+                    <TextView
+                        android:text="@{data.reportPath}"
+                        android:hint="所在哨点"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    style="@style/division" />
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="上报详情说明"
+                    style="@style/rowInputVertical">
+                    <EditText
+                        android:layout_marginTop="10dp"
+                        android:lines="4"
+                        android:val="@={data.description}"
+                        android:verifyField="@{`description`}"
+                        android:textAlignment="textStart"
+                        android:hint="请输入违法情况描述"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <LinearLayout
+                    style="@style/division" />
+                <LinearLayout
+                    style="@style/rowInputVertical" >
+                    <TextView
+                        android:padding="0dp"
+                        android:text="图片"
+                        android:verifyField="@{`attachment`}"
+                        style="@style/blockTitle"/>
+                    <kiun.com.bvroutine.views.MultipleImageGrid
+                        app:gridItemLayout="@layout/item_other_uplaod_view"
+                        android:val="@={data.attachment}"
+                        android:service="@{(part)->otherService.uploadFile(part)}"
+                        android:layout_marginTop="15dp"
+                        style="@style/multipleUploadGrid" />
+                </LinearLayout>
+                <LinearLayout
+                    style="@style/division">
+                    <Button
+                        android:text="确认上报"
+                        android:layout_margin="8dp"
+                        android:verify="@{data}"
+                        android:action="@{(a)->otherService.submitByLevelTwo(data)}"
+                        android:tag="handler.onComplete(data)"
+                        style="@style/bt_active" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

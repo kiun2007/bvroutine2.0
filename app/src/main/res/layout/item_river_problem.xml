@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.river.RiverProblem" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:paddingLeft="24dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                tools:text="干将河"
+                android:text="@{item.title}"
+                style="@style/smallTitle" />
+            <TextView
+                android:layout_marginTop="5dp"
+                tools:text="2020-04-14 16:40:00"
+                android:text="@{MCString.formatDate(`yyyy-MM-dd HH:mm:ss`,item.createDate)}"
+                android:textSize="12sp"
+                style="@style/warp_base" />
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="right"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <View
+                android:layout_weight="1"
+                style="@style/warp_base" />
+            <TextView
+                android:text="待受理"
+                style="@style/tvNormal" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

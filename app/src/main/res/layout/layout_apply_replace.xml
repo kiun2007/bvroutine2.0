@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
+        <import type="android.view.View" />
+
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:orientation="vertical">
+        <LinearLayout
+            style="@style/barVertical">
+            <TextView
+                android:drawableLeft="@drawable/ic_baseline_repeat_18"
+                android:layout_weight="1"
+                android:textStyle="normal"
+                android:text="调班申请"
+                android:textSize="16sp"
+                style="@style/tvTitle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            style="@style/barVertical">
+            <TextView
+                android:text="调换班次:"
+                android:layout_marginRight="10dp"
+                style="@style/tvNormal" />
+            <TextView
+                tools:text="2020-12-29 - 早班"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:text="@{item.tbbeforetimes}"
+                style="@style/tvMain" />
+            <TextView
+                android:drawableLeft="@drawable/ic_baseline_swap_horiz_18"
+                android:layout_weight="1"
+                android:singleLine="true"
+                tools:text="2020-12-29 - 晚班"
+                android:layout_width="match_parent"
+                android:text="@{item.tblatertimes}"
+                style="@style/tvMain" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            style="@style/barVertical">
+            <TextView
+                android:text="调换双方:"
+                android:layout_marginRight="10dp"
+                style="@style/tvNormal" />
+            <TextView
+                tools:text="李明"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@{item.tbmenbefore}"
+                android:layout_width="match_parent"
+                style="@style/tvMain" />
+            <TextView
+                android:drawableLeft="@drawable/ic_baseline_swap_horiz_18"
+                tools:text="韩梅梅"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:text="@{item.tbmenlater}"
+                style="@style/tvMain" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

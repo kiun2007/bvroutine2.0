@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.AddressChooseActivity" />
+        <variable name="otherService" type="com.szxgm.gusustreet.net.services.OtherService" />
+        <variable name="data" type="com.szxgm.gusustreet.net.requests.PublicityReq" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="宣传信息上报"
+            style="@style/navigatorBar" />
+        <ScrollView
+            android:background="@color/wrapBackground"
+            style="@style/fill_base">
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@color/wrapBackground"
+                style="@style/barVertical">
+                <LinearLayout
+                    style="@style/division" />
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="宣传地点"
+                    style="@style/rowInputVertical">
+                    <com.szxgm.gusustreet.views.GeneralItemText
+                        app:activityClz="@{AddressChooseActivity.clz}"
+                        android:val="@={data.chooseAddress}"
+                        android:verifyField="@{`address`}"
+                        android:layout_marginTop="10dp"
+                        android:hint="请选择地址"
+                        style="@style/barVertical" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="宣传时间"
+                    style="@style/rowInput">
+                    <TextView
+                        android:hint="宣传时间"
+                        android:text="@{data.pubDate}"
+                        style="@style/rowEditText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="条幅数量(个)"
+                    style="@style/rowInput">
+                    <EditText
+                        android:hint="请输入条幅数量"
+                        android:val="@={data.bannerNo}"
+                        android:verifyField="@{`bannerNo`}"
+                        style="@style/rowEditInt" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="宣传资料(份)"
+                    style="@style/rowInput">
+                    <EditText
+                        android:hint="请输入宣传资料数量"
+                        android:val="@={data.dataNo}"
+                        android:verifyField="@{`dataNo`}"
+                        style="@style/rowEditInt" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="展板数量(块)"
+                    style="@style/rowInput">
+                    <EditText
+                        android:hint="请输入展板数量"
+                        android:val="@={data.panelNo}"
+                        android:verifyField="@{`panelNo`}"
+                        style="@style/rowEditInt" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    style="@style/division" />
+                <LinearLayout
+                    style="@style/rowInputVertical" >
+                    <TextView
+                        android:padding="0dp"
+                        android:text="图片"
+                        style="@style/blockTitle"/>
+                    <kiun.com.bvroutine.views.MultipleImageGrid
+                        app:gridItemLayout="@layout/item_other_uplaod_view"
+                        android:val="@={data.attachment}"
+                        android:service="@{(part)->otherService.uploadFile(part)}"
+                        android:layout_marginTop="15dp"
+                        style="@style/multipleUploadGrid" />
+                </LinearLayout>
+                <LinearLayout
+                    style="@style/division">
+                    <Button
+                        android:text="确认上报"
+                        android:layout_margin="8dp"
+                        android:verify="@{data}"
+                        android:action="@{(a)->otherService.submitPublicity(data)}"
+                        android:tag="handler.onComplete(data)"
+                        style="@style/bt_active" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

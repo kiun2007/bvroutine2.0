@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.szxgm.gusustreet.ui.fragment.other.GridVisitFragment">
+    <data>
+        <import type="kiun.com.bvroutine.presenters.list.NetListProvider" />
+
+        <variable name="service" type="com.szxgm.gusustreet.net.services.LinkageService" />
+        <variable name="req" type="com.szxgm.gusustreet.net.requests.linkage.VisitListReq" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="#F0F0F0"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                style="@style/fill_base">
+                <androidx.recyclerview.widget.RecyclerView
+                    tools:listitem="@layout/item_grid_visit"
+                    android:netBlock="@{(pager)->service.gridVisitList(req.inherit(pager))}"
+                    android:listProvider="@{NetListProvider.create(context, handler, @layout/item_grid_visit)}"
+                    style="@style/fill_base" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

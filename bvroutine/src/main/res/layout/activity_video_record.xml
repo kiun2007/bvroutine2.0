@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".media.VideoRecorderActivity">
+    <data>
+        <import type="kiun.com.bvroutine.media.MediaState" />
+        <import type="android.view.View" />
+
+        <variable name="recorder" type="kiun.com.bvroutine.media.VideoRecorder" />
+        <variable name="dialog" type="android.content.DialogInterface" />
+        <variable name="duration" type="Integer" />
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextureView
+            android:videoRecorder="@{recorder}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:layout_gravity="top"
+            android:src="@drawable/ic_baseline_loop_30"
+            android:layout_marginTop="10dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:textColor="#FFF"
+            android:onClick="@{()->recorder.flip()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_gravity="top|right"
+            android:src="@drawable/ic_baseline_cancel_24"
+            android:layout_marginTop="10dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:textColor="#FFF"
+            android:onClick="@{()->recorder.cancel(dialog)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:background="#33000000"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="match_parent">
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <kiun.com.bvroutine.views.CameraButton
+                    app:duration="@{duration}"
+                    app:backgroundColor="#888888"
+                    app:outCircleColor="#FFF"
+                    app:innerCircleColor="#38AFFF"
+                    app:recordStart="@{recorder.startRecord}"
+                    app:recordEnd="@{recorder.stopRecord}"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" >
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            tools:visibility="gone"
+            android:show="@{recorder.stateField == MediaState.Nothing}"
+            android:gravity="center"
+            android:background="#F4F4F4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:gravity="center"
+                android:textColor="#628CFF"
+                android:text="相机准备中"
+                android:drawableTop="@drawable/ic_baseline_camera_80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

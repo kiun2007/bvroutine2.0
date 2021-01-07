@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.statistics.DateRow" />
+        <variable name="handler" type="kiun.com.bvroutine.base.BaseHandler"/>
+        <variable name="treeHandler" type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:padding="16dp"
+        android:gravity="center"
+        android:onClick="@{()->treeHandler.onClick(context, 0, null)}"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_weight="1"
+            style="@style/barVertical"
+            android:text="@{item.date}"
+            tools:text="标题"
+            android:textColor="#666"
+            android:textSize="14sp" />
+        <TextView
+            style="@style/warp_base"
+            android:textAlignment="viewEnd"
+            android:text="@{item.value}"
+            tools:text="标题"
+            android:textColor="#999"
+            android:textSize="12sp" />
+    </LinearLayout>
+</layout>

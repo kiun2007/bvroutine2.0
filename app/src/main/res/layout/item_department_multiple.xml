@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.model.dto.mobile.Department" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler&lt;Department>"/>
+        <variable name="item" type="Department" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="left|center"
+        android:paddingStart="16dp"
+        android:paddingRight="16dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:orientation="horizontal">
+        <CheckBox
+            tools:checked="true"
+            android:button="@drawable/sel_check_chose"
+            android:checked="@{item.selected}"
+            android:enabled="false"
+            android:layout_marginLeft="5dp"
+            style="@style/warp_base" />
+        <TextView
+            tools:text="选项1"
+            android:layout_weight="1"
+            android:text="@{item.title}"
+            style="@style/tvSubtitle" />
+        <RadioButton
+            android:show="@{item.selected}"
+            android:checked="@{handler.itemChose(item)}"
+            android:onClick="@{()->handler.onClick(context, 1, item)}"
+            android:text="是否牵头"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

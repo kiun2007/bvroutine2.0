@@ -1,0 +1,5 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:drawable="@drawable/shape_oval_grey" />
+    <item android:state_pressed="true" android:drawable="@drawable/shape_oval_yellow_click"/>
+    <item android:drawable="@drawable/shape_oval_yellow" android:state_checkable="false"/>
+</selector>

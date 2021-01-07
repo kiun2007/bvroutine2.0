@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item android:width="80dp" android:height="35dp">
+        <shape android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:shape="rectangle">
+            <solid android:color="#d9e9ff"/>
+        </shape>
+    </item>
+    <item android:gravity="bottom|right" android:width="35dp" android:height="35dp">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="22%"
+            android:pivotY="154%">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="16dp"
+                    android:height="16dp"/>
+                <solid android:color="#4e84ff"/>
+            </shape>
+        </rotate>
+    </item>
+    <item android:bottom="1dp" android:gravity="right|bottom" android:width="15dp" android:height="15dp">
+        <layer-list>
+            <item android:width="6dp">
+                <rotate
+                    android:pivotY="88%"
+                    android:pivotX="-11%"
+                    android:fromDegrees="45">
+                    <shape android:shape="line">
+                        <size android:width="1dp" android:height="1dp"/>
+                        <stroke android:color="#FFF" android:width="1dp"/>
+                    </shape>
+                </rotate>
+            </item>
+            <item android:width="10dp">
+                <rotate
+                    android:pivotX="70%"
+                    android:pivotY="65%"
+                    android:fromDegrees="135">
+                    <shape android:shape="line">
+                        <size android:width="1dp"/>
+                        <stroke android:color="#FFF" android:width="1dp"/>
+                    </shape>
+                </rotate>
+            </item>
+        </layer-list>
+    </item>
+</layer-list>

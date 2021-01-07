@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    style="@style/warp_base">
+    <TextView
+        android:textColor="#2B8203"
+        android:text="始点"
+        android:textSize="12dp"
+        style="@style/tvMain" />
+    <ImageView
+        android:src="@drawable/ic_baseline_location_start_24"
+        style="@style/warp_base" />
+</LinearLayout>

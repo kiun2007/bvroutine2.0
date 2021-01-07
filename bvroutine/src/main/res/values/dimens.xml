@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="durAnim">50</integer>
+    <dimen name="uploadSize">30dp</dimen>
+</resources>

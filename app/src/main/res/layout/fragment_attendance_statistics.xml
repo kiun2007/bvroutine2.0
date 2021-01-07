@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.fragment.attendance.StatisticsFragment">
+    <data>
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="考勤统计"
+            style="@style/navigatorBar"/>
+        <LinearLayout
+            style="@style/fill_base">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/mainRefresh"
+                style="@style/fill_base">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mainTree"
+                    tools:listitem="@layout/item_root"
+                    style="@style/fill_base">
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.CameraInfo" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:padding="8dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:orientation="horizontal">
+        <ImageView
+            android:background="@drawable/shape_bg_video"
+            android:file="@{item.getLocalThumb(context)}"
+            android:layout_width="120dp"
+            android:layout_height="80dp" />
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:orientation="vertical"
+            style="@style/barVertical">
+            <TextView
+                tools:text="姑苏区铜镜公园"
+                android:text="@{item.name}"
+                style="@style/tvMain" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="5dp"
+                app:html="@string/cameraType"
+                android:argument="@{MCString.asArray(item.devModelType)}"
+                style="@style/tvNormal" />
+<!--            <kiun.com.bvroutine.views.HtmlTextView-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                app:html="@string/cameraStatus"-->
+<!--                android:argument="@{MCString.asArray(item.status)}"-->
+<!--                style="@style/tvNormal" />-->
+        </LinearLayout>
+    </LinearLayout>
+</layout>

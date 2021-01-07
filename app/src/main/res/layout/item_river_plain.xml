@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.list.PatrolListActivity">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.river.RiverPlain" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:orientation="horizontal">
+        <com.szxgm.gusustreet.views.RadiusImageView
+            app:imgUrl="@{item.image}"
+            app:defaultImage="@drawable/svg_river"
+            app:photoNormal="@drawable/svg_river"
+            android:layout_marginRight="8dp"
+            android:layout_width="95dp"
+            android:layout_height="70dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                tools:text="干将河"
+                android:text="@{item.riveRnme}"
+                style="@style/smallTitle" />
+            <TextView
+                tools:text="最近巡查: 无"
+                android:text="@{`最近巡查: `+MCString.formatDate(`yyyy-MM-dd HH:mm`,item.lastPatrol)}"
+                android:textSize="12sp"
+                style="@style/warp_base" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right|bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:onClick="@{()->handler.onClick(context, 1, item)}"
+                    android:text="开始巡查"
+                    android:layout_width="80dp"
+                    style="@style/bt_pad" />
+                <TextView
+                    android:onClick="@{()->handler.onClick(context, 2, item)}"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="80dp"
+                    android:text="巡查记录"
+                    style="@style/bt_hollow_blue" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

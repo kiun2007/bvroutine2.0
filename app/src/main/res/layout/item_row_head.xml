@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.statistics.ClockStatistics" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <LinearLayout
+            android:padding="15dp"
+            android:orientation="vertical"
+            style="@style/barVertical">
+            <LinearLayout
+                android:gravity="center"
+                style="@style/barVertical">
+                <TextView
+                    tools:text="人员名称"
+                    android:text="@{item.user.userName}"
+                    android:layout_weight="1"
+                    android:textStyle="normal"
+                    android:layout_marginRight="5dp"
+                    style="@style/tvNormal" />
+                <kiun.com.bvroutine.views.MonthSwitchView
+                    android:val="@={item.month}"
+                    style="@style/warp_base" />
+            </LinearLayout>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:drawableTint="@color/gray"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:drawableLeft="@drawable/ic_error_outline_red_16dp"
+                android:text="@{String.format(`统计从%s到%s`, MCString.formatDate(`yyyy-MM-dd`,item.monthStart), MCString.formatDate(`yyyy-MM-dd`, item.monthEnd))}"
+                android:textSize="13sp"
+                style="@style/tvSubtitle" />
+        </LinearLayout>
+
+        <View
+            android:background="#F4F4F4"
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+    </LinearLayout>
+</layout>

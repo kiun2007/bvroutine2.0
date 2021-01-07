@@ -1,0 +1,57 @@
+<resources>
+    <style name="DialogBottom">
+        <item name="android:windowEnterAnimation">@anim/dialog_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_bottom_exit</item>
+    </style>
+    <style name="DialogTop">
+        <item name="android:windowEnterAnimation">@anim/dialog_top_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_top_exit</item>
+    </style>
+    <style name="DialogLeft">
+        <item name="android:windowEnterAnimation">@anim/dialog_left_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_left_exit</item>
+    </style>
+    <style name="DialogRight">
+        <item name="android:windowEnterAnimation">@anim/dialog_right_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_right_exit</item>
+    </style>
+
+    <style name="BVAppCompat" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="progressBarColor">#3699FF</item>
+        <item name="loadMore">努力加载中...</item>
+        <item name="iconColor">#FFF</item>
+        <item name="gridWidth">50dp</item>
+    </style>
+
+    <style name="borderAndArrow">
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">3dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">3dp</item>
+        <item name="android:background">@drawable/shape_border</item>
+        <item name="android:drawableRight">@drawable/svg_down_arrow</item>
+    </style>
+
+    <style name="barTitle">
+        <item name="android:layout_marginLeft">50dp</item>
+        <item name="android:layout_marginRight">50dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="barRightTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+</resources>

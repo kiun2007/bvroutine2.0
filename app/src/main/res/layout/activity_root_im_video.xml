@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.im.IMVideoActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.base.VideoState" />
+        <import type="android.view.View" />
+        <import type="lte.trunk.tapp.sdk.video.VideoConstants" />
+        <variable name="userName" type="String" />
+        <variable name="state" type="VideoState" />
+        <variable name="callType" type="Integer" />
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#020A19"
+        android:orientation="vertical">
+        <lte.trunk.tapp.sdk.media.SurfaceView
+            android:id="@+id/otherSurface"
+            style="@style/fill_base" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_weight="1"
+                style="@style/fill_base">
+                <lte.trunk.tapp.sdk.media.SurfaceView
+                    android:id="@+id/mineSurface"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="120dp"
+                    android:layout_width="80dp"/>
+                <LinearLayout
+                    android:visibility="@{state!=VideoState.Ok?View.VISIBLE:View.GONE}"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    style="@style/warp_base">
+                    <TextView
+                        tools:text="王大壮"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:layout_marginBottom="15dp"
+                        android:text="@{userName}"
+                        style="@style/tvTitle" />
+                    <TextView
+                        android:visibility="@{state==VideoState.ToWait?View.VISIBLE:View.GONE}"
+                        android:text="正在等待对方接受邀请..."
+                        style="@style/tvNormal" />
+                </LinearLayout>
+            </RelativeLayout>
+            <GridLayout
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal"
+                style="@style/barVertical">
+                <TextView
+                    android:onClick="onMute"
+                    android:visibility="gone"
+                    android:text="静音"
+                    android:textColor="@color/white"
+                    android:layout_columnWeight="1"
+                    android:drawableTop="@mipmap/ic_im_mute"
+                    style="@style/bt_icon" />
+                <TextView
+                    android:text="挂断"
+                    android:onClick="onRefused"
+                    android:textColor="@color/white"
+                    android:layout_columnWeight="1"
+                    android:drawableTop="@mipmap/ic_im_hangup"
+                    style="@style/bt_icon" />
+                <TextView
+                    android:show="@{state==VideoState.Ok&amp;&amp;callType!=VideoConstants.AUDIO_CALL}"
+                    android:onClick="onSwitch"
+                    android:text="切换摄像头"
+                    android:textColor="@color/white"
+                    android:layout_columnWeight="1"
+                    android:drawableTop="@drawable/ic_camera_switch"
+                    style="@style/bt_icon" />
+                <TextView
+                    android:text="接听"
+                    android:onClick="onAccept"
+                    android:visibility="@{state==VideoState.FromWait?View.VISIBLE:View.GONE}"
+                    android:textColor="@color/white"
+                    android:layout_columnWeight="1"
+                    android:drawableTop="@mipmap/ic_im_answer"
+                    style="@style/bt_icon" />
+            </GridLayout>
+        </LinearLayout>
+    </FrameLayout>
+</layout>

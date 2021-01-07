@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
+        <import type="android.view.View" />
+
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:orientation="vertical">
+        <LinearLayout
+            style="@style/barVertical">
+
+            <TextView
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_baseline_airplanemode_active_18"
+                android:textStyle="normal"
+                android:text="请假申请"
+                android:textSize="16sp"
+                style="@style/tvTitle" />
+            <TextView
+                android:textColor="#333333"
+                android:text="@{MCString.formatDate(`yyyy-MM-dd HH:mm`, item.createTime)}"
+                style="@style/tvNormal" />
+        </LinearLayout>
+        <LinearLayout
+            android:show="@{item.type.equals(`1`)||item.type.equals(`4`)}"
+            android:layout_marginTop="10dp"
+            style="@style/barVertical">
+            <TextView
+                android:text="请假类型:"
+                android:layout_marginRight="10dp"
+                style="@style/tvNormal" />
+            <TextView
+                android:text="@{item.typeInner}"
+                style="@style/tvNormal" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            style="@style/barVertical">
+            <TextView
+                android:text="时间:"
+                android:layout_marginRight="10dp"
+                style="@style/tvNormal" />
+            <TextView
+                android:text="@{MCString.formatDate(`yyyy-MM-dd HH:mm`, item.begin) + `至` + MCString.formatDate(`yyyy-MM-dd HH:mm`, item.end)}"
+                style="@style/tvNormal" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+    </data>
+    <LinearLayout
+        android:padding="5dp"
+        android:gravity="center"
+        style="@style/barVertical">
+        <TextView
+            android:drawableLeft="@drawable/ic_baseline_sentiment_very_satisfied_18"
+            android:gravity="center"
+            android:text="暂时没有任务"
+            style="@style/tvNormal"/>
+    </LinearLayout>
+</layout>

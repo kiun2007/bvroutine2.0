@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="请选择地址"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.amap.api.maps2d.MapView
+                android:id="@+id/mainMapView"
+                android:layout_weight="1.5"
+                style="@style/fill_base" />
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:layout_weight="1"
+                android:id="@+id/main_refresh"
+                style="@style/fill_base">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mainList"
+                    style="@style/fill_base" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

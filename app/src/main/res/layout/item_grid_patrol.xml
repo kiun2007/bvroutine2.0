@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="kiun.com.bvroutine.views.text.ArrayIndex" />
+
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.other.GridPatrolItem" />
+    </data>
+    <FrameLayout
+        android:layout_marginBottom="10dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/wrapBackground"
+            android:padding="15dp"
+            android:orientation="vertical">
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="任务编码 XC99320"
+                android:argument="@{MCString.asArray(`任务编码`, item.id)}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="6dp"
+                tools:text="任务名称 日常巡查"
+                android:argument="@{MCString.asArray(`任务名称`, item.patrolName)}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="6dp"
+                tools:text="巡查日期 2020-10-13"
+                android:argument="@{MCString.asArray(`巡查日期`, MCString.formatDate(`yyyy-MM-dd`, item.patrolDate))}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="6dp"
+                tools:text="巡查时段 上午段"
+                android:argument="@{MCString.asArray(`巡查时段`, @stringArray/patrolPeriod[item.patrolPeriod-1])}"
+                app:html="@string/doubleDetailed"
+                style="@style/barVertical" />
+        </LinearLayout>
+
+        <FrameLayout
+            tools:backgroundTint="@color/gray"
+            android:backgroundTint="@{@intArray/colorOfPatrolState[item.status-1]}"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/bg_no_complete"
+            android:layout_gravity="right|center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                tools:text="未完成"
+                android:textColor="@{@intArray/colorOfPatrolState[item.status-1]}"
+                android:text="@{@stringArray/labelOfPatrolState[item.status-1]}"
+                android:layout_gravity="center"
+                android:rotation="-16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+    </FrameLayout>
+</layout>

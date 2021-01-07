@@ -1,0 +1,161 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="BVAppCompat">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="loadMore">努力加载中...</item>
+        <item name="iconColor">@color/blue</item>
+        <item name="gridWidth">50dp</item>
+    </style>
+
+    <!--没有选中的样式-->
+    <style name="bottom_normal_text">
+        <item name="android:textColor">#1B68F1</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!--选中的样式-->
+    <style name="bottom_selected_text">
+        <item name="android:textColor">#666</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- 全部根据内容控制大小 -->
+    <style name="warp_base">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="fill_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!-- 垂直排列的条状物 -->
+    <style name="barVertical">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- 表单分割 -->
+    <style name="division" parent="barVertical">
+        <item name="android:padding">8dp</item>
+        <item name="android:background">#F8F8FA</item>
+    </style>
+
+    <!-- 点按钮 -->
+    <style name="dotLayout" parent="barVertical">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="rowNormalText" parent="barVertical">
+        <item name="android:gravity">center|left</item>
+        <item name="bottomLine">true</item>
+        <item name="required">false</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+    </style>
+
+    <!-- 输入行 -->
+    <style name="rowInput" parent="barVertical">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:gravity">center|left</item>
+    </style>
+
+    <style name="rowInputVertical" parent="rowInput">
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- 上班 -->
+    <style name="bigDotArrive" parent="warp_base">
+        <item name="lessBackground">@drawable/sel_oval_blue</item>
+        <item name="greaterBackground">@drawable/sel_oval_yellow</item>
+        <item name="lessTitle">上班打卡</item>
+        <item name="greaterTitle">迟到</item>
+        <item name="invalidTitle">休息</item>
+    </style>
+
+    <!-- 下班 -->
+    <style name="bigDotLeave" parent="warp_base">
+        <item name="lessBackground">@drawable/sel_oval_yellow</item>
+        <item name="greaterBackground">@drawable/sel_oval_blue</item>
+        <item name="lessTitle">早退</item>
+        <item name="greaterTitle">下班打卡</item>
+        <item name="invalidTitle">休息</item>
+    </style>
+
+    <!-- 上传图片 -->
+    <style name="uploadImage" parent="warp_base">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:minWidth">50dp</item>
+        <item name="android:maxWidth">150dp</item>
+        <item name="android:maxHeight">150dp</item>
+        <item name="android:src">@drawable/shape_dash_plus_bg</item>
+    </style>
+    
+    <style name="multipleUploadGrid" parent="barVertical">
+        <item name="android:numColumns">auto_fit</item>
+        <item name="android:columnWidth">80dp</item>
+        <item name="android:horizontalSpacing">8dp</item>
+        <item name="android:verticalSpacing">8dp</item>
+        <item name="itemScaleHeight">1</item>
+        <item name="imageLimit">9</item>
+        <item name="audioRecorder">null</item>
+        <item name="videoRecorder">null</item>
+    </style>
+
+    <style name="singleUploadGrid" parent="multipleUploadGrid">
+        <item name="imageLimit">1</item>
+    </style>
+
+    <style name="tabLayout" parent="barVertical">
+        <item name="tabIndicatorColor">@color/blue</item>
+        <item name="tabSelectedTextColor">@color/blue</item>
+        <item name="tabIndicator">@drawable/shape_bar_30x2</item>
+        <item name="android:background">@drawable/shape_bottom_line_bg</item>
+    </style>
+
+    <style name="navigatorBar" parent="barVertical">
+        <item name="android:background">@drawable/shape_bottom_line_bg</item>
+        <item name="barStyle">transparentBlack</item>
+    </style>
+
+
+    <style name="cardViewShallow" parent="barVertical">
+        <item name="cardElevation">3dp</item>
+        <item name="cardMaxElevation">10dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardCornerRadius">3dp</item>
+    </style>
+
+    <style name="shortListNoPadding" parent="barVertical">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="flowHorizontalSpacing">0dp</item>
+        <item name="flowVerticalSpacing">0dp</item>
+    </style>
+
+    <style name="grid4FlowView" parent="barVertical">
+        <item name="android:orientation">horizontal</item>
+        <item name="enableFlow">true</item>
+        <item name="columnOfAverage">4</item>
+    </style>
+
+    <style name="grid3FlowView" parent="barVertical">
+        <item name="android:orientation">horizontal</item>
+        <item name="enableFlow">true</item>
+        <item name="columnOfAverage">3</item>
+    </style>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="com.szxgm.gusustreet.model.dto.UpdateVersion.State" />
+        <variable name="version" type="com.szxgm.gusustreet.model.dto.UpdateVersion" />
+        <variable name="dialog" type="android.content.DialogInterface" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <TextView
+            android:text="版本安装"
+            style="@style/tvTitle" />
+        <TextView
+            tools:text="程序标题:"
+            android:layout_marginTop="5dp"
+            android:text="@{`程序标题: `+version.appName}"
+            style="@style/tvNormal" />
+        <TextView
+            tools:text="目标版本:"
+            android:layout_marginTop="5dp"
+            android:text="@{`目标版本: `+version.versionName}"
+            style="@style/tvNormal" />
+        <LinearLayout
+            style="@style/barVertical">
+            <TextView
+                android:layout_marginTop="5dp"
+                android:text="版本说明: "
+                style="@style/tvNormal" />
+            <TextView
+                tools:text="目标该该该该个iagiaigaigiagiaigaigia放到沙发打开手机疯狂的就是发几点上课交罚款的"
+                android:layout_marginTop="5dp"
+                android:text="@{version.versionDesc}"
+                android:textColor="@color/mainTextColor"
+                style="@style/tvNormal" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                style="@style/warp_base">
+                <TextView
+                    tools:text="正在下载"
+                    android:text="@{version.state.title}"
+                    style="@style/warp_base" />
+                <TextView
+                    tools:text="(0/10)"
+                    android:visibility="@{version.state==State.Downloading?View.VISIBLE:View.GONE}"
+                    android:text="@{String.format(` (%d/%d)`,version.current, version.count)}"
+                    style="@style/warp_base" />
+            </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progress_dialog_mProgressBar"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="@{version.count}"
+                android:progress="@{version.current}"
+                style="?android:attr/progressBarStyleHorizontal"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

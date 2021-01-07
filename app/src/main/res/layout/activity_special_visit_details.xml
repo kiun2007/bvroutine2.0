@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.other.SpecialPatrolDetailsActivity">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="data" type="com.szxgm.gusustreet.model.other.GridVisitItem" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="走访详情"
+            style="@style/navigatorBar" />
+        <ScrollView
+            style="@style/fill_base">
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/barVertical">
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="任务编码 XC99320"
+                    android:argument="@{MCString.asArray(`任务编码`, data.visitNo)}"
+                    app:html="@string/doubleDetailed"
+                    style="@style/gridPatrolRow" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="任务名称 走访"
+                    android:argument="@{MCString.asArray(`任务名称`, data.visitName)}"
+                    app:html="@string/doubleDetailed"
+                    style="@style/gridPatrolRow" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="走访类型 其他"
+                    android:argument="@{MCString.asArray(`走访类型`, `其他`)}"
+                    app:html="@string/doubleDetailed"
+                    style="@style/gridPatrolRow" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="执行对象 xxx"
+                    android:argument="@{MCString.asArray(`执行对象`, data.dealPersonName)}"
+                    app:html="@string/doubleDetailed"
+                    style="@style/gridPatrolRow" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="共同执行对象 xxx"
+                    android:argument="@{MCString.asArray(`共同执行对象`, data.togeDealPersonName)}"
+                    app:html="@string/doubleDetailed"
+                    style="@style/gridPatrolRow" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="下派时间 2020-12-3 12:00:09"
+                    android:argument="@{MCString.asArray(`下派时间`, MCString.formatDate(`yyyy-MM-dd HH:mm:ss`, data.createdDate))}"
+                    app:html="@string/doubleDetailed"
+                    style="@style/gridPatrolRow" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="要求完成时间 2020-12-3 12:00:09"
+                    android:argument="@{MCString.asArray(`要求完成时间`, MCString.formatDate(`yyyy-MM-dd HH:mm:ss`, data.completeTime))}"
+                    app:html="@string/doubleDetailed"
+                    style="@style/gridPatrolRow" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

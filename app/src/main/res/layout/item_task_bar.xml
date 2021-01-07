@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.mobile.OrderTask" />
+    </data>
+    <kiun.com.bvroutine.views.DrawLinearLayout
+        app:radius="8dp"
+        app:paintStyle="fill"
+        app:paintColor="#fff7f7fb"
+        android:gravity="left|center"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:orientation="horizontal">
+        <TextView
+            android:show="@{!`30`.equals(item.vars.map.seriousDegree)}"
+            tools:text="急迫"
+            android:text="@{`10`.equals(item.vars.map.seriousDegree)?`急迫`:`紧急`}"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:layout_gravity="top"
+            android:background="@{`10`.equals(item.vars.map.seriousDegree)?@drawable/shape_leaf_red:@drawable/shape_leaf_yellow}"
+            style="@style/tvLeafRed" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_marginLeft="25dp"
+            android:textColor="@color/mainTextColor"
+            android:textSize="16dp"
+            tools:text="任务"
+            android:text="@{item.vars.map.orderTitle}"
+            style="@style/warp_base" />
+        <TextView
+            tools:text="05-20"
+            android:text="@{MCString.formatDate(`MM-dd`, item.taskCreateDate)}"
+            style="@style/warp_base" />
+        <ImageView
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/ic_chevron_right_black_24dp"
+            style="@style/warp_base" />
+    </kiun.com.bvroutine.views.DrawLinearLayout>
+</layout>

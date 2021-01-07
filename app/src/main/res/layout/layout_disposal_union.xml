@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--处置处室-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.net.requests.mobile.TaskUnionDisposalReq" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.utils.NormalDialogManager" />
+
+        <variable name="dataService" type="com.szxgm.gusustreet.net.services.MobileService" />
+        <variable name="data" type="com.szxgm.gusustreet.net.requests.mobile.TaskUnionDisposalReq" />
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <com.szxgm.gusustreet.views.RowLinearLayout
+            style="@style/rowInputVertical"
+            android:orientation="vertical"
+            app:bottomLine="false"
+            app:title="任务内容：">
+            <TextView
+                android:text="@{data.content}"
+                android:layout_marginTop="10dp"
+                tools:text="时间过快点绥芬河市开发建设的"
+                style="@style/tvNormal" />
+        </com.szxgm.gusustreet.views.RowLinearLayout>
+        <com.szxgm.gusustreet.views.RowLinearLayout
+            style="@style/rowInputVertical"
+            android:orientation="vertical"
+            app:bottomLine="false"
+            app:title="处理说明：">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="top"
+                android:verifyField="@{`workStatement`}"
+                android:lines="4"
+                android:hint="请输入处理说明"
+                android:text="@={data.workStatement}"
+                android:maxLength="100"
+                android:textSize="15sp" />
+        </com.szxgm.gusustreet.views.RowLinearLayout>
+
+        <RelativeLayout
+            android:layout_margin="15dp"
+            android:orientation="horizontal"
+            style="@style/barVertical">
+            <Button
+                android:beforehand="@{MCString.asArray(`确定处理完毕？`,`确定`, `取消`)}"
+                android:verify="@{data}"
+                android:action="@{(a)->dataService.handleHarmonize(data)}"
+                android:text="处理完毕"
+                android:tag="handler.onComplete(data)"
+                style="@style/bt_complete_active" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

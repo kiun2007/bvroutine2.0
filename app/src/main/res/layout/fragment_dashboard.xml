@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.fragment.main.DashboardFragment">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.list.MonitorListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.im.IMListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.RiverPlainListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.AttendanceActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.workbench.MobileWorkBenchActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.workbench.WorkOrderReportActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.ProblemListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.RiverListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.other.SubmitSentinelActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.HealthSupervisionListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.other.SubmitPublicityActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.other.SpecialAssignVisitActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.other.SpecialAssignPatrolActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.workbench.ProcessedOrderActivity" />
+        <import type="com.szxgm.gusustreet.base.AppComponent" />
+        <import type="com.szxgm.gusustreet.model.dto.user.PermitTree" />
+        <import type="com.szxgm.gusustreet.utils.RolesUtil" />
+
+        <variable name="user" type="com.szxgm.gusustreet.model.dto.user.User" />
+        <variable name="isLogin" type="Boolean" />
+        <variable name="versionUpdate" type="com.szxgm.gusustreet.base.presenter.VersionUpdate" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFF">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barNoback="true"
+            android:background="@color/wrapBackground"
+            style="@style/navigatorBar"/>
+        <ScrollView
+            style="@style/fill_base">
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/barVertical">
+                <LinearLayout
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    style="@style/barVertical">
+                    <TextView
+                        android:text="移动工作台"
+                        style="@style/title_label"/>
+                    <com.szxgm.gusustreet.views.FlowRadioGroup
+                        android:layout_marginTop="10dp"
+                        style="@style/grid3FlowView">
+                        <TextView
+                            style="@style/tvCenterButton"
+                            android:text="待办工单"
+                            android:startActivity="@{MobileWorkBenchActivity.clz}"
+                            android:background="@mipmap/bg_work_wait"/>
+                        <TextView
+                            style="@style/tvCenterButton"
+                            android:show="@{RolesUtil.minimum(PermitTree.WORK_STATION_ADMIN)}"
+                            android:text="疑难工单"
+                            android:background="@mipmap/bg_work_complete"
+                            android:startIntent="@{MobileWorkBenchActivity.create(context, 1)}" />
+                        <TextView
+                            style="@style/tvCenterButton"
+                            android:text="已办工单"
+                            android:startActivity="@{ProcessedOrderActivity.clz}"
+                            android:background="@mipmap/bg_work_search"/>
+                    </com.szxgm.gusustreet.views.FlowRadioGroup>
+                    <LinearLayout
+                        android:show="@{RolesUtil.minimum(PermitTree.GRID_WORKER)}"
+                        android:orientation="vertical"
+                        style="@style/barVertical">
+                        <TextView
+                            android:layout_marginTop="25dp"
+                            android:text="巡查走访"
+                            style="@style/title_label"/>
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_marginTop="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <kiun.com.bvroutine.views.AutoFitLayout
+                                android:layout_weight="1"
+                                app:scaleHeight="3.21"
+                                android:layout_marginRight="3dp"
+                                style="@style/barVertical">
+                                <TextView
+                                    style="@style/bt_panel"
+                                    android:background="@mipmap/bg_task_wait"
+                                    android:startActivity="@{SpecialAssignPatrolActivity.clz}"
+                                    android:text="指派巡查" />
+                            </kiun.com.bvroutine.views.AutoFitLayout>
+                            <kiun.com.bvroutine.views.AutoFitLayout
+                                android:layout_weight="1"
+                                app:scaleHeight="3.21"
+                                android:layout_marginLeft="3dp"
+                                style="@style/barVertical">
+                                <TextView
+                                    style="@style/bt_panel"
+                                    android:background="@mipmap/bg_task_complete"
+                                    android:startActivity="@{SpecialAssignVisitActivity.clz}"
+                                    android:text="指派走访" />
+                            </kiun.com.bvroutine.views.AutoFitLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <kiun.com.bvroutine.views.cardview.CardView
+                    style="@style/cardViewShallow"
+                    android:background="#FFF">
+                    <com.szxgm.gusustreet.views.FlowRadioGroup
+                        android:layout_marginTop="10dp"
+                        style="@style/grid4FlowView">
+                        <TextView
+                            style="@style/bt_icon"
+                            android:drawableTop="@mipmap/ic_event_up"
+                            android:text="事件上报"
+                            android:startActivity="@{WorkOrderReportActivity.clz}"
+                            android:layout_columnWeight="1" />
+                        <TextView
+                            style="@style/bt_icon"
+                            android:drawableTop="@mipmap/ic_attendance"
+                            android:text="考勤打卡"
+                            android:startActivity="@{AttendanceActivity.clz}"
+                            android:layout_columnWeight="1" />
+                        <TextView
+                            style="@style/bt_icon"
+                            android:drawableTop="@mipmap/ic_video_online"
+                            android:text="视频直播"
+                            android:drawableTintMode="multiply"
+                            android:drawableTintColor="@{isLogin?0xFFFFFFFF:0xFF999999}"
+                            android:show="@{isLogin}"
+                            android:startActivity="@{IMListActivity.clz}"
+                            android:layout_columnWeight="1" />
+                        <TextView
+                            style="@style/bt_icon"
+                            android:show="@{RolesUtil.minimum(PermitTree.STREET_ADMIN)}"
+                            android:drawableTop="@mipmap/ic_video_manager"
+                            android:startActivity="@{MonitorListActivity.clz}"
+                            android:text="视频管理"
+                            android:layout_columnWeight="1" />
+                    </com.szxgm.gusustreet.views.FlowRadioGroup>
+                </kiun.com.bvroutine.views.cardview.CardView>
+
+                <LinearLayout
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    style="@style/barVertical">
+                    <TextView
+                        android:text="河长制"
+                        style="@style/title_label"/>
+                    <com.szxgm.gusustreet.views.FlowRadioGroup
+                        android:layout_marginTop="15dp"
+                        style="@style/grid3FlowView">
+                        <TextView
+                            style="@style/bt_panel"
+                            android:textColor="@color/sel_enabled_text_color_white"
+                            android:text="河长巡河"
+                            android:startActivity="@{RiverPlainListActivity.clz}"
+                            android:background="@mipmap/bg_rivers_patrol"/>
+                        <TextView
+                            style="@style/bt_panel"
+                            android:text="河道资料"
+                            android:textColor="@color/sel_enabled_text_color_white"
+                            android:startActivity="@{RiverListActivity.clz}"
+                            android:background="@mipmap/ic_river_info"/>
+                        <TextView
+                            style="@style/bt_panel"
+                            android:text="巡河问题"
+                            android:textColor="@color/sel_enabled_text_color_white"
+                            android:startIntentAction="@{(view)->WorkOrderReportActivity.create(context, `30`)}"
+                            android:background="@mipmap/ic_river_problem"/>
+                    </com.szxgm.gusustreet.views.FlowRadioGroup>
+                </LinearLayout>
+                <LinearLayout
+                    android:padding="10dp"
+                    android:show="@{RolesUtil.assign(PermitTree.TREATMENT_MANAGER)}"
+                    android:orientation="vertical"
+                    style="@style/barVertical">
+                    <TextView
+                        android:layout_marginTop="25dp"
+                        android:text="卫监"
+                        style="@style/title_label"/>
+                    <LinearLayout
+                        android:layout_marginTop="15dp"
+                        style="@style/barVertical">
+                        <TextView
+                            style="@style/bt_panel"
+                            android:textColor="@color/sel_enabled_text_color_white"
+                            android:text="事件列表"
+                            android:startActivity="@{HealthSupervisionListActivity.clz}"
+                            android:background="@mipmap/bg_event_list"/>
+                        <TextView
+                            style="@style/bt_panel"
+                            android:textColor="@color/sel_enabled_text_color_white"
+                            android:text="哨所事件"
+                            android:startActivity="@{SubmitSentinelActivity.clz}"
+                            android:background="@mipmap/bg_sentinel_submit"/>
+                        <TextView
+                            style="@style/bt_panel"
+                            android:textColor="@color/sel_enabled_text_color_white"
+                            android:text="宣传事件"
+                            android:startActivity="@{SubmitPublicityActivity.clz}"
+                            android:background="@mipmap/bg_sentinel_publicity"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <GridLayout
+                    android:layout_marginTop="25dp"
+                    android:columnCount="5"
+                    android:useDefaultMargins="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.assign(PermitTree.GRID_WORKER)}"
+                        android:drawableTop="@mipmap/ic_linkage"
+                        android:text="联动"
+                        android:onClick="@{()->versionUpdate.compound(AppComponent.PackageA.put(`username`, user.loginName).put(`needPass`,`0`).put(`word`,`0`))}"
+                        android:layout_columnWeight="1" />
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.assign(PermitTree.URBAN_WORKER)}"
+                        android:drawableTop="@mipmap/ic_city_manager"
+                        android:onClick="@{()->versionUpdate.compound(AppComponent.PackageB.put(`username`, user.phonenumber))}"
+                        android:text="城管"
+                        android:layout_columnWeight="1" />
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.assign(PermitTree.AMBIENT_WORKER)}"
+                        android:drawableTop="@mipmap/ic_ambient"
+                        android:onClick="@{()->versionUpdate.compound(AppComponent.PackageC.put(`username`, user.phonenumber))}"
+                        android:text="环卫"
+                        android:layout_columnWeight="1" />
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.assign(PermitTree.MARKET_MANAGER)}"
+                        android:drawableTop="@mipmap/ic_city_supervise"
+                        android:onClick="@{()->versionUpdate.compound(AppComponent.PackageD.put(`username`, user.phonenumber))}"
+                        android:text="市监"
+                        android:layout_columnWeight="1" />
+                </GridLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

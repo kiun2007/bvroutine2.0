@@ -1,0 +1,50 @@
+<resources>
+    <string name="gusu_app_name" translatable="false">姑苏区街道综合管理</string>
+    <string name="title_home" translatable="false">首页</string>
+    <string name="title_dashboard" translatable="false">工作台</string>
+    <string name="title_address" translatable="false">通讯录</string>
+    <string name="title_mine" translatable="false">我的</string>
+    <string name="home_title" translatable="false">姑苏区街道综合管理</string>
+    <string name="loading" translatable="false">正在加载...</string>
+    <string name="overtime_count" translatable="false">选择时间后自动计算</string>
+    <string name="urgent" translatable="false">紧急</string>
+    <string name="important" translatable="false">重要</string>
+    <string name="cameraCount" translatable="false">
+        <![CDATA[<f c=\"#FF6600\" s=\"12sp\">%1$d</f><f c=\"#FFFFFF\" s=\"12sp\"> 设备</f>]]>
+    </string>
+
+    <string name="cameraType" translatable="false">
+        <![CDATA[<f c=\"#999999\" s=\"12sp\">设备型号: </f><f c=\"#FF6600\" s=\"12sp\">%1$s</f>]]>
+    </string>
+
+    <string name="cameraStatus" translatable="false">
+        <![CDATA[<f c=\"#999999\" s=\"12sp\">设备状态: </f><f v=\"%1$s==0\" c=\"#999999\" s=\"12sp\">离线</f><f v=\"%1$s==1\" c=\"#FF6600\" s=\"12sp\">在线</f><f v=\"%1$s==2\" c=\"#999999\" s=\"12sp\">休眠</f>]]>
+    </string>
+
+    <string name="doubleDetailed" translatable="false">
+        <![CDATA[<f c="#333333" s="15sp">%1$s </f><f c="#7F7F7F" s="15sp">%2$s</f>]]>
+    </string>
+
+    <string name="doubleDetailedNumber" translatable="false">
+        <![CDATA[<f c="#333333" s="15sp">%1$s </f><f c="#7F7F7F" s="15sp">%2$d</f>]]>
+    </string>
+
+    <string name="about_1" translatable="false">
+        \t\t\t\t苏州希格玛科技有限公司成立于2006年，坐落在苏州市姑苏区。是江苏省高新技术企业、姑苏区领军企业。希格玛作为一家专业的城市智慧化运营管理综合解决方案服务商，主要为客户提供智慧城市顶层设计规划方案（咨询）、软硬件系统集成与大数据应用开发与运营维护等服务。
+    </string>
+    <string name="about_2" translatable="false">
+        \t\t\t\t公司响应新时代城市管理智慧化的服务需求，秉承“以人为本”的服务理念，以智慧城市顶层规划设计为先导，以大数据平台为核心，通过人工智能AI赋能，构建智慧城市管理运营新生态，有效支撑城市管理和社会治理精细化、科学化、智能化。
+    </string>
+    <string name="about_3" translatable="false">
+        \t\t\t\t经过多年的发展与实践，公司根据智慧城市各行业应用需求，自主开发了包括政务服务、城市综合治理、环境与河道综合治理、大数据管理与分析决策、智慧建筑综合运营管理中心等系列平台软件，并得到了较好的应用。同时，公司不断结合城市中各行业的特点，发掘用于解决更多城市问题和提升城市发展的大数据能力。
+    </string>
+    <string name="about_4" translatable="false">
+        \t\t\t\t希格玛高度重视技术创新。秉承“博取众长、智造未来”的理念，与省内外多所高校建立了产学研合作关系，已建立“江苏省智慧交通大数据工程技术研究中心”、“希格玛-河海大学江苏省企业研究生工作站”、“苏州市智慧城市大数据服务工程技术研究中心”、“苏州市轨道交通自动化企业技术中心”等省、市级研发载体，助推希格玛高质量发展。
+    </string>
+    <string name="about_5" translatable="false">
+        \t\t\t\t希格玛已通过质量管理、环境管理、职业健康安全管理和知识产权管理等体系认证，并取得“ITSS运维服务”、“CMMI3”、“电子与智能化工程专业承包”、“建筑智能化系统专业设计”、“信息系统集成和服务”等多项行业资质。希格玛拥有自主知识产权102项，其中发明专利7项，实用新型专利18项，软件著作权73项，商标4项。公司承担了省市级科技项目15项，其中省级项目5项，经科技成果转化后形成高新技术产品及软件产品共15项。
+    </string>
+    <string name="about_6" translatable="false">
+        \t\t\t\t“不忘初心，牢记使命”，希格玛作为“苏州市自主创业者协会会长单位”、“姑苏区青商会会长单位”，积极承担社会责任，与苏州的创业者和青年企业家，共同成长、共谋发展。公司设立“希格玛公益与创新基金”，旨在鼓励员工内修德才，外治创新，希格玛人先后获得“江苏省五一劳动奖状”、“江苏省发现双创人才”、“江苏省第六批产业教授”、“创响江苏创业导师专家团专家”、“苏州市瞪羚企业”、“青年文明号”、“科技创新十佳企业”、“红领双创创新创业导师”等荣誉及称号。
+    </string>
+</resources>

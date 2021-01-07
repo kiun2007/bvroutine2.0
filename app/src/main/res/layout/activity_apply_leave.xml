@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.attendance.ApplyLeaveActivity">
+    <data>
+        <import type="com.szxgm.gusustreet.views.SpinnerHelper" />
+        <import type="com.szxgm.gusustreet.model.dto.Dict" />
+        <variable name="leaveApply" type="com.szxgm.gusustreet.model.dto.LeaveApply" />
+
+        <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
+        <variable name="attendanceService" type="com.szxgm.gusustreet.net.services.AttendanceService" />
+        <variable name="fileService" type="com.szxgm.gusustreet.net.services.FileService" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="请假"
+            style="@style/navigatorBar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="请假类型"
+                    app:required="true"
+                    app:bottomLine="false"
+                    android:gravity="center"
+                    style="@style/rowInput">
+                    <Spinner
+                        app:src="@{SpinnerHelper.createDict(sysService.getDict(Dict.create(`shift_qj_qjlx`)))}"
+                        app:value="@={leaveApply.qjType}"
+                        android:dropDownVerticalOffset="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/typeSpinner"
+                        android:gravity="right"
+                        style="@style/barVertical" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <LinearLayout
+                    style="@style/division" />
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="开始时间"
+                    app:required="true"
+                    android:gravity="center"
+                    style="@style/rowInput">
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        app:format="yyyy-MM-dd HH:mm"
+                        android:val="@={leaveApply.qjBegin}"
+                        style="@style/rowSelectText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="结束时间"
+                    app:required="true"
+                    style="@style/rowInput">
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        app:returnType="date"
+                        app:format="yyyy-MM-dd HH:mm"
+                        android:val="@={leaveApply.qjEnd}"
+                        style="@style/rowSelectText" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="时长(小时)"
+                    app:required="true"
+                    app:bottomLine="false"
+                    style="@style/rowInput">
+                    <TextView
+                        android:text="@{leaveApply.qjTotaltime==null?``:String.valueOf(leaveApply.qjTotaltime)}"
+                        android:maxLength="10"
+                        android:verifyField="@{`qjTotaltime`}"
+                        android:hint="@string/overtime_count"
+                        style="@style/rowEditInt" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    style="@style/division" />
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="请假事由"
+                    app:required="true"
+                    app:bottomLine="false"
+                    style="@style/rowInputVertical">
+                    <EditText
+                        android:text="@={leaveApply.qjReason}"
+                        android:verifyField="@{`qjReason`}"
+                        android:layout_marginTop="10dp"
+                        android:background="@null"
+                        android:hint="请输入请假事由"
+                        android:gravity="top"
+                        android:textSize="15sp"
+                        android:maxLength="150"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <LinearLayout
+                    style="@style/division" />
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:required="false"
+                    app:title="图片"
+                    app:bottomLine="false"
+                    android:orientation="vertical"
+                    style="@style/rowInputVertical">
+                    <kiun.com.bvroutine.views.MultipleImageGrid
+                        android:layout_marginTop="10dp"
+                        android:val="@={leaveApply.qjAnnex}"
+                        android:service="@{part->fileService.commonUpload(part)}"
+                        style="@style/singleUploadGrid" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <Button
+                    android:text="提交"
+                    android:layout_margin="20dp"
+                    android:tag="handler.onComplete(data)"
+                    android:verify="@{leaveApply}"
+                    android:action="@{a->attendanceService.qjSaveList(leaveApply)}"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

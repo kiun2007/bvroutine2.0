@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.mine.PwdChangeActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.mine.AboutActivity" />
+        <import type="kiun.com.bvroutine.net.ServiceGenerator" />
+        <variable name="user" type="com.szxgm.gusustreet.model.dto.user.User" />
+        <variable name="versionUpdate" type="com.szxgm.gusustreet.base.presenter.VersionUpdate" />
+        <variable name="packageInfo" type="android.content.pm.PackageInfo" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <kiun.com.bvroutine.views.NavigatorBar
+                    app:barStyle="transparentBlack"
+                    app:barNoback="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <com.szxgm.gusustreet.views.RadiusImageView
+                    app:defaultImage="@drawable/svg_photo_normal"
+                    app:imgUrl="@{user.avatar}"
+                    app:radiusValue="40dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:textSize="24sp"
+                    tools:text="用户名"
+                    android:text="@{user.userName}"
+                    style="@style/tvTitle" />
+                <TextView
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="8dp"
+                    android:drawableLeft="@mipmap/ic_mobile_phone"
+                    tools:text="138-xxxx-xxxx"
+                    android:text="@{user.phonenumber}"
+                    android:textColor="@color/mainTextColor"
+                    style="@style/tvSubtitle" />
+
+                <kiun.com.bvroutine.views.DrawLinearLayout
+                    style="@style/barVertical"
+                    android:layout_margin="16dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    app:gradientColor="#6794FF"
+                    app:paintColor="#3858FF"
+                    app:paintStyle="fill"
+                    app:radius="8dp">
+
+                    <LinearLayout
+                        style="@style/warp_base"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="1dp"
+                            android:background="#FFF" />
+                        <TextView
+                            style="@style/tvTitle"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:text="@string/gusu_app_name"
+                            android:textColor="#FFF" />
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="1dp"
+                            android:background="#FFF" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/tvSubtitle"
+                        android:layout_marginTop="8dp"
+                        android:text="@{`版本号`+packageInfo.versionName}"
+                        android:textColor="#EEE"
+                        android:textSize="14sp" />
+                </kiun.com.bvroutine.views.DrawLinearLayout>
+
+                <kiun.com.bvroutine.views.NavigationRow
+                    app:icon="@mipmap/ic_chang_pwd"
+                    app:title="修改密码"
+                    android:startActivity="@{PwdChangeActivity.clz}"
+                    android:background="@drawable/shape_bottom_line_padding4_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
+                <kiun.com.bvroutine.views.NavigationRow
+                    app:icon="@mipmap/ic_about_me"
+                    app:title="关于我们"
+                    android:startActivity="@{AboutActivity.clz}"
+                    android:background="@drawable/shape_bottom_line_padding4_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
+                <kiun.com.bvroutine.views.NavigationRow
+                    app:icon="@mipmap/ic_recommend"
+                    app:title="推荐"
+                    android:background="@drawable/shape_bottom_line_padding4_bg"
+                    android:onClick="@{()->versionUpdate.share()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
+                <kiun.com.bvroutine.views.NavigationRow
+                    app:icon="@mipmap/ic_update_version"
+                    app:title="版本更新"
+                    android:background="@drawable/shape_bottom_line_padding4_bg"
+                    android:onClick="@{()->versionUpdate.compound()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
+                <kiun.com.bvroutine.views.DrawLinearLayout
+                    app:radius="4dp"
+                    app:paintColor="#EBEDF0"
+                    app:paintStyle="fill"
+                    android:onClick="@{()->ServiceGenerator.clearAuthorize()}"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    style="@style/warp_base">
+                    <TextView
+                        android:gravity="center"
+                        android:text="退出登录"
+                        android:layout_width="160dp"
+                        android:layout_height="40dp" />
+                </kiun.com.bvroutine.views.DrawLinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

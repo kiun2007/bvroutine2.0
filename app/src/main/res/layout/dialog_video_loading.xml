@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="dialog"
+            type="kiun.com.bvroutine.views.dialog.MCDialogManager" />
+        <variable name="data" type="kiun.com.bvroutine.data.KeyValue&lt;Integer, String>" />
+    </data>
+    <kiun.com.bvroutine.views.cardview.CardView
+        style="@style/cardViewShallow"
+        android:background="@color/wrapBackground">
+        <LinearLayout
+            android:padding="25dp"
+            android:gravity="center"
+            android:minWidth="220dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:show="@{data.key() == 0}"
+                style="@style/warp_base" />
+            <ImageView
+                android:show="@{data.key() == 1}"
+                android:src="@drawable/ic_baseline_videocam_off_36"
+                style="@style/warp_base" />
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@{data.value()}"
+                style="@style/tvNormal" />
+            <TextView
+                android:show="@{data.key() == 1}"
+                android:padding="8dp"
+                android:drawableTint="@color/gray"
+                android:drawableLeft="@drawable/ic_baseline_replay_18"
+                android:text="重试"
+                android:onClick="@{()->dialog.onClick(context, 0, `1`)}"
+                android:textColor="@color/gray"
+                style="@style/tvMain" />
+        </LinearLayout>
+        <TextView
+            android:padding="5dp"
+            android:drawableRight="@drawable/ic_baseline_cancel_24"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:onClick="@{()->dialog.cancel()}"
+            style="@style/tvNormal" />
+    </kiun.com.bvroutine.views.cardview.CardView>
+</layout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.river.PatrolRiverActivity">
+    <data>
+        <import type="kiun.com.bvroutine.utils.ContextUtil" />
+        <import type="android.view.View" />
+
+        <variable name="trailService" type="com.szxgm.gusustreet.service.TrailService" />
+        <variable name="riverService" type="com.szxgm.gusustreet.net.services.RiverService" />
+        <variable name="riverPlain" type="com.szxgm.gusustreet.model.dto.river.RiverPlain" />
+        <variable name="patrolId" type="String" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="河流"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.amap.api.maps.MapView
+                android:id="@+id/mainMapView"
+                android:layout_weight="1"
+                android:val="@{trailService.allPoints}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:id="@+id/contentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="horizontal">
+                <kiun.com.bvroutine.views.text.IconButton
+                    app:drawableLeft="@drawable/ic_baseline_directions_walk_24"
+                    app:text="开始巡查"
+                    android:show="@{patrolId == null}"
+                    android:tag="handler.onStart(data)"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:action="@{(a)->riverService.startPatrol(riverPlain.id)}"
+                    style="@style/bt_hollow_gray_app" />
+                <kiun.com.bvroutine.views.text.IconButton
+                    android:show="@{patrolId != null}"
+                    android:tag="handler.onEnd(data)"
+                    app:drawableLeft="@drawable/ic_baseline_flag_24"
+                    app:text="结束巡查"
+                    android:action="@{(a)->riverService.endPatrol(patrolId)}"
+                    style="@style/bt_hollow_gray_app" />
+                <kiun.com.bvroutine.views.text.IconButton
+                    app:drawableLeft="@drawable/ic_baseline_report_24"
+                    app:text="发现问题"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:onClick="onProblemClick"
+                    style="@style/bt_hollow_gray_app" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.list.MonitorListActivity">
+    <data>
+        <import type="kiun.com.bvroutine.presenters.list.NetListProvider" />
+        <import type="kiun.com.bvroutine.data.PagerBean" />
+
+        <variable name="trailService" type="com.szxgm.gusustreet.service.TrailService" />
+        <variable name="handler" type="com.szxgm.gusustreet.base.list.handler.NormalHandler" />
+        <variable name="index" type="androidx.databinding.ObservableField&lt;Integer>" />
+        <variable name="search" type="com.szxgm.gusustreet.net.requests.MonitorListReq" />
+        <variable name="monitorService" type="com.szxgm.gusustreet.net.services.MonitorService" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="视频管理"
+            style="@style/navigatorBar" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            style="@style/fill_base">
+            <kiun.com.bvroutine.views.TabViewLayout
+                android:val="@={index}"
+                app:tabArray="@array/tabMonitorTypes"
+                style="@style/tabLayout" />
+            <FrameLayout
+                style="@style/fill_base">
+                <com.amap.api.maps2d.MapView
+                    android:show="@{index==1}"
+                    android:id="@+id/mainMapView"
+                    style="@style/fill_base" />
+                <LinearLayout
+                    android:show="@{index==0}"
+                    android:orientation="vertical"
+                    style="@style/fill_base">
+                    <include
+                        android:search="@{search}"
+                        layout="@layout/layout_search_bar" />
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        style="@style/fill_base">
+                        <androidx.recyclerview.widget.RecyclerView
+                            tools:listitem="@layout/item_monitor"
+                            android:listProvider="@{(NetListProvider.create(context, handler, @layout/item_monitor))}"
+                            android:netBlock="@{pager->monitorService.list(search.inherit(pager))}"
+                            style="@style/fill_base" />
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

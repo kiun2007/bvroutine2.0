@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.model.dto.mobile.OrderFlowTail" />
+
+        <variable name="index" type="kiun.com.bvroutine.views.adapter.Indexer" />
+        <variable name="item" type="OrderFlowTail" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:selected="@{index.last}"
+        android:enabled="@{index.first}"
+        android:paddingLeft="12dp"
+        android:background="@drawable/sel_order_flow_bg"
+        android:orientation="vertical">
+        <TextView
+            tools:text="2020-10-30 11:54:24"
+            android:drawableLeft="@drawable/shape_dot_text_10dp"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#333"
+            android:text="@{item.startTime}"
+            style="@style/tvSubtitle" />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:orientation="vertical"
+            style="@style/barVertical">
+            <TextView
+                tools:text="姑苏区-->虎丘街道"
+                android:text="@{item.handleOfficeNameQueue}"
+                style="@style/tvNormal" />
+            <TextView
+                tools:text="虎丘街道 虎丘街道"
+                android:text="@{item.handleOfficeName+` `+item.assigneeName}"
+                android:layout_marginTop="5dp"
+                style="@style/tvNormal" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                android:layout_marginTop="5dp"
+                app:html="@{item.comment}"
+                tools:text="内容"
+                style="@style/tvNormal" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

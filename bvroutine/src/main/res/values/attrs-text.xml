@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="valueArray" format="reference" />
+    <attr name="titleArray" format="reference" />
+
+    <declare-styleable name="HtmlTextView">
+        <attr name="nullText" format="string" />
+        <attr name="html" format="string" />
+        <attr name="initShow" format="boolean" />
+        <attr name="titleArray" />
+    </declare-styleable>
+
+    <declare-styleable name="DrawTextView">
+        <attr name="labels" format="reference" />
+        <attr name="colors" format="reference" />
+        <attr name="labelColor" format="color" />
+        <attr name="labelSize" format="dimension" />
+        <attr name="labelDrawable" format="reference" />
+        <attr name="inBackground" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="GeneralItemText">
+        <attr name="tableName" format="string" />
+        <attr name="fieldName" format="string" />
+        <attr name="dialogLayoutId" format="reference" />
+        <attr name="valueArray" />
+        <attr name="titleArray" />
+    </declare-styleable>
+    
+    <declare-styleable name="TextChooseDelegate">
+        <attr name="titleArray" />
+    </declare-styleable>
+
+    <declare-styleable name="IconButton">
+        <attr name="title" />
+        <attr name="icon" />
+    </declare-styleable>
+
+    <declare-styleable name="TextViewDelegate">
+        <!-- The drawable to be drawn above the text. -->
+        <attr name="drawableTop" format="reference|color" />
+        <!-- The drawable to be drawn below the text. -->
+        <attr name="drawableBottom" format="reference|color" />
+        <!-- The drawable to be drawn to the left of the text. -->
+        <attr name="drawableLeft" format="reference|color" />
+        <!-- The drawable to be drawn to the right of the text. -->
+        <attr name="drawableRight" format="reference|color" />
+        <!-- The drawable to be drawn to the start of the text. -->
+        <attr name="drawableStart" format="reference|color" />
+        <!-- The drawable to be drawn to the end of the text. -->
+        <attr name="drawableEnd" format="reference|color" />
+        <!-- The padding between the drawables and the text. -->
+        <attr name="drawablePadding" format="dimension" />
+
+        <attr name="textColor" format="color"/>
+
+        <!-- Size of the text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp). -->
+        <attr name="textSize"/>
+
+        <attr name="text" format="string" />
+    </declare-styleable>
+</resources>

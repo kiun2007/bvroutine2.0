@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--处置处室-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.net.requests.mobile.TaskDisposalReq" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.utils.NormalDialogManager" />
+
+        <variable name="dataService" type="com.szxgm.gusustreet.net.services.MobileService" />
+        <variable name="data" type="com.szxgm.gusustreet.net.requests.mobile.TaskDisposalReq" />
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <com.szxgm.gusustreet.views.RowLinearLayout
+            style="@style/rowInputVertical"
+            android:orientation="vertical"
+            app:bottomLine="false"
+            app:title="处理说明：">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="top"
+                android:verifyField="@{`comment`}"
+                android:lines="4"
+                android:hint="请输入处理说明"
+                android:text="@={data.comment}"
+                android:maxLength="100"
+                android:textSize="15sp" />
+        </com.szxgm.gusustreet.views.RowLinearLayout>
+
+        <RelativeLayout
+            android:layout_margin="15dp"
+            android:orientation="horizontal"
+            style="@style/barVertical">
+            <TextView
+                android:drawableLeft="@drawable/ic_baseline_timer_20"
+                android:onClick="@{()->NormalDialogManager.createCenter(context, @layout/dialog_mobile_delay, data).show()}"
+                android:text="申请延期"
+                style="@style/bt_text_icon" />
+            <TextView
+                android:drawableLeft="@drawable/ic_baseline_gps_fixed_20"
+                android:onClick="@{()->NormalDialogManager.createCenter(context, @layout/dialog_mobile_track, data.businessId).show()}"
+                android:text="申请跟踪"
+                android:layout_centerHorizontal="true"
+                style="@style/bt_text_icon" />
+            <TextView
+                android:show="@{!data.timeOut}"
+                android:drawableLeft="@drawable/ic_baseline_reply_all_20"
+                android:textColor="@color/warning"
+                android:drawableTint="@color/warning"
+                android:verify="@{data}"
+                android:text="退回"
+                android:layout_alignParentRight="true"
+                android:tag="handler.onComplete(data)"
+                android:beforehand="@{MCString.asArray(`确定退回工单？`,`确定`, `取消`)}"
+                android:action="@{(a)->dataService.handleTaskInfo(data.flag(`0`))}"
+                style="@style/bt_text_icon" />
+            <Button
+                android:beforehand="@{MCString.asArray(`确定处理完毕？`,`确定`, `取消`)}"
+                android:verify="@{data}"
+                android:action="@{(a)->dataService.handleTaskInfo(data.flag(`1`))}"
+                android:layout_marginTop="35dp"
+                android:text="处理完毕"
+                android:tag="handler.onComplete(data)"
+                style="@style/bt_complete_active" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

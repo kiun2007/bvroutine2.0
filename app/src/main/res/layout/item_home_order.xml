@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="android.view.View" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.MobileOrder" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        android:gravity="left|center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->handler.onClick(context,0,item)}"
+        android:background="@drawable/bg_bar"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:visibility="@{`2`.equals(item.seriousDegree)?View.VISIBLE:View.GONE}"
+            android:text="@string/urgent"
+            style="@style/tvLeafRed" />
+        <TextView
+            android:visibility="@{`1`.equals(item.seriousDegree)?View.VISIBLE:View.GONE}"
+            android:text="@string/important"
+            style="@style/tvLeafYellow" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_marginLeft="12dp"
+            android:singleLine="true"
+            android:textColor="@color/mainTextColor"
+            android:textSize="14dp"
+            tools:text="任务内容"
+            android:text="@{item.description}"
+            style="@style/warp_base" />
+        <TextView
+            tools:text="04-02"
+            android:text="@{MCString.formatDate(`MM-dd(EEE)`, item.reportDate)}"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            style="@style/warp_base" />
+        <ImageView
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/ic_chevron_right_black_24dp"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

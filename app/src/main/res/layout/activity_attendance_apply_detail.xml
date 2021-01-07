@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.attendance.ApplyDetailActivity">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
+        <import type="android.view.View" />
+
+        <variable name="mineApply" type="Boolean" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="申请详情"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ViewStub
+                android:id="@+id/viewStub"
+                android:isDetail="@{true}"
+                android:item="@{item}"
+                android:layout="@{item.layout}"
+                style="@style/barVertical"/>
+            <LinearLayout
+                android:show="@{mineApply&amp;&amp;item.status == 1}"
+                android:padding="10dp"
+                android:orientation="horizontal"
+                style="@style/barVertical">
+                <Button
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:text="通过"
+                    android:onClick="onPass"
+                    style="@style/bt_active" />
+                <Button
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="驳回"
+                    android:onClick="onRefuse"
+                    android:background="@drawable/shape_radius_red_bg"
+                    style="@style/bt_active" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

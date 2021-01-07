@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.list.GridPersonListActivity">
+    <data>
+        <import type="kiun.com.bvroutine.presenters.list.NetListProvider" />
+
+        <variable name="personReq" type="com.szxgm.gusustreet.net.requests.GridPersonReq" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler" />
+        <variable name="service" type="com.szxgm.gusustreet.net.services.LinkageService" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="请选择网格人员"
+            app:barRightTitle="确定"
+            style="@style/navigatorBar" />
+        <include
+            android:search="@{personReq}"
+            layout="@layout/layout_search_bar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                style="@style/fill_base">
+                <androidx.recyclerview.widget.RecyclerView
+                    tools:listitem="@layout/item_grid_person"
+                    android:netBlock="@{pager->service.queryPerson(personReq.inherit(pager))}"
+                    android:listProvider="@{(NetListProvider.create(context, handler, @layout/item_grid_person))}"
+                    style="@style/fill_base" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

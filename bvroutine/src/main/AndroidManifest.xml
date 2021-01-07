@@ -1,0 +1,35 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="kiun.com.bvroutine" >
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!--拍照-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--录音-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--读写-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.PERMISSIONS_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application android:networkSecurityConfig="@xml/network_security_config">
+        <activity android:name=".media.VideoRecorderActivity" />
+        <activity android:name=".media.MediaPlayActivity" />
+        <activity android:name=".test.TestActivity" />
+        <activity android:name=".media.MediaBrowsingActivity" />
+
+<!--        <provider-->
+<!--            android:authorities="com.kiun.bvroutine.rootProvider"-->
+<!--            android:name="androidx.core.content.FileProvider"-->
+<!--            android:exported="false">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/root_file_paths" />-->
+<!--        </provider>-->
+    </application>
+</manifest>

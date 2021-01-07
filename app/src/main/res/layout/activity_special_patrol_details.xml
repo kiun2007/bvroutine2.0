@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.other.SpecialPatrolDetailsActivity">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="data" type="com.szxgm.gusustreet.model.other.GridPatrolItem" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="巡查详情"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="任务编码 XC99320"
+                android:argument="@{MCString.asArray(`任务编码`, data.patrolNo)}"
+                app:html="@string/doubleDetailed"
+                style="@style/gridPatrolRow" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="任务名称 日常巡查"
+                android:argument="@{MCString.asArray(`任务名称`, data.patrolName)}"
+                app:html="@string/doubleDetailed"
+                style="@style/gridPatrolRow" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="执行对象 xxx"
+                android:argument="@{MCString.asArray(`任务名称`, data.personName)}"
+                app:html="@string/doubleDetailed"
+                style="@style/gridPatrolRow" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="巡查日期 2020-10-13"
+                android:argument="@{MCString.asArray(`巡查日期`, MCString.formatDate(`yyyy-MM-dd`, data.patrolDate))}"
+                app:html="@string/doubleDetailed"
+                style="@style/gridPatrolRow" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="巡查时段 上午段"
+                android:argument="@{MCString.asArray(`巡查时段`, @stringArray/patrolPeriod[data.patrolPeriod-1])}"
+                app:html="@string/doubleDetailed"
+                style="@style/gridPatrolRow" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="任务完成状态 未开始"
+                android:argument="@{MCString.asArray(`任务完成状态`, @stringArray/labelOfPatrolState[data.status-1])}"
+                app:html="@string/doubleDetailed"
+                style="@style/gridPatrolRow" />
+
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                tools:text="巡查时间 未开始"
+                android:show="@{data.status == 3}"
+                android:argument="@{MCString.asArray(`巡查时间`, MCString.formatDate(`HH:mm:ss`, data.patrolTime))}"
+                app:html="@string/doubleDetailed"
+                style="@style/gridPatrolRow" />
+            <Button
+                android:onClick="onShowViewPoint"
+                android:layout_margin="25dp"
+                android:text="查看轨迹"
+                style="@style/bt_active" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

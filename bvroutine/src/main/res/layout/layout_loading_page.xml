@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="loader" type="kiun.com.bvroutine.presenters.loader.GetAsyncLoader" />
+        <variable name="error" type="Exception" />
+        <variable name="title" type="String" />
+    </data>
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            tools:text="网络请求"
+            tools:textColor="#000"
+            android:text="@{title}"
+            android:textColor="?colorAccent"
+            android:textSize="17sp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:show="@{error==null}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:show="@{error!=null}"
+            android:drawableLeft="@drawable/ic_error_outline_red_16dp"
+            android:text="@{error.message}"
+            android:textColor="#F00"
+            android:textAlignment="center"
+            android:layout_margin="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:show="@{error!=null}"
+            android:onClick="@{()->loader.reload()}"
+            android:background="@drawable/shape_border_button_reload"
+            android:gravity="center"
+            android:layout_marginBottom="100dp"
+            android:layout_width="88dp"
+            android:layout_height="34dp">
+            <TextView
+                android:drawableRight="@drawable/ic_baseline_replay_18"
+                android:text="重试"
+                android:textColor="?colorAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

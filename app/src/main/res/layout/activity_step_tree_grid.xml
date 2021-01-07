@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.list.GridStepTreeActivity">
+    <data>
+        <import type="kiun.com.bvroutine.presenters.list.ArrayTreeProvider" />
+        <import type="com.szxgm.gusustreet.model.dto.grid.Grid" />
+        <import type="kiun.com.bvroutine.presenters.list.NetTree" />
+        <import type="java.util.List" />
+
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler" />
+        <variable name="service" type="com.szxgm.gusustreet.net.services.LinkageService" />
+        <variable name="deptId" type="String" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="网格列表"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                tools:listitem="@layout/item_grid_tree"
+                android:treeProvider="@{ArrayTreeProvider.create(context, handler, @layout/item_grid_tree, NetTree.create(service.queryByParentDeptId(deptId))).indent(15)}"
+                style="@style/fill_base" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

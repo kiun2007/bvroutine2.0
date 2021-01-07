@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.river.PatrolDetailActivity">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="fileService" type="com.szxgm.gusustreet.net.services.FileService" />
+        <variable name="riverService" type="com.szxgm.gusustreet.net.services.RiverService" />
+
+        <variable name="edit" type="Boolean" />
+        <variable name="riverPatrol" type="com.szxgm.gusustreet.model.dto.river.RiverPatrol" />
+        <variable name="patrolLog" type="com.szxgm.gusustreet.model.dto.PatrolLog" />
+        <variable name="patrolPoints" type="java.util.List" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="巡查详细信息"
+            app:rightTag="handler.onComplete(data)"
+            app:rightAction="@{(a)->riverService.commitPatrolLog(patrolLog)}"
+            app:rightVerify="@{patrolLog}"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:show="@{patrolLog==null}"
+            tools:visibility="gone"
+            android:layout_marginTop="145dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            style="@style/barVertical">
+            <ProgressBar
+                style="@style/warp_base" />
+            <TextView
+                android:text="正在加载信息"
+                style="@style/tvNormal" />
+        </LinearLayout>
+        <ScrollView
+            android:show="@{patrolLog!=null}"
+            android:id="@+id/mainScrollView"
+            android:orientation="vertical"
+            style="@style/fill_base">
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/barVertical">
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="河流"
+                    app:titleWidth="120dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="桃花坞"
+                        android:text="@{riverPatrol.riverName}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="开始时间"
+                    app:titleWidth="120dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="2020-06-10 10:30"
+                        android:text="@{MCString.formatDate(`yyyy-MM-dd HH:mm`, riverPatrol.createDate)}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="结束时间"
+                    app:titleWidth="120dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="2020-06-10 13:30"
+                        android:text="@{MCString.formatDate(`yyyy-MM-dd HH:mm`, riverPatrol.endTime)}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="巡查路线(箭头代表巡查时运动方向)"
+                    app:titleWidth="wrap"
+                    style="@style/rowNormalText">
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <TextView
+                    tools:visibility="gone"
+                    android:show="@{patrolPoints==null}"
+                    android:layout_gravity="center"
+                    android:layout_margin="15dp"
+                    android:text="未找到巡查轨迹"
+                    style="@style/tvNormal" />
+                <kiun.com.bvroutine.views.MapContainer
+                    app:scrollView="@+id/mainScrollView"
+                    android:show="@{patrolPoints!=null}"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp">
+                    <com.amap.api.maps.MapView
+                        android:id="@+id/mainMapView"
+                        android:val="@{patrolPoints}"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+                </kiun.com.bvroutine.views.MapContainer>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="日志内容"
+                    app:titleWidth="120dp"
+                    app:required="false"
+                    style="@style/rowInputVertical">
+                    <EditText
+                        tools:text="日志内容"
+                        android:enabled="@{edit}"
+                        android:text="@={patrolLog.contentShow}"
+                        android:layout_marginTop="10dp"
+                        android:verifyField="@{`contentShow`}"
+                        android:background="@null"
+                        android:hint="请输入日志内容"
+                        android:gravity="top"
+                        android:lines="5"
+                        android:textSize="15sp"
+                        android:maxLength="500"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="图片"
+                    app:titleWidth="120dp"
+                    app:required="false"
+                    android:verifyField="@{`logImg`}"
+                    style="@style/rowInputVertical">
+                    <kiun.com.bvroutine.views.MultipleImageGrid
+                        android:layout_marginTop="8dp"
+                        app:commitMode="@{edit}"
+                        app:service="@{part->fileService.commonUpload(part)}"
+                        android:val="@={patrolLog.logImg}"
+                        app:imageLimit="4"
+                        style="@style/multipleUploadGrid" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

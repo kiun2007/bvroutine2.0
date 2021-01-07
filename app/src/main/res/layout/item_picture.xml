@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="kiun.com.bvroutine.media.MediaBrowsingActivityHandler" />
+        <variable name="item" type="String" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_bg_rectangle_edging"
+        android:orientation="vertical">
+        <ImageView
+            android:onClick="@{()->MediaBrowsingActivityHandler.openActivityNormal(context,item)}"
+            android:val="@{item}"
+            android:scaleType="fitCenter"
+            style="@style/fill_base" />
+    </LinearLayout>
+</layout>

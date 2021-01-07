@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="data" type="kiun.com.bvroutine.base.BaseHandler" />
+    </data>
+    <kiun.com.bvroutine.views.cardview.CardView
+        android:layout_width="wrap_content"
+        style="@style/cardViewShallow">
+        <LinearLayout
+            style="@style/warp_base"
+            android:orientation="vertical">
+            <TextView
+                android:text="指派巡查"
+                android:drawableLeft="@drawable/ic_grid_patrol"
+                android:background="@drawable/shape_bottom_line_bg"
+                android:onClick="@{()->data.onClick(context, 0, null)}"
+                style="@style/menuCheckButton" />
+            <TextView
+                android:text="指派走访"
+                android:drawableLeft="@drawable/ic_grid_visit"
+                android:onClick="@{()->data.onClick(context, 1, null)}"
+                style="@style/menuCheckButton" />
+        </LinearLayout>
+    </kiun.com.bvroutine.views.cardview.CardView>
+</layout>

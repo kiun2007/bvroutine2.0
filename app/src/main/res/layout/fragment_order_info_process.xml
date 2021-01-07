@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="java.util.List" />
+        <import type="com.szxgm.gusustreet.model.dto.mobile.OrderFlowTail" />
+
+        <variable name="data" type="List&lt;OrderFlowTail>" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <ScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <kiun.com.bvroutine.views.ShortListView
+                android:val="@{data}"
+                app:itemLayout="@layout/item_task_flow_tail"
+                style="@style/shortListNoPadding" />
+        </ScrollView>
+    </LinearLayout>
+</layout>

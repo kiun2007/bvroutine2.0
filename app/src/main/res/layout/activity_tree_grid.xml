@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.list.GridTreeActivity">
+    <data>
+        <import type="kiun.com.bvroutine.presenters.list.ArrayTreeProvider" />
+        <import type="com.szxgm.gusustreet.model.dto.grid.Grid" />
+        <import type="java.util.List" />
+        <import type="kiun.com.bvroutine.data.QueryBean" />
+        <import type="kiun.com.bvroutine.presenters.list.NetTree" />
+
+        <variable name="service" type="com.szxgm.gusustreet.net.services.MobileService" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="网格列表"
+            style="@style/navigatorBar" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                tools:listitem="@layout/item_grid_info"
+                android:treeProvider="@{ArrayTreeProvider.create(context, handler, @layout/item_grid_info, NetTree.create(service.getGrid(QueryBean.create()))).indent(15)}"
+                style="@style/fill_base" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.LoginActivity">
+    <data>
+        <import type="kiun.com.bvroutine.base.RequestBVActivity" />
+        <variable name="authorize" type="com.szxgm.gusustreet.net.services.AuthorizeService" />
+
+        <variable name="user" type="com.szxgm.gusustreet.model.dto.user.User" />
+    </data>
+
+    <LinearLayout
+        android:background="#254FCE"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:src="@mipmap/bg"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:gravity="center|top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="姑苏区街道综合管理"
+                android:textColor="@color/white"
+                android:layout_marginBottom="25dp"
+                style="@style/tvTitle" />
+            <EditText
+                android:background="@drawable/shape_bg_input_round"
+                android:paddingLeft="25dp"
+                android:hint="用户名"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="#F0F0F0"
+                android:text="@={user.loginName}"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:background="@drawable/shape_bg_input_round"
+                android:singleLine="true"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="25dp"
+                android:hint="密码"
+                android:tag="password"
+                android:textColorHint="#F0F0F0"
+                android:textColor="@color/white"
+                android:inputType="textPassword"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content" />
+            <Button
+                style="@style/warp_base"
+                android:tag="handler.login(data)"
+                android:background="@drawable/shape_bg_button_round"
+                android:text="登 录"
+                android:textColor="#1D377F"
+                android:layout_marginTop="20dp"
+                android:action="@{(a)->authorize.login(user.loginName, a.string(`password`), false, user.createToken(a.string(`password`)))}" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

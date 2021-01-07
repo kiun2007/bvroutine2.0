@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.szxgm.gusustreet.ui.fragment.main.HomeFragment">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.im.IMListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.ProblemListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.RiverPlainListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.AttendanceActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.workbench.WorkOrderReportActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.workbench.MobileWorkBenchActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.NoticeListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.MonitorListActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.other.SpecialTaskActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.HealthSupervisionListActivity" />
+        <import type="com.szxgm.gusustreet.model.dto.user.PermitTree" />
+        <import type="com.szxgm.gusustreet.utils.RolesUtil" />
+        <import type="java.util.List" />
+
+        <variable name="isLogin" type="Boolean" />
+        <variable name="taskList" type="List" />
+        <variable name="messageList" type="List" />
+        <variable name="taskHandler" type="kiun.com.bvroutine.handlers.ListHandler" />
+        <variable name="messageHandler" type="kiun.com.bvroutine.handlers.ListHandler" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barStyle="transparentBlack"
+            app:barNoback="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@mipmap/bg_left_lines"
+                    style="@style/warp_base" />
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/home_title"
+                    android:textColor="#1D377F"
+                    style="@style/tvTitle" />
+                <ImageView
+                    android:src="@mipmap/bg_right_lines"
+                    style="@style/warp_base" />
+            </LinearLayout>
+        </kiun.com.bvroutine.views.NavigatorBar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@mipmap/timg"
+                    style="@style/barVertical"/>
+                <LinearLayout
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    style="@style/barVertical">
+                    <TextView
+                        android:textSize="16sp"
+                        android:layout_weight="1"
+                        android:text="待办任务"
+                        style="@style/tvTitle" />
+                    <RadioGroup
+                        android:checkedButton="@id/totalRadio"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/totalRadio"
+                            android:text="今日"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="10dp"
+                            style="@style/textRadio" />
+                        <RadioButton
+                            android:id="@+id/weekRadio"
+                            android:text="本周"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="10dp"
+                            style="@style/textRadio" />
+                    </RadioGroup>
+                    <ImageView
+                        android:startActivity="@{MobileWorkBenchActivity.clz}"
+                        android:layout_marginLeft="12dp"
+                        android:src="@drawable/ic_chevron_right_black_24dp"
+                        style="@style/warp_base" />
+                </LinearLayout>
+                <kiun.com.bvroutine.views.ShortListView
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:val="@{taskList}"
+                    android:listHandler="@{taskHandler}"
+                    app:itemLayout="@layout/item_task_bar"
+                    app:emptyLayout="@layout/list_task_empty"
+                    style="@style/barVertical">
+                </kiun.com.bvroutine.views.ShortListView>
+                <com.szxgm.gusustreet.views.FlowRadioGroup
+                    android:layout_marginTop="20dp"
+                    style="@style/grid4FlowView">
+                    <TextView
+                        style="@style/bt_icon"
+                        android:drawableTop="@mipmap/ic_mobile_work"
+                        android:startActivity="@{MobileWorkBenchActivity.clz}"
+                        android:text="移动工作台"/>
+                    <TextView
+                        style="@style/bt_icon"
+                        android:startActivity="@{WorkOrderReportActivity.clz}"
+                        android:drawableTop="@mipmap/ic_event_up"
+                        android:text="事件上报"/>
+                    <TextView
+                        style="@style/bt_icon"
+                        android:drawableTop="@mipmap/ic_attendance"
+                        android:text="考勤打卡"
+                        android:startActivity="@{AttendanceActivity.clz}"/>
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.minimum(PermitTree.GRID_WORKER)}"
+                        android:startActivity="@{SpecialTaskActivity.clz}"
+                        android:drawableTop="@mipmap/ic_visit"
+                        android:text="巡查走访" />
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.assign(PermitTree.STREET_RIVER_MANAGE)}"
+                        android:drawableTop="@mipmap/ic_rivers_patrol"
+                        android:text="巡河问题"
+                        android:startIntentAction="@{(view)->WorkOrderReportActivity.create(context, `30`)}" />
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.assign(PermitTree.TREATMENT_MANAGER)}"
+                        android:startActivity="@{HealthSupervisionListActivity.clz}"
+                        android:drawableTop="@mipmap/ic_rivers_work"
+                        android:text="卫监事件" />
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{RolesUtil.minimum(PermitTree.STREET_ADMIN)}"
+                        android:drawableTop="@mipmap/ic_video_manager"
+                        android:startActivity="@{MonitorListActivity.clz}"
+                        android:text="视频管理" />
+                    <TextView
+                        style="@style/bt_icon"
+                        android:show="@{isLogin}"
+                        android:drawableTop="@mipmap/ic_video_online"
+                        android:startActivity="@{IMListActivity.clz}"
+                        android:text="视频直播" />
+                </com.szxgm.gusustreet.views.FlowRadioGroup>
+
+                <kiun.com.bvroutine.views.DrawLinearLayout
+                    android:orientation="vertical"
+                    style="@style/barVertical"
+                    android:layout_marginTop="5dp"
+                    android:background="#FFF"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    app:drawPadding="4dp"
+                    app:paintColor="#DBDFE2"
+                    app:radius="4dp"
+                    app:shadow="true"
+                    app:stroke="1px">
+                    <LinearLayout
+                        style="@style/barVertical"
+                        android:background="@drawable/shape_bottom_line_bg"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp">
+                        <TextView
+                            style="@style/tvTitle"
+                            android:layout_weight="1"
+                            android:text="通知公告"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:startActivity="@{NoticeListActivity.clz}"
+                            style="@style/warp_base"
+                            android:text="更多" />
+                        <ImageView
+                            style="@style/warp_base"
+                            android:layout_marginLeft="2dp"
+                            android:src="@drawable/ic_chevron_right_black_24dp" />
+                    </LinearLayout>
+                    <kiun.com.bvroutine.views.ShortListView
+                        app:itemLayout="@layout/item_notice_message"
+                        app:emptyLayout="@layout/list_notice_empty"
+                        android:val="@{messageList}"
+                        android:listHandler="@{messageHandler}"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent" />
+                </kiun.com.bvroutine.views.DrawLinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

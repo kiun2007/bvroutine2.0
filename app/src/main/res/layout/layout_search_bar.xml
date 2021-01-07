@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.views.dialog.MCDialogManager" />
+        <import type="android.view.Gravity" />
+
+        <variable name="search" type="com.szxgm.gusustreet.model.base.SearchQuery" />
+    </data>
+    <LinearLayout
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        style="@style/barVertical">
+        <EditText
+            tools:hint="搜索"
+            android:hint="@{search.searchHint()}"
+            android:text="@={search.searchValue}"
+            android:onSearch="@{()->search.onChanged()}"
+            style="@style/searchText" />
+        <TextView
+            android:show="@{search.filterLayout()!=-1}"
+            android:selected="@{search.empty}"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/check_filter_button_bg"
+            android:onClick="@{()->MCDialogManager.create(context, search.filterLayout(), search).setGravity(Gravity.RIGHT).show()}"
+            style="@style/warp_base" />
+    </LinearLayout>
+</layout>

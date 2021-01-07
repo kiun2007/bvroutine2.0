@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_clock">
+
+    <fragment
+        android:id="@+id/navigation_clock"
+        android:name="com.szxgm.gusustreet.ui.fragment.attendance.ClockInFragment"
+        android:label="打卡"
+        tools:layout="@layout/fragment_attendance_clock" />
+
+    <fragment
+        android:id="@+id/navigation_apply"
+        android:name="com.szxgm.gusustreet.ui.fragment.attendance.ApplyFragment"
+        android:label="申请"
+        tools:layout="@layout/fragment_attendance_apply" />
+
+    <fragment
+        android:id="@+id/navigation_statistics"
+        android:name="com.szxgm.gusustreet.ui.fragment.attendance.StatisticsFragment"
+        android:label="统计"
+        tools:layout="@layout/fragment_attendance_statistics" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.szxgm.gusustreet.ui.fragment.attendance.SettingFragment"
+        android:label="设置"
+        tools:layout="@layout/fragment_attendance_setting" />
+</navigation>

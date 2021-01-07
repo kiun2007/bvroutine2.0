@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".media.MediaPlayActivity">
+    <data>
+        <import type="kiun.com.bvroutine.media.MediaState" />
+        <variable name="state" type="MediaState" />
+    </data>
+    <FrameLayout
+        android:background="#000"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:show="@{state == MediaState.Stop}"
+            android:onClick="onPlay"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_play_circle_outline_50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:onClick="onCancel"
+            android:layout_marginLeft="36dp"
+            android:layout_marginBottom="36dp"
+            android:layout_gravity="bottom|left"
+            android:src="@drawable/ic_svg_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:onClick="onSelect"
+            android:layout_marginRight="36dp"
+            android:layout_marginBottom="36dp"
+            android:layout_gravity="bottom|right"
+            android:src="@drawable/ic_svg_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+</layout>

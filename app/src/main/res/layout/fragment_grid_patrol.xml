@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.szxgm.gusustreet.ui.fragment.other.GridPatrolFragment">
+    <data>
+        <import type="kiun.com.bvroutine.presenters.list.NetListProvider" />
+
+        <variable name="service" type="com.szxgm.gusustreet.net.services.LinkageService" />
+        <variable name="req" type="com.szxgm.gusustreet.net.requests.linkage.PatrolListReq" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler" />
+    </data>
+    <LinearLayout
+        style="@style/fill_base"
+        android:background="#F0F0F0"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            style="@style/fill_base">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                style="@style/fill_base">
+                <androidx.recyclerview.widget.RecyclerView
+                    tools:listitem="@layout/item_grid_patrol"
+                    android:netBlock="@{(pager)->service.gridPatrolList(req.inherit(pager))}"
+                    android:listProvider="@{NetListProvider.create(context, handler, @layout/item_grid_patrol)}"
+                    style="@style/fill_base" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

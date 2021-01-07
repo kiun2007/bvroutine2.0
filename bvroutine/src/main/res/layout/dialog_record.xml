@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.media.MediaState" />
+        <import type="android.view.View" />
+
+        <variable name="recorder" type="kiun.com.bvroutine.media.Recorder" />
+        <variable name="dialog" type="android.content.DialogInterface" />
+    </data>
+    <LinearLayout
+        tools:context=".base.BVBaseActivity"
+        android:minWidth="220dp"
+        android:background="@drawable/shape_border"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:text="多媒体录音"
+            android:layout_margin="10dp"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@{recorder.timeField}"
+            android:textColor="#333"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:visibility="@{recorder.stateField == MediaState.Recording?View.GONE:View.VISIBLE}"
+            android:drawableTop="@drawable/ic_fiber_manual_record_black_24dp"
+            android:text="开始录音"
+            android:onClick="@{()->recorder.startRecord()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:visibility="@{recorder.stateField == MediaState.Recording?View.VISIBLE:View.GONE}"
+            android:drawableTop="@drawable/ic_stop_black_24dp"
+            android:text="停止录音"
+            android:onClick="@{()->recorder.stopRecord()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:gravity="center"
+                android:onClick="@{()->recorder.cancel(dialog)}"
+                android:text="取消"
+                android:padding="5dp"
+                android:textSize="16sp"
+                android:textColor="#999"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:visibility="@{recorder.stateField == MediaState.Recorded?View.VISIBLE:View.GONE}"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="上传录音"
+                android:onClick="@{()->recorder.upload(dialog)}"
+                android:padding="5dp"
+                android:textColor="#009078"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

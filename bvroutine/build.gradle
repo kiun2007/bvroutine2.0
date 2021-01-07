@@ -1,0 +1,152 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+def getVersionCode() {
+
+    def versionFile = file('version.properties')
+
+    if (versionFile.exists()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionFile))
+        def versionCode = versionProps['build.number'].toInteger()
+        println('Current version code is ' + versionCode.toString())
+        return versionCode
+    } else {
+        throw new GradleException("Could not find version.properties!")
+    }
+}
+
+task updateVersion() {
+    println('kiun.com.bvroutine ' + getVersionName())
+    updateVersionCode()
+    println('kiun.com.bvroutine ' + getVersionName())
+}
+
+def getVersionName() {
+
+    def versionFile = file('version.properties')
+
+    if (versionFile.exists()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionFile))
+        def versionCode = versionProps['build.number'].toInteger()
+        def versionName = String.format('%d.%d.%d', (versionCode / 10000).toInteger(), (versionCode % 10000 / 1000).toInteger(), versionCode % 1000)
+        return versionName
+    } else {
+        throw new GradleException("Could not find version.properties!")
+    }
+}
+
+def updateVersionCode() {
+    def runTasks = gradle.startParameter.taskNames
+
+    def File versionFile = file('version.properties')
+
+    if (versionFile.exists()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionFile))
+        def currentVersionCode = versionProps['build.number'].toInteger()
+        currentVersionCode++
+        versionProps['build.number'] = currentVersionCode.toString()
+        versionProps.store(versionFile.newWriter(), null)
+        println('Updated version code to ' + currentVersionCode.toString())
+    } else {
+        throw new GradleException("Could not find version.properties!")
+    }
+}
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode getVersionCode()
+        versionName getVersionName()
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField("String", "Prefix", "\"http://192.168.55.30:8080\"")
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "Prefix", "\"http://192.168.55.30\"")
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
+    sourceSets{
+        main {
+            jniLibs.srcDir(['jni'])
+            java {
+                srcDirs = ["src/main/java"];
+            }
+        }
+    }
+}
+
+dependencies {
+
+    api fileTree(dir: 'libs', include: ['*.aar'])
+
+    implementation 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation "org.apache.commons:commons-jexl:2.1.1"
+    implementation "com.alibaba:fastjson:1.2.31"
+    implementation ("com.squareup.okhttp3:okhttp:3.14.9")
+    implementation "com.squareup.okhttp3:logging-interceptor:3.4.1"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.tencent.tbs.tbssdk:sdk:43939'
+    implementation 'com.google.android.material:material:1.2.1'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId 'com.kiun.bvroutine' //You can either define these here or get them from project conf elsewhere
+                artifactId 'bvroutine'
+                version getVersionName()
+                artifact "$buildDir/outputs/aar/bvroutine-release.aar" //aar artifact you want to publish //generate pom nodes for
+
+                dependencies pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each { dependency ->
+
+                        if(!"unspecified".equals(dependency.name)){
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', dependency.group)
+                            dependencyNode.appendNode('artifactId', dependency.name)
+                            dependencyNode.appendNode('version', dependency.version)
+                        }
+                    }
+                }
+            }
+        }
+        //publish to filesystem repo
+        repositories{
+            maven {
+                url "$buildDir/repo"
+            }
+        }
+    }
+}

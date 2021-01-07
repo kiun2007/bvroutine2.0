@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="riverDetail" type="com.szxgm.gusustreet.model.dto.river.RiverDetail" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.NavigatorBar
+            app:barTitle="河道详细信息"
+            style="@style/navigatorBar" />
+        <ScrollView
+            android:id="@+id/mainScrollView"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/barVertical">
+                <kiun.com.bvroutine.views.MapContainer
+                    app:scrollView="@+id/mainScrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp">
+                    <com.amap.api.maps2d.MapView
+                        android:id="@+id/mainMapView"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="450dp" />
+                </kiun.com.bvroutine.views.MapContainer>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="河流名称"
+                    app:titleWidth="100dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="桃花坞"
+                        android:text="@{riverDetail.rivername}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="所属区域"
+                    app:titleWidth="100dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="姑苏区"
+                        android:text="@{riverDetail.area}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="河道级别"
+                    app:titleWidth="100dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        android:text="街道级"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="河道长度"
+                    app:titleWidth="100dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        android:text="--"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="河道起始"
+                    app:titleWidth="100dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="100m"
+                        android:text="@{riverDetail.place}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <LinearLayout
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:background="#fff3f3f6"
+                    style="@style/barVertical">
+                </LinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="河长名称"
+                    app:titleWidth="100dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="100m"
+                        android:text="@{riverDetail.rivermaste}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="联系方式"
+                    app:titleWidth="100dp"
+                    style="@style/rowNormalText">
+                    <TextView
+                        tools:text="137****5014"
+                        android:textColor="@color/blue"
+                        android:text="@{riverDetail.phone}"
+                        style="@style/tvNormal" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

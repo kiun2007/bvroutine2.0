@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="iconGridTypes">
+        <item>@drawable/ic_grid_area</item>
+        <item>@drawable/ic_grid_street</item>
+        <item>@drawable/ic_grid_village</item>
+        <item>@drawable/ic_grid_final</item>
+    </array>
+</resources>

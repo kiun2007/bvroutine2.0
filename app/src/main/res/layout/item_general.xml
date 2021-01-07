@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.base.GeneralItem" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="left|center"
+        android:paddingStart="16dp"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:background="@drawable/shape_bottom_line_padding4_bg"
+        android:orientation="vertical">
+        <TextView
+            tools:text="选项1"
+            android:text="@{item.title}"
+            style="@style/tvSubtitle" />
+        
+    </LinearLayout>
+</layout>

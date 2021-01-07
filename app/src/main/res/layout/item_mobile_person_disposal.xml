@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.mobile.PersonDisposal" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:orientation="vertical">
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="处置内容:"
+            app:html="@string/doubleDetailed"
+            app:nullText="[未填写]"
+            android:argument="@{MCString.asArray(`处置内容:`, item.handleContent)}"
+            style="@style/tvSubtitle" />
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="处置部门:"
+            app:html="@string/doubleDetailed"
+            app:nullText="[未填写]"
+            android:layout_marginTop="5dp"
+            android:argument="@{MCString.asArray(`处置部门:`, item.handleOfficeName)}"
+            style="@style/tvSubtitle" />
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="完成情况说明:"
+            app:html="@string/doubleDetailed"
+            app:nullText="[未填写]"
+            android:layout_marginTop="5dp"
+            android:argument="@{MCString.asArray(`完成情况说明:`, item.workStatement)}"
+            style="@style/tvSubtitle" />
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="处置人员:"
+            app:html="@string/doubleDetailed"
+            app:nullText="[未获取]"
+            android:layout_marginTop="5dp"
+            android:argument="@{MCString.asArray(`处置人员:`, item.handlePersonName)}"
+            style="@style/tvSubtitle" />
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="完成时间:"
+            app:html="@string/doubleDetailed"
+            app:nullText="[未获取]"
+            android:layout_marginTop="5dp"
+            android:argument="@{MCString.asArray(`完成时间:`, item.finishTime)}"
+            style="@style/tvSubtitle" />
+    </LinearLayout>
+</layout>

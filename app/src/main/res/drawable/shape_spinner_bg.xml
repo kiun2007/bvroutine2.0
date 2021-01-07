@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape>
+            <corners android:radius="3dp" />
+            <padding android:right="15dp" android:top="5dp" android:bottom="5dp"/>
+        </shape>
+    </item>
+    <item android:right="-10dp">
+        <bitmap android:gravity="end" android:src="@drawable/ic_down_arrow" />
+    </item>
+</layer-list>
