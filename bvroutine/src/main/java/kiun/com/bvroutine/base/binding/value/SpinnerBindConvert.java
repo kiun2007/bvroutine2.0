@@ -35,7 +35,8 @@ public class SpinnerBindConvert<T> extends BindConvert<Spinner, SpinnerData, T> 
             return;
         }
 
-        if (arrayAdapter == null){
+        boolean isFirst = arrayAdapter == null;
+        if (isFirst){
             arrayAdapter = new ArrayAdapter<>(view.getContext(), value.itemLayoutId());
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -48,9 +49,13 @@ public class SpinnerBindConvert<T> extends BindConvert<Spinner, SpinnerData, T> 
         arrayAdapter.clear();
         arrayAdapter.addAll(ListUtil.toList(value.allItems(), SpinnerItem::label));
         arrayAdapter.notifyDataSetChanged();
+
         nowSpinnerData = value;
 
         view.setSelection(value.getSelected());
+        if (!isFirst){
+            nowSpinnerData.setSelected(value.getSelected());
+        }
     }
 
     @Override

@@ -254,15 +254,15 @@ public class ActionBinding {
     }
 
     //"android:bindConvertBuilder"
-    @BindingAdapter(value = {"android:val"})
-    public static<T> void setValue(View view, T value){
+    @BindingAdapter(value = {"android:val", "android:bindConvert"}, requireAll = false)
+    public static<T> void setValue(View view, T value, Class<? extends BindConvert> convert){
 
         if (view instanceof ValListener){
             ((ValListener) view).setVal(value);
             return;
         }
 
-        BindConvert bindConvert = BindConvertBridge.getViewBindConvert(view, null);
+        BindConvert bindConvert = BindConvertBridge.getViewBindConvert(view, convert);
         if (bindConvert != null){
             if (!bindConvert.isOnlySet()){
                 bindConvert.setValue(value);

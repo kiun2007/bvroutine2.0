@@ -205,7 +205,7 @@ public class User implements JSON, NetTextBean {
 
     public String createToken(String pwd){
 
-        String tokenStr = loginName + ":" + pwd;
+        String tokenStr = "222.92.48.28:8180";
         return Base64.encodeToString(tokenStr.getBytes(), Base64.NO_WRAP);
     }
 }

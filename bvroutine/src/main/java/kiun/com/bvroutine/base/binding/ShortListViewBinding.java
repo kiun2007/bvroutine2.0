@@ -10,7 +10,7 @@ public class ShortListViewBinding {
     @BindingAdapter({"android:listHandler","android:val"})
     public static void setListHandlerAndVal(ShortListView shortListView, ListHandler listHandler, Object value){
         setListHandler(shortListView, listHandler);
-        ActionBinding.setValue(shortListView, value);
+        ActionBinding.setValue(shortListView, value, null);
     }
 
     @BindingAdapter("android:listHandler")

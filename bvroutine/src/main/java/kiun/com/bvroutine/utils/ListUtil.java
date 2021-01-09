@@ -34,7 +34,7 @@ public class ListUtil {
     }
 
     public static<T> List<T> filter(List<T> list, CompareCaller<T> caller) {
-        return filters(list, false,caller)[0];
+        return filters(list, false, caller)[0];
     }
 
     public static<T> List<T> filter(List<T> list, boolean repeat, CompareCaller<T> caller) {
