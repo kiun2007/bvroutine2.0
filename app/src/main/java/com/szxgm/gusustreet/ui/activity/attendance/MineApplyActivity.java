@@ -50,7 +50,10 @@ public class MineApplyActivity extends GeneralListActivity implements GeneralHan
     @Override
     public ListHandler getHandler() {
         return new RefreshHandler<MineApply>(general, this){
-            
+            @Override
+            public int getItemLayout(MineApply item) {
+                return item.getLayout();
+            }
         }.addTag(0, MineApplyDetailActivityHandler::openActivityIntent);
     }
 }

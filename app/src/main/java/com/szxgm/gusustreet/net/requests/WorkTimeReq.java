@@ -17,13 +17,31 @@ public class WorkTimeReq extends EventBean {
     @JSONField(format = "yyyy-MM-dd")
     private Date pbEndDate = new Date();
 
+    private boolean isAsync = false;
+
     public Date getPbStartDate() {
         return pbStartDate;
     }
 
-    public void setPbStartDate(Date pbStartDate) {
-        this.pbEndDate = pbStartDate;
+    public WorkTimeReq() {
+    }
+
+    public WorkTimeReq(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
+
+    public WorkTimeReq(Date pbStartDate, Date pbEndDate) {
         this.pbStartDate = pbStartDate;
+        this.pbEndDate = pbEndDate;
+    }
+
+    public void setPbStartDate(Date pbStartDate) {
+
+        this.pbEndDate = pbStartDate;
+
+        if (isAsync){
+            this.pbStartDate = pbStartDate;
+        }
         onChanged(false);
     }
 
@@ -33,7 +51,10 @@ public class WorkTimeReq extends EventBean {
 
     public void setPbEndDate(Date pbEndDate) {
         this.pbEndDate = pbEndDate;
-        this.pbStartDate = pbEndDate;
+
+        if (isAsync){
+            this.pbStartDate = pbEndDate;
+        }
         onChanged(false);
     }
 

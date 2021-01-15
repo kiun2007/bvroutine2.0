@@ -30,22 +30,29 @@
                 android:text="调换班次:"
                 android:layout_marginRight="10dp"
                 style="@style/tvNormal" />
-            <TextView
-                tools:text="2020-12-29 - 早班"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:text="@{item.tbbeforetimes}"
-                style="@style/tvMain" />
-            <TextView
-                android:drawableLeft="@drawable/ic_baseline_swap_horiz_18"
-                android:layout_weight="1"
-                android:singleLine="true"
-                tools:text="2020-12-29 - 晚班"
-                android:layout_width="match_parent"
-                android:text="@{item.tblatertimes}"
-                style="@style/tvMain" />
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/barVertical">
+                <TextView
+                    tools:text="2020-12-29 - 早班"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:ellipsize="middle"
+                    android:text="@{item.tbbeforetimes}"
+                    style="@style/tvMain" />
+                <TextView
+                    android:drawableTop="@drawable/ic_baseline_swap_horiz_18"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    tools:text="2020-12-29 - 晚班"
+                    android:ellipsize="middle"
+                    android:layout_width="match_parent"
+                    android:text="@{item.tblatertimes}"
+                    style="@style/tvMain" />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="10dp"
@@ -61,8 +68,10 @@
                 android:text="@{item.tbmenbefore}"
                 android:layout_width="match_parent"
                 style="@style/tvMain" />
+            <ImageView
+                android:src="@drawable/ic_baseline_swap_horiz_18"
+                style="@style/warp_base" />
             <TextView
-                android:drawableLeft="@drawable/ic_baseline_swap_horiz_18"
                 tools:text="韩梅梅"
                 android:layout_weight="1"
                 android:layout_width="match_parent"

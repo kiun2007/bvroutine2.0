@@ -166,5 +166,6 @@
         <activity android:name=".ui.activity.workbench.ProcessedOrderActivity" />
         <activity android:name=".ui.activity.attendance.MineApplyDetailActivity" />
         <activity android:name=".ui.activity.list.BadClockListActivity" />
+        <activity android:name=".ui.activity.attendance.MineReplaceApprovalActivity" />
     </application>
 </manifest>

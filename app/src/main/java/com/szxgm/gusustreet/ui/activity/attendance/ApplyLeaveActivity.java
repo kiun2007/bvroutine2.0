@@ -1,6 +1,7 @@
 package com.szxgm.gusustreet.ui.activity.attendance;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.szxgm.gusustreet.BR;
 import com.szxgm.gusustreet.R;
@@ -33,6 +34,13 @@ public class ApplyLeaveActivity extends CommitBaseActivity<ActivityApplyLeaveBin
 
         if (begin != null && end != null){
             timeStatistics(begin, end, count->{
+
+                int totalValue = Math.round(count.floatValue());
+                if (totalValue <= 0){
+                    Toast.makeText(getContext(), "时间段内无需上班,请重新选时间", Toast.LENGTH_LONG).show();
+                    leaveApply.clear();
+                    return;
+                }
                 leaveApply.setQjTotaltime(Math.round(count.floatValue()));
                 leaveApply.onChanged();
             });

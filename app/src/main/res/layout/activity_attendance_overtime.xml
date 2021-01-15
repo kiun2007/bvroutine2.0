@@ -4,6 +4,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.activity.attendance.OvertimeActivity">
     <data>
+        <import type="kiun.com.bvroutine.utils.DateUtil" />
+
         <variable name="overtime" type="com.szxgm.gusustreet.model.dto.Overtime" />
         <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
         <variable name="attendanceService" type="com.szxgm.gusustreet.net.services.AttendanceService" />

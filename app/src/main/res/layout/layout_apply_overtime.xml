@@ -39,16 +39,12 @@
                 android:text="@{MCString.formatDate(`yyyy-MM-dd HH:mm`, item.begin) + `至` + MCString.formatDate(`yyyy-MM-dd HH:mm`, item.end)}"
                 style="@style/tvNormal" />
         </LinearLayout>
-        <LinearLayout
-            android:show="@{item.type.equals(`1`)||item.type.equals(`4`)}"
+
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="加班时长:1"
             android:layout_marginTop="10dp"
-            style="@style/barVertical">
-            <TextView
-                tools:text="加班时长:"
-                android:layout_marginRight="10dp"
-                style="@style/tvNormal" />
-            <TextView
-                style="@style/tvNormal" />
-        </LinearLayout>
+            android:argument="@{MCString.asArray(`加班时长:`, item.totaltime)}"
+            app:html="@string/doubleDetailed"
+            style="@style/tvNormal" />
     </LinearLayout>
 </layout>

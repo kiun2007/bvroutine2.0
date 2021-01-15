@@ -54,6 +54,7 @@
                     <kiun.com.bvroutine.views.DatePickerLayout
                         app:format="yyyy-MM-dd HH:mm"
                         android:val="@={leaveApply.qjBegin}"
+                        android:greaterLimit="@{leaveApply.qjEnd}"
                         style="@style/rowSelectText" />
                 </com.szxgm.gusustreet.views.RowLinearLayout>
                 <com.szxgm.gusustreet.views.RowLinearLayout
@@ -63,6 +64,7 @@
                     <kiun.com.bvroutine.views.DatePickerLayout
                         app:returnType="date"
                         app:format="yyyy-MM-dd HH:mm"
+                        android:lessLimit="@{leaveApply.qjBegin}"
                         android:val="@={leaveApply.qjEnd}"
                         style="@style/rowSelectText" />
                 </com.szxgm.gusustreet.views.RowLinearLayout>

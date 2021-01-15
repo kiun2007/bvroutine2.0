@@ -31,9 +31,7 @@ public class LeaveApply extends QueryBean {
 
     private String qjType;
 
-    @Verifys({
-            @Verify(value = NotNull.class, desc = "请输入请假事由")
-    })
+    @Verify(value = NotNull.class, desc = "请输入请假事由")
     private String qjReason;
 
     private String qjAnnex;
@@ -57,7 +55,6 @@ public class LeaveApply extends QueryBean {
     }
 
     public Date getQjBegin() {
-
         return qjBegin;
     }
 
@@ -163,5 +160,13 @@ public class LeaveApply extends QueryBean {
 
     public String getId() {
         return qjId;
+    }
+
+    @Override
+    public void clear() {
+        qjBegin = null;
+        qjEnd = null;
+        qjTotaltime = null;
+        onChanged();
     }
 }

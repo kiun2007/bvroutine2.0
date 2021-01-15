@@ -68,6 +68,16 @@ public class ApplyDetailActivity extends RequestBVActivity<ActivityAttendanceApp
         }
         if (mineApply.getType().equals("3")){
             req.setTbId(mineApply.getId());
+            boolean isPass = "2".equals(status);
+
+            if (mineApply.getStatus() == 1){
+                status = isPass ? "4" : "5";
+            }
+
+            if (mineApply.getStatus() == 4){
+                status = isPass ? "2" : "3";
+            }
+
             req.setTbStatus(status);
             p.addRequest(()->p.callServiceData(AttendanceService.class, s -> s.tbshSaveList(req)), this::onComplete);
         }
@@ -79,14 +89,14 @@ public class ApplyDetailActivity extends RequestBVActivity<ActivityAttendanceApp
     }
 
     public void onPass(View view)  {
-        new AlertDialog.Builder(this).setTitle("提示").setMessage("是否通过审批")
+        new AlertDialog.Builder(this).setTitle("提示").setMessage(mineApply.getAgreeMessage())
                 .setPositiveButton("确定", (dialog, which) -> {
                     requestApply("2");
                 }).setNegativeButton("取消", null).show();
     }
 
     public void onRefuse(View view){
-        new AlertDialog.Builder(this).setTitle("提示").setMessage("是否驳回审批")
+        new AlertDialog.Builder(this).setTitle("提示").setMessage(mineApply.getRefuseMessage())
                 .setPositiveButton("确定", (dialog, which) -> {
                     requestApply("3");
                 }).setNegativeButton("取消", null).show();

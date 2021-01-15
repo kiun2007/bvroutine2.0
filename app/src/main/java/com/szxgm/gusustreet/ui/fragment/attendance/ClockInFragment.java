@@ -38,7 +38,7 @@ public class ClockInFragment extends RequestBVFragment<FragmentAttendanceClockBi
     public void initView() {
         mViewBinding.setUser(SharedUtil.getValue(User.TAG, new User()));
         getRequestPresenter().addRequest(this::getClockViews, mViewBinding::setClocks);
-        setVariable(BR.req, new WorkTimeReq().listener(v -> {
+        setVariable(BR.req, new WorkTimeReq(true).listener(v -> {
             reqBinding.addRequest(this::getClockViews, mViewBinding::setClocks);
         }));
     }

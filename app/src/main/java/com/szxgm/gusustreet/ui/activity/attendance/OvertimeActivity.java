@@ -41,7 +41,8 @@ public class OvertimeActivity extends CommitBaseActivity<ActivityAttendanceOvert
                 float totalTime = (float)(end.getTime() - begin.getTime())/(1000*60*60);
                 int totalValue = (int) Math.round(totalTime - count.floatValue());
                 if (totalValue == 0){
-                    Toast.makeText(getContext(), "加班时间太短, 请重新选择时间", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "时间太短,请重新选择时间", Toast.LENGTH_LONG).show();
+                    overtime.clear();
                     return;
                 }
                 overtime.setJbTotal(String.valueOf(totalValue));

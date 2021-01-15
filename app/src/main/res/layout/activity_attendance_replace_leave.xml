@@ -62,6 +62,7 @@
                     <com.szxgm.gusustreet.views.GeneralItemText
                         app:activityClz="@{ColleagueListActivity.clz}"
                         android:hint="请先选择调换班次"
+                        android:enabled="@{replaceLeave.tbqId!=null&amp;&amp;replaceLeave.btbId!=null}"
                         android:verifyField="@{`tbLaterId`}"
                         android:val="@={replaceLeave.tbLaterId}"
                         app:param="@{ListUtil.keyValues(`workTimeId`, replaceLeave.btbId)}"

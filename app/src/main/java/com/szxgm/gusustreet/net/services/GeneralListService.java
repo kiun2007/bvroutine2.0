@@ -35,6 +35,10 @@ public interface GeneralListService {
     @POST("API/pb/xjList")
     Call<NetListWrapper<MineApply>> allxjGetList(@Body PagerBean pagerBean);
 
+
+    @POST("API/pb/secondTbList")
+    Call<NetListWrapper<MineApply>> secondTbList(@Body PagerBean pagerBean);
+
     //全部人员
     @POST("API/pb/peopleList")
     Call<NetListWrapper<Person>> allPerson(@Body PagerBean pagerBean);

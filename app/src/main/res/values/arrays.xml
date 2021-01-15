@@ -120,6 +120,8 @@
         <item>@color/orgDark</item>
         <item>@color/grass</item>
         <item>@color/red</item>
+        <item>@color/grass</item>
+        <item>@color/red</item>
     </integer-array>
 
     <string-array name="titleOfApplyState">
@@ -127,5 +129,7 @@
         <item>待审批</item>
         <item>已通过</item>
         <item>已驳回</item>
+        <item>同意调班</item>
+        <item>拒绝调班</item>
     </string-array>
 </resources>

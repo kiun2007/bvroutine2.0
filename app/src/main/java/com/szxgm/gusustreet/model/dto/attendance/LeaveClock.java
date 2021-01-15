@@ -25,7 +25,7 @@ public class LeaveClock extends ArriveClock {
     private String dkEarly;
 
     public boolean isEarly(){
-        return !TextUtils.isEmpty(dkEarly) && dkEarly.equals("0");
+        return "1".equals(dkEarly);
     }
 
     public String getDkId() {

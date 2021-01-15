@@ -32,7 +32,7 @@ public class DateUtil {
 
         if (Calendar.getInstance().before(calendar)){
             calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_YEAR, -1);
+//            calendar.add(Calendar.DAY_OF_YEAR, -1);
         }
         return calendar.getTime();
     }
@@ -81,9 +81,26 @@ public class DateUtil {
      * @return
      */
     public static Date addDay(Date date, int days){
+
+        if (date == null){
+            return null;
+        }
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, days);
+        return calendar.getTime();
+    }
+
+    public static Date addHours(Date date, int hours){
+
+        if (date == null){
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR, hours);
         return calendar.getTime();
     }
 

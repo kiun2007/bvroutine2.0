@@ -26,7 +26,7 @@ public class ArriveClock {
     private String dkPbname;
 
     public boolean isLate(){
-        return !TextUtils.isEmpty(dkLate) && dkLate.equals("0");
+        return "1".equals(dkLate);
     }
 
     public String getDkPbid() {

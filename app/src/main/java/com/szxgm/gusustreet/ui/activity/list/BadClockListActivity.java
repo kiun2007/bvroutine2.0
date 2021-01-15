@@ -25,7 +25,7 @@ public class BadClockListActivity extends GeneralListActivity {
     @Override
     public void initView() {
         super.initView();
-        getBarItem().setTitle("选被调班次人员");
+        getBarItem().setTitle("异常打卡记录");
         binding.generalSearch.setVisibility(View.GONE);
         type = getIntent().getStringExtra("type");
     }

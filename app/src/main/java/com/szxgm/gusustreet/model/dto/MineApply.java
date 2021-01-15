@@ -78,6 +78,21 @@ public class MineApply implements Serializable {
      */
     private String tbmenlater;
 
+    /**
+     * 时长
+     */
+    private Integer totaltime;
+
+    /**
+     * 附件
+     */
+    private String annex;
+
+    /**
+     * 是否是调班审批.
+     */
+    private boolean isReplace;
+
 
     public int getLayout(){
         if ("1".equals(type)){
@@ -202,5 +217,65 @@ public class MineApply implements Serializable {
 
     public void setTblatertimes(String tblatertimes) {
         this.tblatertimes = tblatertimes;
+    }
+
+    public Integer getTotaltime() {
+        return totaltime;
+    }
+
+    public void setTotaltime(Integer totaltime) {
+        this.totaltime = totaltime;
+    }
+
+    public String getAnnex() {
+        return annex;
+    }
+
+    public void setAnnex(String annex) {
+        this.annex = annex;
+    }
+
+    /**
+     * 是否需要展示操作.
+     * @return
+     */
+    public boolean isShowAction(){
+        return status == 1 || (!isReplace && status == 4);
+    }
+
+    public String getAgreeTitle(){
+        if ("3".equals(type) && status == 1){
+            return "同意调班";
+        }
+        return "通过";
+    }
+
+    public String getRefuseTitle(){
+        if ("3".equals(type) && status == 1){
+            return "拒绝调班";
+        }
+        return "驳回";
+    }
+
+    public String getAgreeMessage(){
+        if ("3".equals(type) && status == 1){
+            return "是否同意对方调班请求?";
+        }
+        return "通过";
+    }
+
+    public String getRefuseMessage(){
+        if ("3".equals(type) && status == 1){
+            return "是否拒绝对方调班请求?";
+        }
+        return "是否驳回审批";
+    }
+
+    public boolean isReplace() {
+        return isReplace;
+    }
+
+    public void setReplace(boolean replace) {
+        isReplace = replace;
     }
 }

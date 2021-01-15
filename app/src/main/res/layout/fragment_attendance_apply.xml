@@ -9,6 +9,7 @@
         <import type="com.szxgm.gusustreet.ui.activity.attendance.OvertimeActivity"/>
         <import type="com.szxgm.gusustreet.ui.activity.attendance.MineApplyActivity" />
         <import type="com.szxgm.gusustreet.ui.activity.attendance.MineApprovalActivity" />
+        <import type="com.szxgm.gusustreet.ui.activity.attendance.MineReplaceApprovalActivity" />
 
     </data>
     <LinearLayout
@@ -90,6 +91,23 @@
                 <TextView
                     android:layout_weight="1"
                     android:text="我的审批"
+                    style="@style/tvNavigation" />
+                <ImageView
+                    android:src="@drawable/svg_right_arrow_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="@drawable/shape_bottom_line_padding4_bg"
+                android:padding="18dp"
+                android:startActivity="@{MineReplaceApprovalActivity.clz}"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1"
+                    android:text="被调班审批"
                     style="@style/tvNavigation" />
                 <ImageView
                     android:src="@drawable/svg_right_arrow_gray"

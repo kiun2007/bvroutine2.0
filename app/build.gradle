@@ -20,8 +20,8 @@ android {
         minSdkVersion 23
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 23
-        versionCode 150
-        versionName "V1.0.50"
+        versionCode 151
+        versionName "V1.0.51"
         multiDexEnabled = true
 
         ndk {

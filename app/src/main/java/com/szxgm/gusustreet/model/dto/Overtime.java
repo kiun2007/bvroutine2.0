@@ -1,5 +1,7 @@
 package com.szxgm.gusustreet.model.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import kiun.com.bvroutine.base.EventBean;
 import kiun.com.bvroutine.data.verify.NotNull;
 import kiun.com.bvroutine.data.verify.RangeLimit;
@@ -15,9 +17,11 @@ public class Overtime extends EventBean {
     private String jbDept;
 
     @Verify(value = NotNull.class, desc = "请选择")
+    @JSONField(format = "yyyy-MM-dd HH:mm")
     private Date jbBegin;
 
     @Verify(value = NotNull.class, desc = "请选择")
+    @JSONField(format = "yyyy-MM-dd HH:mm")
     private Date jbEnd;
 
     @Verifys({
@@ -26,9 +30,7 @@ public class Overtime extends EventBean {
     })
     private String jbTotal;
 
-    @Verifys({
-            @Verify(value = NotNull.class, desc = "请输入加班事由")
-    })
+    @Verify(value = NotNull.class, desc = "请输入加班事由")
     private String jbReason;
 
     private String jbAnnex;
@@ -139,5 +141,12 @@ public class Overtime extends EventBean {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public void clear(){
+        jbBegin = null;
+        jbEnd = null;
+        jbTotal = null;
+        onChanged();
     }
 }

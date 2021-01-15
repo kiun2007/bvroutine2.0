@@ -44,14 +44,26 @@
                 <com.szxgm.gusustreet.views.RowLinearLayout
                     app:title="异常记录"
                     app:required="true"
-                    app:bottomLine="false"
                     style="@style/rowInput">
                     <com.szxgm.gusustreet.views.GeneralItemText
                         style="@style/rowSelectText"
+                        android:layout_marginLeft="10dp"
                         android:val="@={apply.dkid}"
                         android:verifyField="@{`dkid`}"
                         app:activityClz="@{BadClockListActivity.clz}"
                         app:param="@{ListUtil.keyValues(`type`, apply.sbReason)}" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+
+                <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="打卡时间"
+                    app:required="true"
+                    app:bottomLine="false"
+                    style="@style/rowInput">
+                    <kiun.com.bvroutine.views.DatePickerLayout
+                        android:val="@={apply.sbBegin}"
+                        android:verifyField="@{`sbBegin`}"
+                        app:format="yyyy-MM-dd HH:mm"
+                        style="@style/rowSelectText" />
                 </com.szxgm.gusustreet.views.RowLinearLayout>
                 <Button
                     android:text="提交"

@@ -7,9 +7,10 @@
         <import type="kiun.com.bvroutine.utils.MCString" />
         <import type="com.szxgm.gusustreet.model.base.DictStatic" />
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
 
-        <variable name="mineApply" type="Boolean" />
         <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />
+        <variable name="mineApply" type="boolean" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,21 +30,36 @@
                 android:item="@{item}"
                 android:layout="@{item.layout}"
                 style="@style/barVertical"/>
+
+            <com.szxgm.gusustreet.views.RowLinearLayout
+                android:show="@{!TextUtils.isEmpty(item.annex)}"
+                app:title="图片附件"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:required="false"
+                app:bottomLine="false"
+                android:orientation="vertical"
+                style="@style/barVertical">
+                <ImageView
+                    android:url="@{item.annex}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.szxgm.gusustreet.views.RowLinearLayout>
             <LinearLayout
-                android:show="@{mineApply&amp;&amp;item.status == 1}"
+                android:show="@{mineApply&amp;&amp;item.showAction}"
                 android:padding="10dp"
                 android:orientation="horizontal"
                 style="@style/barVertical">
                 <Button
                     android:layout_weight="1"
                     android:layout_marginRight="5dp"
-                    android:text="通过"
+                    android:text="@{item.agreeTitle}"
                     android:onClick="onPass"
                     style="@style/bt_active" />
                 <Button
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:text="驳回"
+                    android:text="@{item.refuseTitle}"
                     android:onClick="onRefuse"
                     android:background="@drawable/shape_radius_red_bg"
                     style="@style/bt_active" />

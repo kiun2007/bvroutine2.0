@@ -133,7 +133,11 @@ public abstract class EventBean {
         }
     }
 
+    protected void beforeVerify(){
+    }
+
     public List<Problem> verify(){
+        beforeVerify();
         return VerifyUtil.verify(this);
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
+        <import type="android.view.View" />
+
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+        <variable name="isDetail" type="boolean" />
+    </data>
+    <LinearLayout
+        android:padding="16dp"
+        style="@style/barVertical"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
+        android:background="@{isDetail?null:@drawable/shape_bottom_line_padding4_bg}"
+        android:orientation="vertical">
+        <include
+            layout="@layout/layout_apply_replace"
+            android:id="@+id/viewStub"
+            android:item="@{item}"
+            style="@style/barVertical"/>
+
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="申请人:"
+            android:layout_marginTop="10dp"
+            app:html="@string/doubleDetailed"
+            android:argument="@{MCString.asArray(`申请人:`, item.tbmenbefore)}"
+            style="@style/tvNormal" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:text="@{@stringArray/titleOfApplyState[item.status]}"
+            android:textColor="@{@intArray/colorOfApplyState[item.status]}"
+            android:backgroundTint="@{@intArray/colorOfApplyState[item.status]}"
+            android:background="@drawable/shape_bg_label_round"
+            android:padding="5dp"
+            android:backgroundTintMode="multiply"
+            tools:backgroundTint="@color/grass"
+            tools:text="通过"
+            tools:textColor="@color/grass"
+            android:textSize="11sp"
+            style="@style/tvSubtitle" />
+
+    </LinearLayout>
+</layout>

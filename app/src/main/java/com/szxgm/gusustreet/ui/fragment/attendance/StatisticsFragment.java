@@ -244,7 +244,7 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
         addMissClock(6);
         addNeglect(7);
         addTimeTotal("请假", 8, leaveTimeTotal);
-        addTimeTotal("加班", 9, leaveTimeTotal);
+        addTimeTotal("加班", 9, overTimeTotal);
     }
 
     private boolean allGet() throws Exception{
@@ -252,10 +252,6 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
         RequestBindingPresenter p = getRequestPresenter();
         String startDate = MCString.formatDate("yyyy-MM-dd", monthStart);
         String startEnd = MCString.formatDate("yyyy-MM-dd", monthEnd);
-
-        WorkTimeReq timeReq = new WorkTimeReq();
-        timeReq.setPbStartDate(monthStart);
-        timeReq.setPbEndDate(monthEnd);
 
         ClockHistoryReq clockReq = new ClockHistoryReq();
         clockReq.setDkBegin(monthStart);
@@ -265,7 +261,7 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
         req.setBegin(startDate);
         req.setEnd(startEnd);
 
-        this.workTimes = p.callServiceData(AttendanceService.class,s->s.pbList(timeReq));
+        this.workTimes = p.callServiceData(AttendanceService.class,s->s.pbList(new WorkTimeReq(monthStart, monthEnd)));
         this.clocks = p.callServiceData(AttendanceService.class,s->s.clockHistory(clockReq));
         this.leaveTimeTotal = p.callServiceData(AttendanceService.class,s->s.qjTotalList(req));
         this.overTimeTotal = p.callServiceData(AttendanceService.class,s->s.jbTotalList(req));
