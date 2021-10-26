@@ -17,6 +17,7 @@ public class HttpException extends IOException {
     public HttpException(Response response){
         super();
         this.response = response;
+        code = response.code();
         codeMap.put(401, "授权无效!");
         codeMap.put(403, "请求被拒绝!");
         codeMap.put(404, "请求页面不存在!");
@@ -24,10 +25,17 @@ public class HttpException extends IOException {
         codeMap.put(500, "服务器发生未知错误!");
     }
 
+    public Response getResponse() {
+        return response;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
     @Nullable
     @Override
     public String getMessage() {
-
         return response.request().url().toString() + "\n"
                 + codeMap.get(response.code()) + ":" + response.message();
     }

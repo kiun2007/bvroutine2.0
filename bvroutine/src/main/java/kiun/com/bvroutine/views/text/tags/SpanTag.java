@@ -15,6 +15,11 @@ public class SpanTag extends TextTagBase{
     }
 
     @Override
+    protected String backgroundColor(Map<String, String> attributes) {
+        return attributes.get("background");
+    }
+
+    @Override
     protected String show(Map<String, String> attributes) {
         return attributes.get("visible");
     }

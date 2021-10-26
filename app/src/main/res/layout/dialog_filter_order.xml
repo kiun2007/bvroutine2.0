@@ -5,6 +5,9 @@
     <data>
         <import type="android.view.View" />
         <import type="com.szxgm.gusustreet.base.QueryType" />
+        <import type="com.szxgm.gusustreet.ui.activity.list.GridTreeEventTypeActivity" />
+
+        <variable name="listPresenter" type="com.szxgm.gusustreet.base.presenter.imp.GeneralListPresenter" />
         <variable name="data" type="com.szxgm.gusustreet.model.query.GeneralListQuery" />
         <variable name="dialog" type="android.content.DialogInterface"/>
     </data>
@@ -17,8 +20,32 @@
         <LinearLayout
             android:layout_weight="1"
             android:padding="10dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <TextView
+                android:text="工单类型:"
+                style="@style/tvNormal"/>
+            <com.szxgm.gusustreet.views.FlowRadioGroup
+                android:layout_marginTop="10dp"
+                android:show="@{`0`.equals(data.findValue(`index`))}"
+                app:valueArray="@array/orderActivityValues"
+                app:titleArray="@array/orderActivityTitles"
+                app:itemLayout="@layout/layout_radio_button_filter"
+                app:enableFlow="true"
+                android:val="@={data.find(`activity`)}"
+                style="@style/barVertical" />
+
+            <com.szxgm.gusustreet.views.FlowRadioGroup
+                android:layout_marginTop="10dp"
+                android:show="@{`1`.equals(data.findValue(`index`))}"
+                app:valueArray="@array/orderActivityCheckValues"
+                app:titleArray="@array/orderActivityCheckTitles"
+                app:itemLayout="@layout/layout_radio_button_filter"
+                app:enableFlow="true"
+                android:val="@={data.find(`activity`)}"
+                style="@style/barVertical" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -35,8 +62,7 @@
                         app:format="yyyy-MM-dd"
                         app:type="date"
                         app:returnType="formatDate"
-                        android:text="@{data.findValue(`startTime`)}"
-                        android:valChanged="@{(v)->data.put(`startTime`, QueryType.Eq, (String)v)}"
+                        android:val="@={data.create(`startTime`)}"
                         android:padding="8dp"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -54,8 +80,7 @@
                         app:type="date"
                         app:format="yyyy-MM-dd"
                         app:returnType="formatDate"
-                        android:text="@{data.findValue(`endTime`)}"
-                        android:valChanged="@{(v)->data.put(`endTime`, QueryType.Eq, (String)v)}"
+                        android:val="@={data.create(`endTime`)}"
                         android:padding="8dp"
                         android:hint="选择结束日期"
                         android:gravity="center"
@@ -63,6 +88,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:text="事件类型:"
+                    style="@style/tvNormal"/>
+                <kiun.com.bvroutine.views.text.GeneralItemText
+                    app:activityClz="@{GridTreeEventTypeActivity.clz}"
+                    android:layout_marginTop="10dp"
+                    android:hint="请选择事件类型"
+                    android:gravity="left"
+                    app:listener="@{(view, id, title, extra)-> data.put(`orderType`, id).put(`typeName`, title)}"
+                    android:text="@{data.create(`typeName`)}"
+                    style="@style/rowEditText" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -71,12 +108,12 @@
             android:orientation="horizontal">
             <Button
                 style="@style/bt_pad"
-                android:onClick="@{()->dialog.cancel()}"
+                android:onClick="@{()->data.clearFilter()&amp;dialog.cancel()&amp;listPresenter.refresh()}"
                 android:background="@color/white"
                 android:layout_width="0dp"
                 android:textColor="#666"
                 android:layout_weight="1"
-                android:text="清除" />
+                android:text="重置" />
             <Button
                 style="@style/bt_pad"
                 android:onClick="@{()->dialog.dismiss()}"

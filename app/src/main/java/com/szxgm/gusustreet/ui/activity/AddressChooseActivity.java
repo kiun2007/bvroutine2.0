@@ -77,17 +77,19 @@ public class AddressChooseActivity extends AMapActivity<ActivityAddressChooseBin
     @Override
     public void mapInit(Location location) {
 
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        searchPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
+        if (listViewPresenter == null){
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            searchPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
 
-        listViewPresenter = new RecyclerListPresenter(binding.mainList, binding.mainRefresh);
-        listViewPresenter.initRequest(new PagerBean(), this);
-        listViewPresenter.start(handler, R.layout.item_poi_item, BR.item, getRequestPresenter());
+            listViewPresenter = new RecyclerListPresenter(binding.mainList, binding.mainRefresh);
+            listViewPresenter.initRequest(new PagerBean(), this);
+            listViewPresenter.start(handler, R.layout.item_poi_item, BR.item, getRequestPresenter());
 
-        moveCamera(latLng);
-        centerMarker = addMarker(latLng, BitmapDescriptorFactory.HUE_RED, "搜索附近");
+            moveCamera(latLng);
+            centerMarker = addMarker(latLng, BitmapDescriptorFactory.HUE_RED, "搜索附近");
 
-        amap.setOnCameraChangeListener(this);
+            amap.setOnCameraChangeListener(this);
+        }
     }
 
     ListHandler<PoiChooseItem> handler = new ListHandler<PoiChooseItem>(BR.handler,R.layout.list_error_normal){

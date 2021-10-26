@@ -36,8 +36,7 @@ public class FlowRadioGroupBindConvert extends BindConvert<FlowRadioGroup, Strin
         Object selectedTag = group.findViewById(checkedId).getTag();
 
         if (selectedTag instanceof String){
-            nowValue = (String) selectedTag;
-            onChanged();
+            onChanged((String) selectedTag);
         }
     }
 }

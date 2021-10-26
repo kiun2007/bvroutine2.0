@@ -10,7 +10,9 @@ public class ViewStubBinding {
     @BindingAdapter("android:layout")
     public static void setLayout(ViewStub viewStub, int layoutId){
 
-        viewStub.setLayoutResource(layoutId);
-        viewStub.setVisibility(View.VISIBLE);
+        if (layoutId > 0){
+            viewStub.setLayoutResource(layoutId);
+            viewStub.setVisibility(View.VISIBLE);
+        }
     }
 }

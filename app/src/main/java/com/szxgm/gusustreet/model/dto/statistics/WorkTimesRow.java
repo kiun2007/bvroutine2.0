@@ -5,9 +5,24 @@ public class WorkTimesRow {
     private String name;
     private String times;
 
+    private Object extra;
+
     public WorkTimesRow(String name, String times) {
         this.name = name;
         this.times = times;
+    }
+
+    public WorkTimesRow(String name, String times, Object extra) {
+        this(name, times);
+        this.extra = extra;
+    }
+
+    public Object getExtra() {
+        return extra;
+    }
+
+    public void setExtra(Object extra) {
+        this.extra = extra;
     }
 
     public String getName() {

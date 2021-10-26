@@ -5,7 +5,7 @@
     <data>
         <import type="android.graphics.drawable.Drawable" />
         <import type="kiun.com.bvroutine.utils.MCString" />
-        <import type="com.szxgm.gusustreet.model.base.DictStatic"/>
+
         <variable name="item" type="com.szxgm.gusustreet.model.vo.SentinelSurveillance" />
         <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
     </data>

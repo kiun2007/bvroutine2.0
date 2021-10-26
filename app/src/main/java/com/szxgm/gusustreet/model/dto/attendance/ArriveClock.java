@@ -1,9 +1,5 @@
 package com.szxgm.gusustreet.model.dto.attendance;
 
-import android.text.TextUtils;
-
-import com.szxgm.gusustreet.model.base.LastLocation;
-
 import java.util.Date;
 
 /**

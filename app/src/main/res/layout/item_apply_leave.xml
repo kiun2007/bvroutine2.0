@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="kiun.com.bvroutine.utils.MCString" />
-        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
         <import type="android.view.View" />
 
         <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />

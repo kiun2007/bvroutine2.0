@@ -39,7 +39,18 @@ public class ErrorMessageCatcher implements ExceptionCatcher {
         }else if (ex instanceof NullPointerException){
             messageCaller.call("空指针");
         }else{
-            messageCaller.call(ex.getMessage());
+
+            StringBuilder builder = new StringBuilder();
+
+            if (ex.getMessage() != null){
+                builder.append(ex.getMessage());
+            }
+
+            for (StackTraceElement element : ex.getStackTrace()) {
+                builder.append(element.getClassName()).append("(").append(element.getLineNumber()).append(")").append(".").append(element.getMethodName()).append('\n');
+            }
+
+            messageCaller.call(builder.toString());
         }
 
         if (completeCaller != null){

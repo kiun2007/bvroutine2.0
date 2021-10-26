@@ -1,5 +1,6 @@
 package kiun.com.bvroutine.views.adapter;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +109,7 @@ public class RecyclerSimpleAdapter extends BaseRecyclerAdapter<Object, ListViewP
 
                 if(listViewPresenter != null && position >= listData.size() - 2){
                     if (footerView == null){
-                        listViewPresenter.loadMore();
+                        new Handler().post(()->listViewPresenter.loadMore());
                     }
                 }
             }

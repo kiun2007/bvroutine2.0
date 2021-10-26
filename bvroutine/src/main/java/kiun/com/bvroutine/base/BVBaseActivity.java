@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,13 +30,15 @@ import kiun.com.bvroutine.base.binding.variable.VariableBinding;
 import kiun.com.bvroutine.base.jexl.ProxyEnable;
 import kiun.com.bvroutine.base.jexl.ProxyHandler;
 import kiun.com.bvroutine.data.BaseBean;
+import kiun.com.bvroutine.data.TypeSetter;
+import kiun.com.bvroutine.interfaces.StateTransfer;
 import kiun.com.bvroutine.interfaces.callers.CallBack;
-import kiun.com.bvroutine.interfaces.callers.GetThrowCaller;
 import kiun.com.bvroutine.interfaces.callers.IntentSetCaller;
 import kiun.com.bvroutine.interfaces.callers.PutVoidCaller;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
 import kiun.com.bvroutine.interfaces.view.BindingView;
 import kiun.com.bvroutine.utils.ListUtil;
+import kiun.com.bvroutine.utils.ObjectUtil;
 import kiun.com.bvroutine.utils.PermissionUtil;
 import kiun.com.bvroutine.utils.StatusBarUtils;
 import kiun.com.bvroutine.utils.ViewBindingUtil;
@@ -43,8 +47,14 @@ import kiun.com.bvroutine.views.viewmodel.ActionBarItem;
 
 public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompatActivity implements BindingView {
 
+    /**
+     * 事件响应接口
+     */
     interface EventPutCall extends PutVoidCaller<Integer, Object>{}
 
+    /**
+     * 导航条对象
+     */
     private NavigatorBar barView;
     private int requestIdBase = 50;
     private PermissionUtil permissionUtil;
@@ -57,6 +67,14 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     private Map<Fragment, EventPutCall> fragmentSetCallerMap = new HashMap<>();
 
     private List<VariableBinding> variableBindingList = new LinkedList<>();
+
+    //原返回值
+    private Intent resultIntent = null;
+
+    //原返回Code
+    private int resultCode = Activity.RESULT_CANCELED;
+
+    private StateTransfer transfer;
 
     public boolean isWithActionBar(){
         return false;
@@ -99,6 +117,28 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
         initView();
     }
 
+    /**
+     * 传递参数给上一个页面,为了安全起见请使用此方法替代 {@link Activity#setResult(int, Intent)}
+     * @param code 动作值
+     * @param intent 参数Intent
+     */
+    public final void setResultAction(int code, Intent intent){
+        resultCode = code;
+        resultIntent = intent;
+
+        if (transfer == null){
+            setResult(code, intent);
+        }
+    }
+
+    /**
+     * 传递参数给上一个页面,为了安全起见请使用此方法替代 {@link Activity#setResult(int)}
+     * @param code 动作值
+     */
+    public final void setResultAction(int code){
+        setResultAction(code, null);
+    }
+
     public View getRootView(){
         return binding.getRoot();
     }
@@ -139,6 +179,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        this.transfer = ObjectUtil.getFirstAnnotation(getClass(), StateTransfer.class);
         onCreateBefore();
         super.onCreate(savedInstanceState);
         create();
@@ -158,6 +199,9 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (transfer != null){
+            transferToIntent(getIntent(), data);
+        }
         SetCaller caller = resultCallers.remove(requestCode);
         if (caller != null && resultCode == Activity.RESULT_OK){
             caller.call(data);
@@ -223,6 +267,12 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     }
 
     @Override
+    public void startActivity(Intent intent, @Nullable Bundle options) {
+        putIntent(intent);
+        super.startActivity(intent, options);
+    }
+
+    @Override
     public Context getContext() {
         return this;
     }
@@ -261,7 +311,85 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     }
 
     @Override
+    public void startActivity(Intent intent) {
+        putIntent(intent);
+        super.startActivity(intent);
+    }
+
+    private void transferToIntent(Intent intent, Intent inIntent){
+        transferToIntent(intent, inIntent, false);
+    }
+
+    private void transferToIntent(Intent intent, Intent inIntent, boolean isOver){
+
+        if (inIntent == null || inIntent.getExtras() == null || intent == null){
+            return;
+        }
+
+        Bundle bundle = new Bundle();
+        for (String key : transfer.value()){
+            Object value = inIntent.getExtras().get(key);
+
+            if (intent.getExtras() != null && intent.getExtras().get(key) != null && !isOver){
+                continue;
+            }
+
+            if (value instanceof Serializable){
+                intent.putExtra(key, (Serializable)value);
+            }else if (value instanceof Parcelable){
+                intent.putExtra(key, (Parcelable)value);
+            }else if (value != null){
+                new TypeSetter().addPutter(String.class, bundle::putString)
+                        .addPutter(Integer.class, bundle::putInt)
+                        .addPutter(Long.class, bundle::putLong)
+                        .addPutter(Float.class, bundle::putFloat)
+                        .addPutter(Double.class, bundle::putDouble)
+                        .execute(key, value);
+            }
+        }
+
+        intent.putExtras(bundle);
+    }
+
+    private void putIntent(Intent intent){
+        if(transfer != null){
+            boolean isBreak = !ListUtil.filter(Arrays.asList(transfer.breakAction()),
+                    item-> item.equals(intent.getAction())).isEmpty();
+
+            if (!isBreak){
+                transferToIntent(intent, getIntent());
+            }
+        }
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
+        putIntent(intent);
+        super.startActivityForResult(intent, requestCode, options);
+    }
+
+    protected void restart(){
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void finish() {
+        if (transfer != null){
+            if (resultIntent == null){
+                resultIntent = new Intent();
+            }
+            transferToIntent(resultIntent, getIntent());
+            setResult(resultCode, resultIntent);
+        }
+        super.finish();
     }
 }

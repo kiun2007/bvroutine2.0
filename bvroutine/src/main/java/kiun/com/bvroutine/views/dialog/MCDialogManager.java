@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.databinding.ViewDataBinding;
 
@@ -15,12 +16,13 @@ import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.EventBean;
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
+import kiun.com.bvroutine.interfaces.view.MessageView;
 import kiun.com.bvroutine.utils.ViewBindingUtil;
 
 /**
  * Created by kiun_2007 on 2018/8/12.
  */
-public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T> implements DialogInterface {
+public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T> implements DialogInterface, MessageView {
 
     private Context context;
     private Dialog alertDialog;
@@ -171,5 +173,10 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
 
     public static<MC,MVB extends ViewDataBinding> MCDialogManager<MC,MVB> create(Context context, int resId, Object data) {
         return (MCDialogManager<MC, MVB>) create(context, resId, data, BR.data, BR.dialog);
+    }
+
+    @Override
+    public void errorMsg(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }

@@ -38,7 +38,7 @@ public class StepTreePresenter extends RecyclerListPresenter<TreeNode, TreeNode,
 
     @Override
     public void reload() {
-        loadAdapter.clear();
+        loadAdapter.clearData();
         refreshing();
         presenter.addRequest(()->mRequestView.requestPager(presenter, null),
                             v -> onDataComplete(v, null, null));

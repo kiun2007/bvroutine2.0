@@ -37,7 +37,7 @@ public class ClockTimeTree implements GeneralItem {
     }
 
     public String getTitle() {
-        return title;
+        return "日期:" + pId;
     }
 
     public void setTitle(String title) {

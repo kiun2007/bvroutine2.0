@@ -9,8 +9,10 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.Headers;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -36,6 +38,10 @@ public class GlideUtil {
     }
 
     public static void into(View view, String src, String thumb, boolean isBackground, boolean isNoHead){
+        into(view, src, thumb, isBackground, isNoHead, false);
+    }
+
+    public static void into(View view, String src, String thumb, boolean isBackground, boolean isNoHead, boolean noCache){
 
         if (!src.contains("http://") && !src.contains("https://")){
             src = ServiceGenerator.getBasePrefix() + (src.startsWith("/") ? "" : emptyPrefix) + src;
@@ -44,16 +50,13 @@ public class GlideUtil {
 
         RequestBuilder<Drawable> builder;
         if (!isNoHead){
-            GlideUrl cookie = new GlideUrl(src, new Headers() {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> header = new HashMap<>();
+            GlideUrl cookie = new GlideUrl(src, () -> {
+                Map<String, String> header = new HashMap<>();
 
-                    if (ServiceGenerator.getLogin() != null){
-                        return ServiceGenerator.getLogin().getHeader();
-                    }
-                    return header;
+                if (ServiceGenerator.getLogin() != null){
+                    return ServiceGenerator.getLogin().getHeader();
                 }
+                return header;
             });
             builder = Glide.with(view.getContext()).load(cookie);
         }else{
@@ -70,18 +73,9 @@ public class GlideUtil {
             builder.thumbnail(thumbnailBuilder);
         }
 
-//        builder.listener(new RequestListener<Object, GlideDrawable>() {
-//            @Override
-//            public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//
-//                return true;
-//            }
-//        });
+        if (noCache){
+            builder.apply(RequestOptions.skipMemoryCacheOf(true).diskCacheStrategy(DiskCacheStrategy.NONE));
+        }
 
         if (isBackground){
             builder.into(new SimpleTarget<Drawable>() {

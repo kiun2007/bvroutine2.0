@@ -5,7 +5,6 @@ import org.junit.Test;
 import kiun.com.bvroutine.data.verify.NotNull;
 import kiun.com.bvroutine.interfaces.verify.Verify;
 import kiun.com.bvroutine.interfaces.verify.Verifys;
-import kiun.com.bvroutine.utils.ClassUtil;
 import kiun.com.bvroutine.utils.ObjectUtil;
 
 /**

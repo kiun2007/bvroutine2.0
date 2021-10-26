@@ -1,5 +1,7 @@
 package com.szxgm.gusustreet.net.requests;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class ClockHistoryReq {

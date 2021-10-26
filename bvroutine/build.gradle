@@ -12,7 +12,7 @@ def getVersionCode() {
         println('Current version code is ' + versionCode.toString())
         return versionCode
     } else {
-        throw new GradleException("Could not find version.properties!")
+        throw new Exception("Could not find version.properties!")
     }
 }
 
@@ -33,7 +33,7 @@ def getVersionName() {
         def versionName = String.format('%d.%d.%d', (versionCode / 10000).toInteger(), (versionCode % 10000 / 1000).toInteger(), versionCode % 1000)
         return versionName
     } else {
-        throw new GradleException("Could not find version.properties!")
+        throw new Exception("Could not find version.properties!")
     }
 }
 
@@ -51,7 +51,7 @@ def updateVersionCode() {
         versionProps.store(versionFile.newWriter(), null)
         println('Updated version code to ' + currentVersionCode.toString())
     } else {
-        throw new GradleException("Could not find version.properties!")
+        throw new Exception("Could not find version.properties!")
     }
 }
 
@@ -86,34 +86,36 @@ android {
         targetCompatibility = '1.8'
     }
 
-    sourceSets{
-        main {
-            jniLibs.srcDir(['jni'])
-            java {
-                srcDirs = ["src/main/java"];
-            }
-        }
-    }
+//    sourceSets{
+//        main {
+//            jniLibs.srcDir(['jni'])
+//            java {
+//                srcDirs = ["src/main/java"];
+//            }
+//        }
+//    }
 }
 
 dependencies {
 
     api fileTree(dir: 'libs', include: ['*.aar'])
 
-    implementation 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    api 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
+    api 'androidx.appcompat:appcompat:1.1.0'
+    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    api 'androidx.recyclerview:recyclerview:1.1.0'
+    api 'androidx.constraintlayout:constraintlayout:1.1.3'
+    api 'com.google.android.material:material:1.2.1'
 
-    implementation "org.apache.commons:commons-jexl:2.1.1"
-    implementation "com.alibaba:fastjson:1.2.31"
-    implementation ("com.squareup.okhttp3:okhttp:3.14.9")
-    implementation "com.squareup.okhttp3:logging-interceptor:3.4.1"
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    implementation 'com.tencent.tbs.tbssdk:sdk:43939'
-    implementation 'com.google.android.material:material:1.2.1'
+    api "org.apache.commons:commons-jexl:2.1.1"
+    api "com.alibaba:fastjson:1.2.31"
+    api ("com.squareup.okhttp3:okhttp:3.14.9")
+    api "com.squareup.okhttp3:logging-interceptor:3.4.1"
+    api "com.kiun.retrofit:retrofit:2.10.2"
+    api 'com.github.bumptech.glide:glide:4.8.0'
+
+//    implementation file('libs/tbs_sdk_thirdapp_v3.2.0.1104_43200.jar')
+    api 'com.tencent.tbs.tbssdk:sdk:43939'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -126,7 +128,9 @@ dependencies {
                 groupId 'com.kiun.bvroutine' //You can either define these here or get them from project conf elsewhere
                 artifactId 'bvroutine'
                 version getVersionName()
-                artifact "$buildDir/outputs/aar/bvroutine-release.aar" //aar artifact you want to publish //generate pom nodes for
+                artifact "$buildDir/outputs/aar/bvroutine-debug.aar"
+
+                println("$rootDir")
 
                 dependencies pom.withXml {
                     def dependenciesNode = asNode().appendNode('dependencies')
@@ -145,7 +149,8 @@ dependencies {
         //publish to filesystem repo
         repositories{
             maven {
-                url "$buildDir/repo"
+//                url "$buildDir/repo"
+                url "$rootDir/repo"
             }
         }
     }

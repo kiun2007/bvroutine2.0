@@ -16,6 +16,9 @@ import com.szxgm.gusustreet.databinding.FragmentAddressBinding;
 import com.szxgm.gusustreet.model.dto.IMList;
 import com.szxgm.gusustreet.model.dto.user.User;
 import com.szxgm.gusustreet.model.query.GeneralListQuery;
+
+import java.util.List;
+
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.utils.SharedUtil;
@@ -84,5 +87,9 @@ public class IMListActivity extends RequestBVActivity<FragmentAddressBinding> im
                         .setPositiveButton("取消", null).show();
             }
         };
+    }
+
+    @Override
+    public void onDataComplete(List list) {
     }
 }

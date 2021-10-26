@@ -3,6 +3,9 @@ package com.szxgm.gusustreet.model.query;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.ObservableField;
+
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -15,6 +18,8 @@ import java.util.Map;
 
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.interfaces.TypeRequest;
+import kiun.com.bvroutine.interfaces.callers.GetCaller;
+import kiun.com.bvroutine.interfaces.callers.SetCaller;
 import kiun.com.bvroutine.utils.ListUtil;
 
 public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implements Parcelable, TypeRequest {
@@ -22,6 +27,8 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
     private String field;
 
     private String table;
+
+    private GetCaller<String, Boolean> putCaller;
 
     private List<Query> search = new LinkedList<>();
 
@@ -56,13 +63,31 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
         in.readTypedList(search, Query.CREATOR);
     }
 
+    public GeneralListQuery putEvent(GetCaller<String, Boolean> caller){
+        putCaller = caller;
+        return this;
+    }
+
     public Query find(String field){
+        return find(field, QueryType.Eq);
+    }
+
+    public Query find(String field, QueryType queryType){
         for (Query query : search){
-            if (query.field.equals(field)){
+            if (query.field.equals(field) && query.type == queryType){
                 return query;
             }
         }
         return null;
+    }
+
+    public Query create(String field){
+        Query query = find(field);
+        if (query == null){
+            query = new Query(field, QueryType.Eq, null);
+            search.add(query);
+        }
+        return query;
     }
 
     public String findValue(String field){
@@ -80,7 +105,7 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
 
         if (filterNames != null){
             for (String fieldName : filterNames){
-                if (find(fieldName) != null){
+                if (find(fieldName) != null && find(fieldName).value != null){
                     return false;
                 }
             }
@@ -122,12 +147,21 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
         return this;
     }
 
-    public GeneralListQuery put(String field, QueryType type, String value){
-
-        return put(field, type, value, false);
+    public GeneralListQuery put(String field, String value){
+        return put(field, QueryType.Eq, value);
     }
 
-    public GeneralListQuery put(String field, QueryType type, String value, boolean isRemove){
+    public GeneralListQuery put(String field, QueryType type, String value) {
+
+        try {
+            return put(field, type, value, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public GeneralListQuery put(String field, QueryType type, String value, boolean isRemove) throws Exception{
 
         if (type != QueryType.In){
             clear(field);
@@ -172,6 +206,11 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
                 }
             }else{
                 search.add(new Query(field, type, value));
+                if (putCaller != null){
+                    if (!putCaller.call(field)){
+                        throw new Exception("拒绝操作");
+                    }
+                }
             }
         }
         return this;
@@ -219,7 +258,9 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
         simpleMap.put("pageSize", String.valueOf(getPageSize()));
 
         for(Query query : search){
-            simpleMap.put(query.field, query.value);
+            if (query.value != null){
+                simpleMap.put(query.field, query.value);
+            }
         }
 
         return simpleMap;
@@ -285,7 +326,7 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
         return itemClz;
     }
 
-    public static class Query implements Parcelable{
+    public static class Query extends ObservableField<String> implements Parcelable{
 
         private String field;
 
@@ -378,6 +419,18 @@ public class GeneralListQuery extends PagerBean<Object, GeneralListQuery> implem
 
         public void setMax(long max) {
             this.max = max;
+        }
+
+        @Override
+        public void set(String value) {
+            this.value = value;
+            super.set(value);
+        }
+
+        @Nullable
+        @Override
+        public String get() {
+            return value;
         }
     }
 }

@@ -23,6 +23,8 @@ public class MediaBrowsingActivity extends RequestBVActivity<ActivityMediaBrowsi
 
     String url;
 
+    boolean isThumb;
+
     public static final Class clz = MediaBrowsingActivity.class;
 
     MediaPlayer mediaPlayer;
@@ -35,6 +37,7 @@ public class MediaBrowsingActivity extends RequestBVActivity<ActivityMediaBrowsi
     @Override
     public void initView() {
         binding.setUrl(url);
+        binding.setIsThumb(isThumb);
         MediaType type = MediaUtil.mediaType(this, url);
         binding.setType(type.type());
         binding.setReady(false);

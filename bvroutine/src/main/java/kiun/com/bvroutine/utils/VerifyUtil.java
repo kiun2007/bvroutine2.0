@@ -68,7 +68,7 @@ public class VerifyUtil {
 
             List<Verify> parentVerify = parentVerifyMap.get(field.getDeclaringClass());
 
-            //如果字段类存在验证添加到字段验证, 但要排除重复.
+            //替换类中定义
             if (parentVerify != null){
                 for (Verify itemVerify : parentVerify){
                     boolean isEmpty = ListUtil.filter(verifyList, item -> item.value().equals(itemVerify.value())).isEmpty();

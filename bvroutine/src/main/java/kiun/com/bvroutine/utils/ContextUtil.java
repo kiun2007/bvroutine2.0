@@ -12,4 +12,12 @@ public class ContextUtil {
         }
         return null;
     }
+
+    public static boolean getBoolean(Context context, String name){
+        if (context instanceof Activity){
+            Activity activity = (Activity) context;
+            return activity.getIntent().getBooleanExtra(name, false);
+        }
+        return false;
+    }
 }

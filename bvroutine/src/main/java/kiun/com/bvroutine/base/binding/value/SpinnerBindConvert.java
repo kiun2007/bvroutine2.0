@@ -31,7 +31,7 @@ public class SpinnerBindConvert<T> extends BindConvert<Spinner, SpinnerData, T> 
     @Override
     public void setValue(SpinnerData value) {
 
-        if (value == null){
+        if (value == null || value.allItems() == null){
             return;
         }
 

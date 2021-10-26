@@ -15,7 +15,7 @@ import kiun.com.bvroutine.base.binding.value.EditTextBindConvert;
 import kiun.com.bvroutine.base.binding.value.ImageViewBindConvert;
 import kiun.com.bvroutine.base.binding.value.SpinnerBindConvert;
 import kiun.com.bvroutine.base.binding.value.TextViewBindConvert;
-import kiun.com.bvroutine.utils.ClassUtil;
+import kiun.com.bvroutine.utils.type.ClassUtil;
 import kiun.com.bvroutine.utils.ObjectUtil;
 
 public class BindConvertBridge {

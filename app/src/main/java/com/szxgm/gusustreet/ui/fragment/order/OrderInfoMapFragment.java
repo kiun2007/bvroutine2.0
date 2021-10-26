@@ -50,6 +50,7 @@ public class OrderInfoMapFragment extends RequestBVFragment<FragmentOrderInfoMap
 
     @Override
     protected void onEvent(Integer tag, Object value) {
+
         if (value instanceof OrderInfoDetailed){
             OrderInfoDetailed orderInfoDetailed = (OrderInfoDetailed) value;
 

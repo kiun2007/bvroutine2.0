@@ -48,12 +48,12 @@ public class OrderInfoReq implements Parcelable {
         taskDefKey = TaskDisposalType.unionDisposal.toString();
     }
 
-    public OrderInfoReq(OrderTask orderTask) {
-        this.taskId = orderTask.getTaskId();
-        this.taskDefKey = orderTask.getTaskDefKey();
-        this.procInsId = orderTask.getProcInsId();
-        this.status = orderTask.getStatus().toString();
-        this.businessId = orderTask.getVars().getMap().getOrderId();
+    public OrderInfoReq(String orderId, String taskId, String taskDefKey, String procInsId, String status) {
+        this.businessId = orderId;
+        this.taskId = taskId;
+        this.taskDefKey = taskDefKey;
+        this.procInsId = procInsId;
+        this.status = status;
     }
 
     protected OrderInfoReq(Parcel in) {

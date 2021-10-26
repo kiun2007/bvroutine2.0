@@ -38,7 +38,9 @@ public class GridTreeEventTypeActivity extends RequestBVActivity<ActivityTreeEve
         @Override
         public void onClick(Context context, int tag, EventType data) {
             if (tag == 3){
-                setResult(RESULT_OK, new Intent().putExtra(GeneralItemText.ID, data.getTypeId()).putExtra(GeneralItemText.TITLE, data.getTypeName()));
+                setResult(RESULT_OK,
+                        new Intent().putExtra(GeneralItemText.ID, data.getTypeId())
+                                .putExtra(GeneralItemText.TITLE, data.getTypeName()));
                 finish();
             }
         }

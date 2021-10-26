@@ -85,7 +85,6 @@ public abstract class RequestBVActivity<T extends ViewDataBinding> extends BVBas
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         getRequestPresenter();
         super.onCreate(savedInstanceState, persistentState);
-
     }
 
     @Override
@@ -98,8 +97,7 @@ public abstract class RequestBVActivity<T extends ViewDataBinding> extends BVBas
     public <T> T createService(Class<T> serviceClass) {
         return ServiceGenerator.createService(serviceClass);
     }
-
-
+    
     @Override
     public RequestBindingPresenter getRequestPresenter() {
         if(rbp == null){

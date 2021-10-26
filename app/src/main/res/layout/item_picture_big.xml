@@ -12,8 +12,8 @@
         android:background="@drawable/shape_bg_rectangle_edging"
         android:orientation="vertical">
         <ImageView
-            android:onClick="@{()->MediaBrowsingActivityHandler.openActivityNormal(context,item)}"
-            android:val="@{item}"
+            android:onClick="@{()->MediaBrowsingActivityHandler.openActivityNormal(context, item, false)}"
+            android:url="@{item}"
             android:scaleType="fitCenter"
             style="@style/fill_base" />
     </LinearLayout>

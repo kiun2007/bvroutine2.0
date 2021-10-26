@@ -36,7 +36,7 @@ public class UploadImageView extends ImageView implements TypedView, UploadView,
 
     private InverseBindingListener listener;
 
-    OnClickUploadPresenter<String> uploadPresenter = new OnClickUploadPresenter<>(1);
+    OnClickUploadPresenter<String> uploadPresenter;
 
     public UploadImageView(Context context) {
         super(context);
@@ -60,6 +60,7 @@ public class UploadImageView extends ImageView implements TypedView, UploadView,
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void initView() {
+        uploadPresenter = new OnClickUploadPresenter<>(1, getContext());
         uploadPresenter.init(activity, listener);
         this.setOnClickListener(uploadPresenter);
     }

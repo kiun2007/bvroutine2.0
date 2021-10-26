@@ -34,6 +34,9 @@ public class ShortListView extends LinearLayout implements TypedView, ValListene
     @AttrBind
     int emptyLayout = -1;
 
+    @AttrBind
+    boolean isFlow = true;
+
     View emptyView = null;
 
     List<ViewDataBinding> bindings = new LinkedList<>();
@@ -65,12 +68,20 @@ public class ShortListView extends LinearLayout implements TypedView, ValListene
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        delegate.layout(changed, l, t, r, b);
+        if (isFlow){
+            delegate.layout(changed, l, t, r, b);
+        }else{
+            super.onLayout(changed, l, t, r, b);
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        delegate.measure(widthMeasureSpec, heightMeasureSpec);
+        if (isFlow){
+            delegate.measure(widthMeasureSpec, heightMeasureSpec);
+        }else{
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
     @Override

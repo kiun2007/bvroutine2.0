@@ -1,6 +1,7 @@
 package kiun.com.bvroutine.presenters;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -95,6 +96,7 @@ public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends L
     }
 
     protected void refreshing(){
+
         if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(true);
         }
@@ -102,6 +104,7 @@ public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends L
 
     @Override
     public void reload() {
+
         loadAdapter.clear();
         if(rootRequest instanceof PagerBean) {
             ((PagerBean) rootRequest).setPageNum(1);
@@ -119,6 +122,14 @@ public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends L
     @Override
     public void notifySet() {
         loadAdapter.notifySet();
+    }
+
+    @Override
+    public int count() {
+        if(rootRequest instanceof PagerBean) {
+            return  ((PagerBean) rootRequest).getTotal();
+        }
+        return list().size();
     }
 
     @Override

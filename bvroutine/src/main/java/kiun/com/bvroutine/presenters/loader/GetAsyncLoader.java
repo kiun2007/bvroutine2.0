@@ -49,10 +49,8 @@ public class GetAsyncLoader extends AsyncTaskLoader<Object> {
 
     @Override
     public void deliverResult(Object apps) {
-        if (isReset()) {
-            if (apps != null) {
-                onReleaseResources(apps);
-            }
+        if (isReset() && apps != null) {
+            onReleaseResources(apps);
         }
         Object oldApps = mApps;
         mApps = apps;

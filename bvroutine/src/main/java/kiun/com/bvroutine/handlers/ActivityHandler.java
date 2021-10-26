@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import kiun.com.bvroutine.BR;
 import kiun.com.bvroutine.base.BVBaseActivity;
 import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.data.BaseBean;
@@ -45,6 +46,13 @@ public class ActivityHandler<B extends Parcelable> extends ListHandler<B>{
         context.startActivity(intent);
     }
 
+    public void onClick(Context context, int tag, String key, Serializable data) {
+
+        Intent intent = new Intent(context, activityClz);
+        intent.putExtra(key, data);
+        context.startActivity(intent);
+    }
+
     public void resultClick(Context context, int index, String key, B data){
         if (context instanceof BVBaseActivity && index >= 0 && index < keyValues.size()){
             Intent intent = new Intent(context, keyValues.get(index).key());
@@ -63,5 +71,11 @@ public class ActivityHandler<B extends Parcelable> extends ListHandler<B>{
             }
             ((BVBaseActivity) context).startForResult(intent, keyValues.get(index).value());
         }
+    }
+
+    public static ActivityHandler create(Class<? extends Activity> clz, int errorLayoutId){
+        
+        ActivityHandler activityHandler = new ActivityHandler(BR.handler, errorLayoutId, clz);
+        return activityHandler;
     }
 }

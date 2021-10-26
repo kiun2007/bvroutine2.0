@@ -6,7 +6,7 @@
     <data>
         <import type="android.graphics.drawable.Drawable" />
         <import type="kiun.com.bvroutine.utils.MCString" />
-        <import type="com.szxgm.gusustreet.model.base.DictStatic"/>
+
         <import type="com.szxgm.gusustreet.model.base.TaskStatus" />
 
         <variable name="item" type="com.szxgm.gusustreet.model.dto.mobile.CombinedTask" />

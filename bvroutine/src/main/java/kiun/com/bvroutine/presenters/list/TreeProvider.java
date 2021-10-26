@@ -11,7 +11,7 @@ import kiun.com.bvroutine.interfaces.view.IndentTreeStepView;
 import kiun.com.bvroutine.interfaces.view.TreeStepView;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
 
-public abstract class TreeProvider implements IndentTreeStepView {
+public abstract class TreeProvider implements IndentTreeStepView, Refresher {
 
     protected RequestBVActivity context;
     protected ListHandler handler;
@@ -24,6 +24,10 @@ public abstract class TreeProvider implements IndentTreeStepView {
     public TreeProvider(RequestBVActivity context, ListHandler handler) {
         this.context = context;
         this.handler = handler;
+
+        if (handler != null){
+            handler.setTag(this);
+        }
     }
 
     public void setPresenter(StepTreePresenter presenter) {
@@ -36,6 +40,13 @@ public abstract class TreeProvider implements IndentTreeStepView {
             handler = new ListHandler(BR.handler, 0);
         }
         return handler;
+    }
+
+    @Override
+    public void refresh() {
+        if (presenter != null){
+            presenter.reload();
+        }
     }
 
     @Override

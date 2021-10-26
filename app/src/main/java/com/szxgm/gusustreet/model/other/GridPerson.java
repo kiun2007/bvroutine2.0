@@ -1,11 +1,13 @@
 package com.szxgm.gusustreet.model.other;
 
+import java.io.Serializable;
+
 import kiun.com.bvroutine.base.EventBean;
 
 /**
  * 网格人员
  */
-public class GridPerson extends EventBean {
+public class GridPerson extends EventBean implements Serializable {
 
     private String id;
     private String wgbm;

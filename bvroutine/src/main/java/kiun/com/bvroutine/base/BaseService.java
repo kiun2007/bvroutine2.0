@@ -9,7 +9,6 @@ import java.util.Map;
 
 public abstract class BaseService extends Service{
 
-
     private Map<String, ScheduledMethod> scheduledMethodMap;
 
     public BaseService(){

@@ -34,17 +34,22 @@ public class HtmlTextView extends AppCompatTextView implements TypedView {
 
     private Object[] args = null;
 
+    private HtmlTextImageGetter htmlTextImageGetter;
+
     public HtmlTextView(Context context) {
         super(context);
+        htmlTextImageGetter = new HtmlTextImageGetter(context, 16, 20);
     }
 
     public HtmlTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        htmlTextImageGetter = new HtmlTextImageGetter(context, 16, 20);
         ViewUtil.initTyped(this, attrs);
     }
 
     public HtmlTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        htmlTextImageGetter = new HtmlTextImageGetter(context, 16, 20);
         ViewUtil.initTyped(this, attrs);
     }
 
@@ -82,9 +87,8 @@ public class HtmlTextView extends AppCompatTextView implements TypedView {
                 return;
             }
 
-            Spanned spanned = Html.fromHtml(value, TO_HTML_PARAGRAPH_LINES_CONSECUTIVE,null, new HtmlTag());
+            Spanned spanned = Html.fromHtml(value, TO_HTML_PARAGRAPH_LINES_CONSECUTIVE, htmlTextImageGetter, new HtmlTag());
             setText(spanned);
-
         }
     }
 

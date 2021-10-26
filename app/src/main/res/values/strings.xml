@@ -21,8 +21,16 @@
         <![CDATA[<f c=\"#999999\" s=\"12sp\">设备状态: </f><f v=\"%1$s==0\" c=\"#999999\" s=\"12sp\">离线</f><f v=\"%1$s==1\" c=\"#FF6600\" s=\"12sp\">在线</f><f v=\"%1$s==2\" c=\"#999999\" s=\"12sp\">休眠</f>]]>
     </string>
 
+    <string name="doubleDetailedUnit" translatable="false">
+        <![CDATA[<f c="#333333" s="15sp">%1$s </f><f c="#7F7F7F" s="15sp">%2$s</f><f c="#FF6600" s="11sp">%3$s</f>]]>
+    </string>
+
     <string name="doubleDetailed" translatable="false">
         <![CDATA[<f c="#333333" s="15sp">%1$s </f><f c="#7F7F7F" s="15sp">%2$s</f>]]>
+    </string>
+
+    <string name="doubleDetailedColor" translatable="false">
+        <![CDATA[<f c="#333333" s="15sp">%1$s </f><f c="%3$s" s="15sp">%2$s</f>]]>
     </string>
 
     <string name="doubleDetailedNumber" translatable="false">

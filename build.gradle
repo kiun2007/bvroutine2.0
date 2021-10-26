@@ -42,6 +42,10 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+
+        maven { //本地仓库.
+            url "$rootDir/repo"
+        }
     }
 }
 

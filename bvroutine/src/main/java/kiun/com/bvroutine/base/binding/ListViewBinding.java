@@ -12,6 +12,7 @@ import kiun.com.bvroutine.interfaces.callers.PagerCaller;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.presenters.RecyclerListPresenter;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
+import kiun.com.bvroutine.presenters.list.ArrayTreeProvider;
 import kiun.com.bvroutine.presenters.list.ListProvider;
 import kiun.com.bvroutine.presenters.list.NetListProvider;
 import kiun.com.bvroutine.presenters.list.TreeProvider;
@@ -56,8 +57,8 @@ public class ListViewBinding {
         recyclerView.setTag(R.id.tagListPresenter, listProvider);
     }
 
-    @BindingAdapter({"android:treeProvider"})
-    public static void setTreeProvider(RecyclerView recyclerView, TreeProvider treeProvider){
+    @BindingAdapter({"android:treeProvider", "android:netBlock"})
+    public static void setTreeProvider(RecyclerView recyclerView, TreeProvider treeProvider, PagerCaller caller){
 
         if (!(recyclerView.getContext() instanceof RequestBVActivity) || treeProvider == null){
             return;
@@ -65,6 +66,10 @@ public class ListViewBinding {
 
         if (recyclerView.getTag(R.id.tagListPresenter) instanceof TreeProvider){
             return;
+        }
+
+        if (treeProvider instanceof ArrayTreeProvider && caller != null){
+            ((ArrayTreeProvider) treeProvider).setCaller(caller);
         }
 
         RequestBVActivity activity = (RequestBVActivity) recyclerView.getContext();
@@ -79,5 +84,10 @@ public class ListViewBinding {
 
         presenter.start(treeProvider.getHandler(), treeProvider.getItemLayoutId(), treeProvider.getDataBind(), activity.getRequestPresenter());
         recyclerView.setTag(R.id.tagListPresenter, treeProvider);
+    }
+
+    @BindingAdapter({"android:treeProvider"})
+    public static void setTreeProvider(RecyclerView recyclerView, TreeProvider treeProvider){
+        setTreeProvider(recyclerView, treeProvider, null);
     }
 }

@@ -71,6 +71,10 @@ public class WorkTime implements GeneralItem {
         return pbTimes;
     }
 
+    public String getTimes(){
+        return MCString.formatDate("yyyy-MM-dd", pbTime) + " - " + pbTimes;
+    }
+
     public void setPbTimes(String pbTimes) {
         this.pbTimes = pbTimes == null ? null : pbTimes.trim();
     }

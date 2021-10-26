@@ -23,10 +23,19 @@
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:singleLine="true"
-            tools:text="标题标题标题标题标题标题标题标题标题标题标题标题"
+            tools:text="公告说明"
             android:textColor="@color/mainTextColor"
             android:textSize="16dp"
             android:text="@{item.noticeTitle}"
+            style="@style/warp_base" />
+        <TextView
+            tools:text="通知"
+            tools:enabled="false"
+            android:text="@{`1`.equals(item.noticeType)?`通知`:`公告`}"
+            android:textSize="11sp"
+            android:enabled="@{!`1`.equals(item.noticeType)}"
+            android:background="@drawable/sel_notice_icon"
+            android:textColor="#FFF"
             style="@style/warp_base" />
         <ImageView
             android:layout_marginLeft="3dp"

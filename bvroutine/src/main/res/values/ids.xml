@@ -11,6 +11,8 @@
     <item name="tagTint" type="id" />
     <item name="tagViewListener" type="id" />
     <item name="tagViewValue" type="id" />
+    <item name="tagExtra" type="id" />
+    <item name="tagActionHandler" type="id" />
 
     <item name="actionBarViewBinding" type="id" />
 </resources>

@@ -22,6 +22,8 @@ import com.szxgm.gusustreet.model.dto.Address;
 import com.szxgm.gusustreet.model.query.GeneralListQuery;
 import com.szxgm.gusustreet.model.vm.AddressViewModel;
 
+import java.util.List;
+
 import kiun.com.bvroutine.base.RequestBVFragment;
 import kiun.com.bvroutine.handlers.ListHandler;
 
@@ -83,5 +85,9 @@ public class AddressFragment extends RequestBVFragment<FragmentAddressBinding> i
     @Override
     public ListHandler getHandler() {
         return new NormalHandler<Address>().addTag(0, this::callToAddress);
+    }
+
+    @Override
+    public void onDataComplete(List list) {
     }
 }

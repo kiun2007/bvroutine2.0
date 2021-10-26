@@ -52,19 +52,19 @@ public class HomeFragment extends RequestBVFragment<FragmentHomeBinding>{
             mViewBinding.setIsLogin(v);
         });
 
-        mViewBinding.setTaskHandler(new NormalHandler<OrderTask>().addTag(0, (context, item)->{
-            if (item.getStatus() == TaskStatus.todo){
-                WorkOrderDetailActivityHandler.openActivityNormal(context, new OrderInfoReq(item), item.getTaskDefKey());
-            }else{
-                AlertUtil.build(context, "是否签收任务\"%s\"", item.getVars().getMap().getOrderTitle())
-                        .setPositiveButton("签收", (dialog, which) -> {
-                            getRequestPresenter().addRequest(()->RetrofitUtil.callServiceData(MobileService.class, s -> s.claimOrderForStreet(item.getTaskId())),v -> {
-                                Toast.makeText(getContext(), "签收任务成功", Toast.LENGTH_LONG).show();
-                                item.setStatus(TaskStatus.todo);
-                            });
-                        }).setNegativeButton("不签收", null).show();
-            }
-        }));
+//        mViewBinding.setTaskHandler(new NormalHandler<OrderTask>().addTag(0, (context, item)->{
+//            if (item.getStatus() == TaskStatus.todo){
+//                WorkOrderDetailActivityHandler.openActivityNormal(context, new OrderInfoReq(item), item.getTaskDefKey());
+//            }else{
+//                AlertUtil.build(context, "是否签收任务\"%s\"", item.getVars().getMap().getOrderTitle())
+//                        .setPositiveButton("签收", (dialog, which) -> {
+//                            getRequestPresenter().addRequest(()->RetrofitUtil.callServiceData(MobileService.class, s -> s.claimOrderForStreet(item.getTaskId())),v -> {
+//                                Toast.makeText(getContext(), "签收任务成功", Toast.LENGTH_LONG).show();
+//                                item.setStatus(TaskStatus.todo);
+//                            });
+//                        }).setNegativeButton("不签收", null).show();
+//            }
+//        }));
 
         mViewBinding.setMessageHandler(new NormalHandler<Notice>().addTag(0, NoticeActivityHandler::openActivityNormal));
     }

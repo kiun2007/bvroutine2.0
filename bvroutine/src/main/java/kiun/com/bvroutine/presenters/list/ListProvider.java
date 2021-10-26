@@ -8,7 +8,7 @@ import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.view.ListRequestView;
 
-public abstract class ListProvider<T> implements ListRequestView<PagerBean, T> {
+public abstract class ListProvider<T> implements ListRequestView<PagerBean, T>, Refresher {
 
     protected RequestBVActivity context;
 

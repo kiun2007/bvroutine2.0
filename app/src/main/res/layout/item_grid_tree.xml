@@ -33,11 +33,13 @@
                 android:textSize="12sp"
                 style="@style/warp_base" />
         </LinearLayout>
-        <TextView
+        <CheckBox
             tools:text="下拉"
+            tools:checked="true"
+            android:button="@null"
             android:show="@{item.withChild(treeHandler.treeNode.parentLevel())}"
             android:padding="10dp"
-            android:selected="@{treeHandler.treeNode.expansion}"
+            android:checked="@{treeHandler.treeNode.expansion}"
             android:drawableLeft="@drawable/sel_grid_tree"
             android:onClick="@{()->treeHandler.onClick(context, TreeHandler.EVENT_EXP, null)}"
             style="@style/warp_base" />

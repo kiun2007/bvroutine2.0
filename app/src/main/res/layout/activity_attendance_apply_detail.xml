@@ -5,7 +5,7 @@
         tools:context=".ui.activity.attendance.ApplyDetailActivity">
     <data>
         <import type="kiun.com.bvroutine.utils.MCString" />
-        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
+
         <import type="android.view.View" />
         <import type="android.text.TextUtils" />
 

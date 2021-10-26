@@ -2,10 +2,12 @@ package kiun.com.bvroutine.presenters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import kiun.com.bvroutine.interfaces.presenter.UploadPresenter;
 import kiun.com.bvroutine.media.Recorder;
 import kiun.com.bvroutine.media.VideoRecorderActivityHandler;
 import kiun.com.bvroutine.utils.AgileThread;
+import kiun.com.bvroutine.utils.attri.ThemeUtil;
 import kiun.com.bvroutine.utils.file.MediaPackage;
 import kiun.com.bvroutine.views.dialog.MCDialogManager;
 import kiun.com.bvroutine.views.popup.PopupManager;
@@ -59,13 +62,25 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
     private List<Uri> cacheUploadFileList = new LinkedList<>();
     private MediaPackage mediaPackage;
 
+    private float compress = 1.0f;
+
+    private String mediaType = "image/*";
+
+    private Context context;
+
+    private boolean uploadReviewIsSrc = false;
+
     //后上传模式.
     private boolean afterModel = false;
 
-    public OnClickUploadPresenter(int limit){
+    public OnClickUploadPresenter(int limit, Context context){
         super(BR.handler, null);
         this.isMultiple = (limit > 1);
         this.limit = limit;
+        this.context = context;
+
+        TypedValue typedValue = ThemeUtil.getValue(context, R.attr.uploadReviewIsSrc);
+        uploadReviewIsSrc = typedValue.data != 0;
     }
 
     public void setFilePartName(String filePartName) {
@@ -74,6 +89,10 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
 
     public void setThumbPartName(String thumbPartName) {
         this.thumbPartName = thumbPartName;
+    }
+
+    public void setCompress(float compress) {
+        this.compress = compress;
     }
 
     public void addData(T data){
@@ -119,11 +138,15 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
         this.maxVideoDuration = maxVideoDuration;
     }
 
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
     public void setList(List<T> items, boolean isEdit){
 
         if (isMultiple){
             listArray = items;
-            if(isEdit){
+            if(isEdit && items.size() < limit){
                 listArray.add(null);
             }
             presenter.setList(listArray);
@@ -142,7 +165,8 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
         }else{
             super.removeAt(index);
             if (listArray.size() < limit){
-                if (listArray.get(listArray.size() - 1) != null){
+
+                if (listArray.isEmpty() || listArray.get(listArray.size() - 1) != null){
                     presenter.add(null);
                 }
             }
@@ -194,6 +218,7 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
         this.activity = activity;
         this.listener = listener;
         this.mediaPackage = new MediaPackage(activity, filePartName, thumbPartName);
+        mediaPackage.setCompress(compress);
     }
 
     @Override
@@ -276,7 +301,7 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
 
             }, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, CAMERA);
         }).addItem(R.id.album, ()->{
-            Intent data = new Intent(Intent.ACTION_PICK).setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            Intent data = new Intent(Intent.ACTION_PICK).setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mediaType);
             activity.startForResult(data, activityCallBack::onResult);
         });
 
@@ -326,7 +351,14 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
 
             if (mediaPackage.getBitmap() != null){
                 //显示图像.
-                thread.into(()->v.setBackground(new BitmapDrawable(v.getResources(), mediaPackage.getBitmap())));
+                thread.into(()->{
+                    if (uploadReviewIsSrc && v instanceof ImageView){
+                        ImageView imageView = (ImageView) v;
+                        imageView.setImageDrawable(new BitmapDrawable(v.getResources(), mediaPackage.getBitmap()));
+                    }else{
+                        v.setBackground(new BitmapDrawable(v.getResources(), mediaPackage.getBitmap()));
+                    }
+                });
             }
 
             if (networkCall != null){

@@ -25,6 +25,7 @@ public class VerifyBinder {
         for(Problem problem : problems){
 
             View problemView = ViewUtil.findChildViewTag(rootView, R.id.tagVerifyField, problem.getField());
+
             if (problemView == null){
                 continue;
             }

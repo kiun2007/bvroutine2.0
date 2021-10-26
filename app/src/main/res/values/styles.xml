@@ -9,6 +9,7 @@
         <item name="loadMore">努力加载中...</item>
         <item name="iconColor">@color/blue</item>
         <item name="gridWidth">50dp</item>
+        <item name="uploadReviewIsSrc">true</item>
     </style>
 
     <!--没有选中的样式-->

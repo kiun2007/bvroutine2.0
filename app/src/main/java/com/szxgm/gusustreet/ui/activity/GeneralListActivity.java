@@ -91,17 +91,24 @@ public abstract class GeneralListActivity extends RequestBVActivity<LayoutGenera
         return p.callServiceList(GeneralListService.class, s->s.search(bean), bean);
     }
 
+    protected void onRefresh(){
+    }
+
+    @Override
+    public void onDataComplete(List list) {
+    }
+
     public void onFilter(View view){
         if (getFilterDialogLayout() != 0){
             MCDialogManager.create(this, getFilterDialogLayout(), general.getQuery(), getDataBr(), getDialogBr())
-                    .setGravity(Gravity.RIGHT)
+                    .setGravity(Gravity.RIGHT).setCancelable(true)
                     .show()
+                    .bindValue(BR.listPresenter, general)
                     .setOnCancelListener((dialogInterface)->{
-                        general.getQuery().clearFilter();
-                        general.refresh();
-                        binding.filterBtn.setSelected(false);
+                        binding.filterBtn.setSelected(!general.getQuery().isEmpty());
                     })
                     .setCaller(v -> {
+                        onRefresh();
                         general.refresh();
                         binding.filterBtn.setSelected(!general.getQuery().isEmpty());
                     });

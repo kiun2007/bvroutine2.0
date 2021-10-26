@@ -36,6 +36,7 @@ public class PagerBean<T,P extends PagerBean> extends QueryBean<T>{
     public P inherit(PagerBean pagerBean){
         setPageNum(pagerBean.pageNum);
         setPageSize(pagerBean.pageSize);
+        setTotal(pagerBean.getTotal());
         return (P) this;
     }
 

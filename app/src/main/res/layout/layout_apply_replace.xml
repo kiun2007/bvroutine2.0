@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="kiun.com.bvroutine.utils.MCString" />
-        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
+
         <import type="android.view.View" />
 
         <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />
@@ -78,5 +78,12 @@
                 android:text="@{item.tbmenlater}"
                 style="@style/tvMain" />
         </LinearLayout>
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="调班原因:1"
+            android:show="@{item.reason!=null}"
+            android:layout_marginTop="10dp"
+            android:argument="@{MCString.asArray(`调班原因:`, item.reason)}"
+            app:html="@string/doubleDetailed"
+            style="@style/tvNormal" />
     </LinearLayout>
 </layout>

@@ -1,6 +1,7 @@
 package kiun.com.bvroutine.presenters.list;
 
 import android.content.Context;
+import android.provider.Telephony;
 
 import java.util.List;
 
@@ -9,6 +10,9 @@ import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.callers.PagerCaller;
+import kiun.com.bvroutine.interfaces.callers.PagerDataCaller;
+import kiun.com.bvroutine.interfaces.callers.SetCaller;
+import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.utils.RetrofitUtil;
 import retrofit2.Call;
@@ -19,9 +23,11 @@ public class NetListProvider extends ListProvider<PagerBean>{
 
     private int layoutId;
 
-    private PagerCaller caller;
+    private Object caller;
 
     private ListHandler<?> listHandler;
+
+    private SetCaller<ListViewPresenter> completeCaller;
 
     protected NetListProvider(RequestBVActivity<?> context, int layoutId, ListHandler<?> listHandler, int errorLayoutId) {
         super(context);
@@ -55,6 +61,18 @@ public class NetListProvider extends ListProvider<PagerBean>{
         }
     }
 
+    public NetListProvider complete(SetCaller<ListViewPresenter> completeCaller){
+        this.completeCaller = completeCaller;
+        return this;
+    }
+
+    @Override
+    public void loadComplete(ListViewPresenter p) {
+        if (this.completeCaller != null){
+            this.completeCaller.call(p);
+        }
+    }
+
     /**
      * 设置网络请求接口.
      * @param caller
@@ -65,13 +83,20 @@ public class NetListProvider extends ListProvider<PagerBean>{
         return this;
     }
 
+    public NetListProvider setCaller(PagerDataCaller caller){
+        this.caller = caller;
+        return this;
+    }
+
     @Override
     public List<?> requestPager(RequestBindingPresenter p, PagerBean bean) throws Exception {
-        if (caller != null) {
-            Call<?> call = caller.get(bean);
+        if (caller instanceof PagerCaller) {
+            Call<?> call = ((PagerCaller) caller).get(bean);
             if (call != null) {
                 return RetrofitUtil.unpackWrap(bean, call.execute());
             }
+        }else if (caller instanceof PagerDataCaller){
+            return  ((PagerDataCaller) caller).get(bean);
         }
         return null;
     }
@@ -85,6 +110,7 @@ public class NetListProvider extends ListProvider<PagerBean>{
      */
     public static NetListProvider create(Context context, ListHandler<?> listHandler, int layoutId){
 
+        
         if (context instanceof RequestBVActivity){
             return new NetListProvider((RequestBVActivity<?>) context, layoutId, listHandler, 0);
         }

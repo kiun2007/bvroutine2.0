@@ -108,6 +108,7 @@ public class NavigatorBar extends LinearLayout implements TypedView {
             if (barItem == null){
                 barItem = new ActionBarItem();
             }
+            barItem.setBarNoBack(barNoback);
             barItem.bind(BR.barItem, dataBinding);
             dataBinding.setBarItem(barItem);
         }
@@ -204,7 +205,7 @@ public class NavigatorBar extends LinearLayout implements TypedView {
 
     public ActionBarItem getBarItem() {
         if (barItem == null){
-            barItem = new ActionBarItem();
+            barItem = new ActionBarItem().bind(BR.barItem, dataBinding);
         }
         return barItem;
     }

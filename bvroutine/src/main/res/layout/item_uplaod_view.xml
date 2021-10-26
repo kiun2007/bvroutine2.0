@@ -17,7 +17,7 @@
             android:orientation="vertical">
             <ImageView
                 android:backgroundUrl="@{handler.getItem(item)}"
-                android:background="@drawable/bg_auto_dash_plus"
+                android:background="@{handler.getItem(item)==null?@drawable/bg_auto_dash_plus:null}"
                 android:scaleType="center"
                 android:onClick="@{(v)->handler.onClick(v, item, index.index)}"
                 android:layout_width="match_parent"

@@ -30,7 +30,10 @@ public abstract class EventBean {
     private SetCaller<String> errorListener;
 
     @JSONField(serialize = false)
-    private Map<String, ProblemExport> problemExports = new HashMap<>();
+    protected boolean isWithWaring = false;
+
+    @JSONField(serialize = false)
+    protected Map<String, ProblemExport> problemExports = new HashMap<>();
 
     public<T extends EventBean> T bind(int br, ViewDataBinding viewDataBinding){
         this.binding = viewDataBinding;
@@ -65,6 +68,10 @@ public abstract class EventBean {
         if (errorListener != null){
             errorListener.call(error);
         }
+    }
+
+    public void setWithWaring(boolean withWaring) {
+        isWithWaring = withWaring;
     }
 
     /**

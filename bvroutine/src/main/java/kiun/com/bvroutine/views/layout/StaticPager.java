@@ -15,7 +15,7 @@ import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.base.BVBaseActivity;
 import kiun.com.bvroutine.interfaces.view.TypedView;
-import kiun.com.bvroutine.utils.ClassUtil;
+import kiun.com.bvroutine.utils.type.ClassUtil;
 import kiun.com.bvroutine.utils.ViewUtil;
 import kiun.com.bvroutine.views.adapter.PagerFragmentAdapter;
 
@@ -82,6 +82,10 @@ public class StaticPager extends ViewPager implements TypedView {
         }
 
         setOffscreenPageLimit(maxCachePageSize);
+    }
+
+    public PagerFragmentAdapter getPagerFragmentAdapter() {
+        return pagerFragmentAdapter;
     }
 
     @Override

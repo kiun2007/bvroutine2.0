@@ -1,6 +1,5 @@
 package kiun.com.bvroutine.interfaces;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface TreeItem {

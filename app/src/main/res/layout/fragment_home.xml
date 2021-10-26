@@ -114,6 +114,7 @@
                     style="@style/grid4FlowView">
                     <TextView
                         style="@style/bt_icon"
+                        android:show="@{!RolesUtil.assign(PermitTree.GRID_WORKER)}"
                         android:drawableTop="@mipmap/ic_mobile_work"
                         android:startActivity="@{MobileWorkBenchActivity.clz}"
                         android:text="移动工作台"/>

@@ -3,7 +3,6 @@ package com.szxgm.gusustreet.ui.activity.attendance;
 import android.view.View;
 
 import com.szxgm.gusustreet.R;
-import com.szxgm.gusustreet.base.list.handler.NormalHandler;
 import com.szxgm.gusustreet.base.general.GeneralHandlerController;
 import com.szxgm.gusustreet.base.list.handler.RefreshHandler;
 import com.szxgm.gusustreet.model.dto.MineApply;

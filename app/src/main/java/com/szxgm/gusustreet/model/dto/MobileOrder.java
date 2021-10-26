@@ -446,9 +446,7 @@ public class MobileOrder extends AddressChooseBean implements Serializable, Gene
     }
 
     public void setImageData(String imageData) {
-        if (imageData != null){
-            this.imageData = imageData.replace(",","|");
-            onChanged();
-        }
+        this.imageData = imageData;
+        onChanged();
     }
 }

@@ -16,12 +16,18 @@ public abstract class ClassifyListActivity<T> extends GeneralListActivity implem
 
     private boolean isFirst = false;
 
+    private int selectIndex = -1;
+
     @Override
     public void initView() {
         binding.classifyTabLayout.setVisibility(View.VISIBLE);
-        rbp.addRequest(this::classifyList, this::classifyComplete);
+        reloadTab();
         binding.classifyTabLayout.addOnTabSelectedListener(this);
         super.initView();
+    }
+
+    protected void reloadTab(){
+        rbp.addRequest(this::classifyList, this::classifyComplete);
     }
 
     protected void setTabMode(int mode){
@@ -37,6 +43,7 @@ public abstract class ClassifyListActivity<T> extends GeneralListActivity implem
 
     protected void classifyComplete(List<T> list){
 
+        binding.classifyTabLayout.removeAllTabs();
         int i = 0;
         for (T item : list){
             TabLayout.Tab tab = binding.classifyTabLayout.newTab();
@@ -50,6 +57,11 @@ public abstract class ClassifyListActivity<T> extends GeneralListActivity implem
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+
+        if (selectIndex == binding.classifyTabLayout.getSelectedTabPosition()){
+            return;
+        }
+        selectIndex = binding.classifyTabLayout.getSelectedTabPosition();
         onSelected((T) tab.getTag());
 
         if (isFirst){

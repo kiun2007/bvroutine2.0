@@ -6,6 +6,7 @@
     <attr name="loadMore" format="string" />
     <attr name="iconColor" format="color" />
     <attr name="icon" format="reference" />
+    <attr name="uploadReviewIsSrc" format="boolean" />
 
     <attr name="flowHorizontalSpacing" format="dimension"/>
     <attr name="flowVerticalSpacing" format="dimension" />
@@ -97,6 +98,8 @@
         <attr name="imageLimit" format="integer" />
         <attr name="itemScaleHeight" format="float" />
         <attr name="commitMode" format="boolean" />
+        <attr name="compress" format="float" />
+        <attr name="mediaType" format="string" />
 
         <attr name="audioRecorder" format="string" />
         <attr name="videoRecorder" format="string" />
@@ -251,6 +254,7 @@
     <declare-styleable name="ShortListView">
         <attr name="itemLayout" format="reference" />
         <attr name="emptyLayout" format="reference" />
+        <attr name="isFlow" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="TabViewLayout">

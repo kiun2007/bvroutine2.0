@@ -5,6 +5,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.EditText;
 
+import java.util.List;
+
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 
@@ -23,4 +25,6 @@ public interface GeneralListController {
     SwipeRefreshLayout getRefresh();
 
     EditText getSearchEdit();
+
+    void onDataComplete(List list);
 }

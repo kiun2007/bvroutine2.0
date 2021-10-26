@@ -17,11 +17,9 @@ public class Overtime extends EventBean {
     private String jbDept;
 
     @Verify(value = NotNull.class, desc = "请选择")
-    @JSONField(format = "yyyy-MM-dd HH:mm")
     private Date jbBegin;
 
     @Verify(value = NotNull.class, desc = "请选择")
-    @JSONField(format = "yyyy-MM-dd HH:mm")
     private Date jbEnd;
 
     @Verifys({

@@ -22,6 +22,7 @@ import kiun.com.bvroutine.base.binding.variable.VariableBinding;
 import kiun.com.bvroutine.interfaces.binding.Import;
 import kiun.com.bvroutine.interfaces.binding.ImportType;
 import kiun.com.bvroutine.base.binding.variable.AutoImport;
+import kiun.com.bvroutine.utils.auto.AutoVariableLifecycleOwner;
 
 /**
  * 界面绑定工具.
@@ -75,30 +76,11 @@ public class ViewBindingUtil {
      * @param binding 需要填充的 ViewDataBinding.
      */
     private static void fullServiceVariable(ViewDataBinding binding, Context context){
-
-        for (Method method : binding.getClass().getMethods()){
-
-            if (method.getName().startsWith("set") && method.getParameterTypes().length == 1){
-                Class<?> parameterClz = method.getParameterTypes()[0];
-                AutoImport autoImport = parameterClz.getAnnotation(AutoImport.class);
-                if (autoImport != null){
-                    try {
-                        VariableBinding<?> variableBinding = autoImport.value().
-                                getConstructor(Context.class,ViewDataBinding.class,Class.class, Method.class).newInstance(context, binding, parameterClz, method);
-                        variableBinding.start();
-
-                        if (context instanceof BVBaseActivity){
-                            ((BVBaseActivity) context).addVariableBinding(variableBinding);
-                        }
-                    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+        binding.setLifecycleOwner(new AutoVariableLifecycleOwner(context));
     }
 
     public static<T extends ViewDataBinding> T setContentView(Activity activity, int layoutId){
+
          T viewBinding = DataBindingUtil.setContentView(activity, layoutId);
          readSetting(activity, viewBinding);
          fullServiceVariable(viewBinding, activity);
@@ -106,6 +88,7 @@ public class ViewBindingUtil {
     }
 
     public static <T extends ViewDataBinding> T inflate(@NonNull LayoutInflater inflater, int layoutId, @Nullable ViewGroup parent, boolean attachToParent){
+
         T viewBinding = DataBindingUtil.inflate(inflater, layoutId, parent, attachToParent);
         fullServiceVariable(viewBinding, inflater.getContext());
         return viewBinding;

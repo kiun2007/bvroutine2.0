@@ -143,8 +143,6 @@ public class VersionUpdatePresenter implements VersionUpdate {
         Response<ResponseBody> response = versionService.downloadVersion(datVersion.getId(), "None", String.format("bytes=%d", breakPoint)).execute();
         ResponseBody body = response.body();
 
-
-
         int len = 0, total = breakPoint;
         byte[] buf = new byte[20480];
         InputStream inputStream = body.byteStream();

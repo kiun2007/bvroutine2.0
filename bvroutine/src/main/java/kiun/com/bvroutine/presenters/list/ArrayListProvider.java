@@ -2,8 +2,11 @@ package kiun.com.bvroutine.presenters.list;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import kiun.com.bvroutine.BR;
 import kiun.com.bvroutine.base.RequestBVActivity;
@@ -49,8 +52,40 @@ public class ArrayListProvider extends ListProvider{
         return layoutId;
     }
 
+    public void setList(List list) {
+
+        if (Objects.hashCode(list) != Objects.hashCode(this.list)){
+            this.list = list;
+            refresh();
+        }
+    }
+
+    public List getList() {
+        if (list == null){
+            list = new LinkedList();
+        }
+        return list;
+    }
+
+    public void add(Object item){
+        if (presenter != null){
+            presenter.list().add(item);
+            presenter.notifySet();
+        }
+    }
+
+    public void insert(Object item){
+        if (presenter != null){
+            presenter.list().add(0, item);
+            presenter.notifySet();
+        }
+    }
+
     @Override
     public void refresh() {
+        if (presenter != null){
+            presenter.reload();
+        }
     }
 
     @Override

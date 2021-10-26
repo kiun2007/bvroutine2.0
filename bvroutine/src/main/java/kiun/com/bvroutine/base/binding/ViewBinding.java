@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.interfaces.callers.CallBack;
 import kiun.com.bvroutine.interfaces.callers.GetBooleanCaller;
+import kiun.com.bvroutine.interfaces.callers.GetCaller;
+import kiun.com.bvroutine.interfaces.callers.GetViewCaller;
 import kiun.com.bvroutine.utils.ViewUtil;
 
 public class ViewBinding {
@@ -154,7 +156,12 @@ public class ViewBinding {
     }
 
     @BindingAdapter("android:init")
-    public static void setInit(View view, CallBack callBack){
-        callBack.call();
+    public static void setInit(View view, GetViewCaller callBack){
+        callBack.call(view);
+    }
+
+    @BindingAdapter("android:extra")
+    public static void setExtra(View view, Object extra){
+        view.setTag(R.id.tagExtra, extra);
     }
 }

@@ -71,7 +71,7 @@ public class MCString {
     }
 
     public static int asInt(String str) {
-        if (str.isEmpty()) {
+        if (TextUtils.isEmpty(str)) {
             return 0;
         }
         int hex = str.startsWith("0x") ? 16 : 10;

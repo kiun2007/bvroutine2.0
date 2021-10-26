@@ -21,6 +21,7 @@
         <kiun.com.bvroutine.views.NavigatorBar
             app:barTitle="指派巡查任务"
             style="@style/navigatorBar" />
+
         <ScrollView
             style="@style/fill_base">
             <LinearLayout

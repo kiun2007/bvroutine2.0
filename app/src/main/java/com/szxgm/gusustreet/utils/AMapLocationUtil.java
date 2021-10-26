@@ -1,6 +1,8 @@
 package com.szxgm.gusustreet.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -38,13 +40,18 @@ public class AMapLocationUtil {
         }else{
             option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         }
-        option.setOnceLocation(isOnce);
+
         option.setInterval(interval);
 
         locationClient.setLocationOption(option);
         locationClient.setLocationListener(aMapLocation -> {
             if (aMapLocation.getErrorCode() == 0){
+
                 if (setCaller != null){
+
+                    if (isOnce){
+                        locationClient.stopLocation();
+                    }
 
                     if (!aMapLocation.getAddress().isEmpty()){
                         setCaller.onLocationChanged(aMapLocation);
@@ -65,8 +72,9 @@ public class AMapLocationUtil {
                         v.into(()->setCaller.onLocationChanged(aMapLocation));
                     }).start();
                 }
+
             }else{
-                Toast.makeText(context, aMapLocation.getErrorInfo(), Toast.LENGTH_LONG).show();
+                Log.e("Localtion", aMapLocation.getErrorInfo());
             }
         });
         locationClient.startLocation();

@@ -81,10 +81,12 @@ public class ActionBinding {
 
             if (eventBean != null){
 
+                eventBean.setWithWaring(false);
+
                 List<Problem> problems = eventBean.verify();
                 if (!problems.isEmpty()){
 
-                    VerifyBinder verifyBinder = new VerifyBinder(fragment != null ? fragment.getView() : activity.getRootView());
+                    VerifyBinder verifyBinder = new VerifyBinder(view.getRootView());
                     verifyBinder.sendProblem(problems, eventBean);
 
                     List<Problem> warringProblems = ListUtil.filter(problems, item -> !item.isForce());
@@ -102,11 +104,11 @@ public class ActionBinding {
                     }else{
                         if (!warringProblems.isEmpty()){
 
+                            eventBean.setWithWaring(true);
                             StringBuilder stringBuilder = new StringBuilder();
                             stringBuilder.append("提交前请先确认如下问题:\n");
                             for (int i = 0; i < warringProblems.size(); i++) {
                                 Log.w("Verify", warringProblems.get(i).getField() + ":" + warringProblems.get(i).getDesc());
-//                                stringBuilder.append(i+1).append("、").append(warringProblems.get(i).getDesc()).append("\n");
                             }
                             stringBuilder.append(String.format("%d处警告, 取消提交后可在页面查看详细\n", warringProblems.size()));
                             stringBuilder.append("是否继续提交?");
@@ -135,7 +137,16 @@ public class ActionBinding {
             RequestBindingPresenter p = activity.getRequestPresenter();
             p.addRequest(()->p.execute(retrofitCall), (v)->{
                 if (v != null){
-                    boolean isSuccess = DataUtil.dataComplete(tag, v, fragment == null ? activity : fragment, isWaring);
+                    Object handler = view.getTag(R.id.tagActionHandler);
+                    if (handler == null){
+                        handler = fragment;
+                    }
+
+                    if (handler == null){
+                        handler = activity;
+                    }
+                    boolean isSuccess = DataUtil.dataComplete(tag, v, handler, isWaring);
+
                     if (isSuccess){
                         callNoNull(presenter, TextViewLoadingPresenter::complete);
                         if (onClickListener != null){
@@ -187,6 +198,11 @@ public class ActionBinding {
                 button.getContext().startActivity(new Intent(button.getContext(), clz));
             });
         }
+    }
+
+    @BindingAdapter("android:actionHandler")
+    public static void setActionHandler(View view, Object handler){
+        view.setTag(R.id.tagActionHandler, handler);
     }
 
     @BindingAdapter("android:startIntent")

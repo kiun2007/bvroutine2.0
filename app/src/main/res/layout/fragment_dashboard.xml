@@ -52,15 +52,16 @@
                         style="@style/grid3FlowView">
                         <TextView
                             style="@style/tvCenterButton"
+                            android:show="@{!RolesUtil.assign(PermitTree.GRID_WORKER)}"
                             android:text="待办工单"
                             android:startActivity="@{MobileWorkBenchActivity.clz}"
                             android:background="@mipmap/bg_work_wait"/>
-                        <TextView
-                            style="@style/tvCenterButton"
-                            android:show="@{RolesUtil.minimum(PermitTree.WORK_STATION_ADMIN)}"
-                            android:text="疑难工单"
-                            android:background="@mipmap/bg_work_complete"
-                            android:startIntent="@{MobileWorkBenchActivity.create(context, 1)}" />
+<!--                        <TextView-->
+<!--                            style="@style/tvCenterButton"-->
+<!--                            android:show="@{RolesUtil.minimum(PermitTree.WORK_STATION_ADMIN)}"-->
+<!--                            android:text="疑难工单"-->
+<!--                            android:background="@mipmap/bg_work_complete"-->
+<!--                            android:startIntent="@{MobileWorkBenchActivity.create(context, 1)}" />-->
                         <TextView
                             style="@style/tvCenterButton"
                             android:text="已办工单"

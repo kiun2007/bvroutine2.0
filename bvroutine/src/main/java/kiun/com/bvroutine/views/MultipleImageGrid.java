@@ -78,6 +78,12 @@ public class MultipleImageGrid extends GridView implements TypedView, UploadView
     @AttrBind
     private boolean afterMode = false;
 
+    @AttrBind(def = 1)
+    private float compress = 1.0f;
+
+    @AttrBind
+    private String mediaType = "image/*";
+
     @AttrBind
     private int gridItemLayout = R.layout.item_uplaod_view;
 
@@ -85,7 +91,7 @@ public class MultipleImageGrid extends GridView implements TypedView, UploadView
 
     private OnDataChangedLister onDataChangedLister;
 
-    private OnClickUploadPresenter<List<?>> uploadPresenter = new OnClickUploadPresenter<>(9);
+    private OnClickUploadPresenter<List<?>> uploadPresenter;
 
     public MultipleImageGrid(Context context) {
         super(context);
@@ -109,6 +115,9 @@ public class MultipleImageGrid extends GridView implements TypedView, UploadView
     @Override
     public void initView() {
 
+        uploadPresenter = new OnClickUploadPresenter<>(9, getContext());
+        uploadPresenter.setMediaType(mediaType);
+        uploadPresenter.setCompress(compress);
         uploadPresenter.setFilePartName(filePartName);
         uploadPresenter.setThumbPartName(thumbPartName);
         uploadPresenter.setAfterModel(afterMode);

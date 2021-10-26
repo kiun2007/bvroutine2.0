@@ -1,5 +1,6 @@
 package kiun.com.bvroutine.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
@@ -15,9 +16,13 @@ public class MD5Util {
      * @return
      */
     public static byte[] MD5(String s) {
+        return MD5(s.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static byte[] MD5(byte[] buff){
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] bytes = md.digest(s.getBytes("utf-8"));
+            byte[] bytes = md.digest(buff);
             return bytes;
         } catch (Exception e) {
             throw new RuntimeException(e);

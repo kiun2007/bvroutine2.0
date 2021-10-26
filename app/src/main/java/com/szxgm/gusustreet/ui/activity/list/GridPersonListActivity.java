@@ -30,6 +30,10 @@ public class GridPersonListActivity extends RequestBVActivity<ActivityGridPerson
     @IntentValue
     String gridCode;
 
+    boolean single;
+
+    GridPerson lastSelect;
+
     @Override
     public int getViewId() {
         return R.layout.activity_grid_person_choose_list;
@@ -42,7 +46,10 @@ public class GridPersonListActivity extends RequestBVActivity<ActivityGridPerson
 
         GridPersonReq req = new GridPersonReq();
         req.setWgbm(getIntent().getStringExtra("gridCode"));
+        req.setIsWgz(getIntent().getIntExtra("isWgz", 1));
         binding.setPersonReq(req.listener(this::onRequestChanged));
+
+        single = getIntent().getBooleanExtra("single", false);
 
         getBarItem().getHandler().setRightCallBack(()->{
 
@@ -57,7 +64,13 @@ public class GridPersonListActivity extends RequestBVActivity<ActivityGridPerson
             Intent intent = new Intent();
             intent.putExtra(TITLE, ListUtil.join(selectedPerson, ","));
             intent.putExtra(ID, ListUtil.join(selectedPerson, ",", GridPerson::getYhm));
-            intent.putExtra(EXTRA, ListUtil.join(selectedPerson, ",", GridPerson::getId));
+
+            if (single){
+                intent.putExtra(EXTRA, selectedPerson.get(0));
+            }else{
+                intent.putExtra(EXTRA, ListUtil.join(selectedPerson, ",", GridPerson::getId));
+            }
+
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -72,6 +85,15 @@ public class GridPersonListActivity extends RequestBVActivity<ActivityGridPerson
         public void onClick(Context context, int tag, GridPerson data) {
 
             if (tag == 1){
+
+                if (single){
+                    if (lastSelect != null){
+                        lastSelect.setChecked(false);
+                    }
+                    data.setChecked(true);
+                    lastSelect = data;
+                    return;
+                }
                 data.setChecked(!data.isChecked());
             }
         }

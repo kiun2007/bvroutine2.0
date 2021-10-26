@@ -1,5 +1,6 @@
 package kiun.com.bvroutine.base;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -30,6 +31,7 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     protected int mDataBr;
     protected boolean isError = false;
     protected boolean isEmpty = false;
+    protected boolean isLoading = true;
     protected String errorContent = null;
     protected ListHandler mHandler;
     protected List<T> listData = new LinkedList();
@@ -47,9 +49,15 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     public void addFooterView(View footerView) {}
     public void removeFooter(){}
 
+    private void clearState(){
+        isError = false;
+        isEmpty = false;
+        isLoading = false;
+    }
+
     @Override
     public void add(List<T> list) {
-        isError = false;
+        clearState();
         if(list != null){
             isEmpty = list.size() == 0;
             listData.addAll(list);
@@ -60,8 +68,8 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     @Override
     public void error(String err) {
         errorContent = err;
+        clearState();
         isError = true;
-        isEmpty = false;
         notifySet();
     }
 
@@ -70,8 +78,12 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
 
         if (isError) return ERROR_VIEW;
 
+        if (isLoading) {
+            return LOADING_VIEW;
+        }
+
         if(showList() == null || showList().size() == 0) {
-            return isEmpty ? EMPTY_VIEW : LOADING_VIEW;
+            return EMPTY_VIEW;
         }
 
         if (position < listData.size()){
@@ -127,7 +139,14 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     @Override
     public void clear() {
         listData.clear();
+        clearState();
+        isLoading = true;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void clearData() {
+        listData.clear();
     }
 
     @Override
@@ -137,11 +156,6 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
 
     @Override
     public void notifySet() {
-        new Handler(Looper.getMainLooper()){
-            @Override
-            public void dispatchMessage(Message msg) {
-                notifyDataSetChanged();
-            }
-        }.sendEmptyMessage(0);
+        notifyDataSetChanged();
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
+
+import java.io.Serializable;
 import java.util.Map;
 import kiun.com.bvroutine.BR;
 import kiun.com.bvroutine.R;
@@ -158,33 +161,44 @@ public class GeneralItemText extends TextView implements TypedView, View.OnClick
 
             Intent intent = new Intent(getContext(), clz);
             if (params instanceof Map){
-                Map<String, String> maps = (Map<String, String>) params;
+                Map<String, Object> maps = (Map<String, Object>) params;
+
                 for (String key : maps.keySet()){
-                    intent.putExtra(key, maps.get(key));
+
+                    Object value = maps.get(key);
+                    if (value instanceof String){
+                        intent.putExtra(key, (String) maps.get(key));
+                    }else if (value instanceof Boolean){
+                        intent.putExtra(key, (Boolean) maps.get(key));
+                    }
                 }
             }else if (params instanceof Parcelable){
                 intent.putExtra(PARAM, (Parcelable) params);
+            }else if (params instanceof Serializable){
+                intent.putExtra(PARAM, (Serializable) params);
             }
             intent.putExtra(RETURN, true);
 
-            activity.startForResult(intent, result->{
-                extra = result.getParcelableExtra(EXTRA);
-                if (extra == null){
-                    extra = result.getSerializableExtra(EXTRA);
-                }
-                id = result.getStringExtra(ID);
-                String title = result.getStringExtra(TITLE);
-                if (!TextUtils.isEmpty(title)){
-                    setText(result.getStringExtra(TITLE));
-                }
+            if (activity != null){
+                activity.startForResult(intent, result->{
+                    extra = result.getParcelableExtra(EXTRA);
+                    if (extra == null){
+                        extra = result.getSerializableExtra(EXTRA);
+                    }
+                    id = result.getStringExtra(ID);
+                    String title = result.getStringExtra(TITLE);
+                    if (!TextUtils.isEmpty(title)){
+                        setText(result.getStringExtra(TITLE));
+                    }
 
-                if (textListener != null){
-                    textListener.onChanged(this, id, title, extra);
-                }
-                if (listener != null){
-                    listener.onChange();
-                }
-            });
+                    if (textListener != null){
+                        textListener.onChanged(this, id, title, extra);
+                    }
+                    if (listener != null){
+                        listener.onChange();
+                    }
+                });
+            }
         }
     }
 
@@ -196,7 +210,9 @@ public class GeneralItemText extends TextView implements TypedView, View.OnClick
     @BindingAdapter("param")
     public static void setParam(GeneralItemText itemText, Object keyValues){
         itemText.params = keyValues;
-        itemText.setText(null);
+        if (itemText.params != null && !itemText.params.equals(keyValues)){
+            itemText.setText(null);
+        }
     }
 
     @BindingAdapter("paramGetter")

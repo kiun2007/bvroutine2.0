@@ -1,24 +1,23 @@
 package com.szxgm.gusustreet.ui.activity.workbench;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.text.TextUtils;
+
 import com.google.android.material.tabs.TabLayout;
 import com.szxgm.gusustreet.R;
-import com.szxgm.gusustreet.base.TaskDisposalType;
 import com.szxgm.gusustreet.base.QueryType;
 import com.szxgm.gusustreet.base.general.GeneralHandlerController;
-import com.szxgm.gusustreet.model.base.TaskStatus;
+import com.szxgm.gusustreet.model.base.OrderActivityType;
 import com.szxgm.gusustreet.model.dto.MobileOrder;
-import com.szxgm.gusustreet.model.dto.user.PermitTree;
-import com.szxgm.gusustreet.model.dto.user.User;
+import com.szxgm.gusustreet.model.dto.mobile.ActivityOrderItem;
 import com.szxgm.gusustreet.model.dto.mobile.CombinedTask;
 import com.szxgm.gusustreet.model.dto.mobile.OrderTask;
 import com.szxgm.gusustreet.model.query.GeneralListQuery;
 import com.szxgm.gusustreet.model.query.OrderInfoReq;
 import com.szxgm.gusustreet.net.services.MobileService;
 import com.szxgm.gusustreet.ui.activity.ClassifyListActivity;
-import com.szxgm.gusustreet.utils.RolesUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,8 +27,6 @@ import kiun.com.bvroutine.data.KeyValue;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
-import kiun.com.bvroutine.utils.AlertUtil;
-import kiun.com.bvroutine.utils.SharedUtil;
 
 /**
  * 移动工作台
@@ -41,15 +38,19 @@ public class MobileWorkBenchActivity extends ClassifyListActivity<KeyValue<Strin
 
     public static final Class clz = MobileWorkBenchActivity.class;
 
+    private static final String KEY_ACTIVITY = "activity";
+
+    private AlertDialog alertDialog = null;
+
     @Override
     protected List<KeyValue<String, Integer>> classifyList() throws Exception {
         List<KeyValue<String, Integer>> list = new LinkedList<>();
-        list.add(new KeyValue<>("待办工单", 0));
+        list.add(new KeyValue<>("待处理", 0));
 
-        if (RolesUtil.minimum(PermitTree.WORK_STATION_ADMIN)){
-            list.add(new KeyValue<>("疑难工单", 1));
+        String activity = general.getQuery() == null ? null : general.getQuery().findValue(KEY_ACTIVITY);
+        if (!OrderActivityType.grid.getActivity().equals(activity)){
+            list.add(new KeyValue<>("待核查", 1));
         }
-        list.add(new KeyValue<>("综合协调", 2));
         return list;
     }
 
@@ -60,12 +61,14 @@ public class MobileWorkBenchActivity extends ClassifyListActivity<KeyValue<Strin
 
     @Override
     protected void onSelected(KeyValue<String, Integer> item) {
-        selectByIndex(item.value());
-    }
 
-    private void selectByIndex(int index){
-        general.getQuery().put("orderListType", QueryType.Eq, String.valueOf(index));
-        general.getQuery().setItemClz(index < 2 ? OrderTask.class : CombinedTask.class);
+        general.getQuery().put("index", String.valueOf(item.value()));
+        String activity = general.getQuery().findValue(KEY_ACTIVITY);
+
+        if (activity != null){
+            OrderActivityType type = OrderActivityType.getType(activity, item.value() == 1);
+            general.getQuery().put(KEY_ACTIVITY, QueryType.Eq, type.getActivity());
+        }
     }
 
     @Override
@@ -73,7 +76,7 @@ public class MobileWorkBenchActivity extends ClassifyListActivity<KeyValue<Strin
         super.initView();
 
         getBarItem().setTitle("移动工作台");
-        getSearchEdit().setHint("输入工单号搜索");
+        getSearchEdit().setHint("输入关键词或工单号搜索");
         setTabMode(TabLayout.MODE_FIXED);
     }
 
@@ -95,77 +98,83 @@ public class MobileWorkBenchActivity extends ClassifyListActivity<KeyValue<Strin
     @Override
     public GeneralListQuery getQuery() {
         return new GeneralListQuery(MobileOrder.class)
-                .field("orderCode")
-                .filterFields("endTime","startTime")
-                .put("orderListType", QueryType.Eq, String.valueOf(getIntent().getIntExtra("index", 0)));
+                .field("searchValue")
+                .filterFields("endTime", "startTime", "orderType", "typeName")
+                .put(KEY_ACTIVITY, QueryType.Eq, OrderActivityType.ottff.getActivity())
+                .putEvent(this::onFieldChanged);
     }
 
     @Override
     public List requestPager(RequestBindingPresenter p, PagerBean bean) throws Exception {
 
         GeneralListQuery query = (GeneralListQuery) bean;
-        User user = SharedUtil.getValue("User", new User());
-        query.put("userId", QueryType.Eq, user.getUserId());
-        return rbp.callServiceList(MobileService.class, s->s.getOrderToDoList(query.toSimple(), query.getItemClz().getName()), bean);
+        return rbp.callServiceList(MobileService.class, s->s.getActivityOrder(query.findValue(KEY_ACTIVITY), query.toSimple()), bean);
     }
 
-    private void onClaimOk(String value){
-        general.refresh();
-        Toast.makeText(this, "签收成功", Toast.LENGTH_LONG).show();
+    private boolean onFieldChanged(String field){
+        if ("searchValue".equals(field)){
+
+            GeneralListQuery.Query query = general.getQuery().find(field, QueryType.Like);
+            String value = query == null ? null : query.getValue();
+            if (!TextUtils.isEmpty(value)){
+                if (value.matches("^[A-Z]{2}\\d{1,5}$") || value.matches("\\d{1,5}$")){
+                    //存在歧义, 询问用户.
+                    if (alertDialog != null){
+                        return true;
+                    }
+                    alertDialog = new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("当前查询存在歧义,请问您是查询?")
+                            .setNegativeButton("查工单", (dialog, v)->{
+                                general.getQuery()
+                                        .put(OrderActivityType.isOther(general.getQuery().findValue(KEY_ACTIVITY)) ? "duijieId" : "orderCode", value);
+                                general.refresh();
+                                alertDialog = null;
+                            })
+                            .setPositiveButton("查关键词", (dialog, v)->{
+                                general.getQuery().put("keyWord", value);
+                                general.refresh();
+                                alertDialog = null;
+                            }).show();
+                    return false;
+                }else if (value.matches("^[A-Z]{2}\\d{5,20}$") || value.matches("\\d{5,24}$")){
+                    //不存在歧义，查询工单号
+                    general.getQuery()
+                            .put(OrderActivityType.isOther(general.getQuery().findValue(KEY_ACTIVITY)) ? "duijieId" : "orderCode", value);
+                }else {
+                    //不存在歧义，查询关键词
+                    general.getQuery().put("keyWord", value);
+                }
+            }else {
+                general.getQuery().clear("duijieId");
+                general.getQuery().clear("orderCode");
+                general.getQuery().clear("keyWord");
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onRefresh() {
+        reloadTab();
     }
 
     @Override
     public ListHandler getHandler() {
 
-        return new ListHandler(BR.handler, R.layout.list_error_normal){
+        return new ListHandler<ActivityOrderItem>(BR.handler, R.layout.list_error_normal){
 
             @Override
-            public void onClick(Context context, int tag, Object item) {
+            public void onClick(Context context, int tag, ActivityOrderItem item) {
 
-                Intent intent = null;
-                if (item instanceof OrderTask){
-                    OrderTask data = (OrderTask) item;
-                    if (tag == 0){
-                        WorkOrderDetailActivityHandler.openActivityNormal(context, new OrderInfoReq(data), null);
-                    }else if (tag == 1){
-
-                        if (data.getStatus() == TaskStatus.todo){
-                            intent = WorkOrderDetailActivityHandler.openActivityIntent(context, new OrderInfoReq(data), data.getTaskDefKey());
-                            intent.putExtra("isTimeOut", data.getVars().getMap().isTimeOut());
-                        }else{
-                            AlertUtil.build(context, "是否签收任务\"%s\"", data.getVars().getMap().getOrderTitle())
-                                    .setPositiveButton("签收", (dialog, which) -> {
-                                        rbp.addRequest(()->rbp.callServiceData(MobileService.class, s -> s.claimOrderForStreet(data.getTaskId())),
-                                                MobileWorkBenchActivity.this::onClaimOk);
-                                    }).setNegativeButton("不签收", null).show();
-                        }
-                    }
-                }else if (item instanceof CombinedTask){
-                    CombinedTask data = (CombinedTask) item;
-
-                    if (tag == 0){
-                        WorkOrderDetailActivityHandler.openActivityNormal(context, new OrderInfoReq(data.getId(), data.getOrderInfo().getProcInsId()), null);
-                    }else{
-                        //处置
-                        intent = WorkOrderDetailActivityHandler.openActivityIntent(context, new OrderInfoReq(data.getId(), data.getOrderInfo().getProcInsId()), TaskDisposalType.unionDisposal.toString());
-                    }
-                }
+                Intent intent = WorkOrderDetailActivityHandler.openActivityIntent(context,
+                        new OrderInfoReq(item.getOrderId(), item.getTaskId(), item.getTaskDefKey(), item.getProcInsId(), "todo"), item.getTaskDefKey());
 
                 if (intent != null){
                     startForResult(intent, (v)->{
                         general.refresh();
                     });
                 }
-            }
-
-            @Override
-            public int getItemLayout(Object item) {
-                if (item instanceof OrderTask){
-                    return R.layout.item_mobile_workbench;
-                }else if (item instanceof CombinedTask){
-                    return R.layout.item_mobile_workbench_combined;
-                }
-                return super.getItemLayout(item);
             }
         };
     }

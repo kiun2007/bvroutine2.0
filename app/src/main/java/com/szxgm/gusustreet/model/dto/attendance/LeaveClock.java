@@ -1,16 +1,14 @@
 package com.szxgm.gusustreet.model.dto.attendance;
 
-import android.text.TextUtils;
-
 import com.szxgm.gusustreet.model.base.LastLocation;
-import com.szxgm.gusustreet.model.dto.attendance.ArriveClock;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 下班打卡，合并上班信息.
  */
-public class LeaveClock extends ArriveClock {
+public class LeaveClock extends ArriveClock implements Serializable {
 
     private String dkId;
 
@@ -23,6 +21,10 @@ public class LeaveClock extends ArriveClock {
     private String dkEndaddress;
 
     private String dkEarly;
+
+    private String applyType;
+
+    private String times;
 
     public boolean isEarly(){
         return "1".equals(dkEarly);
@@ -57,8 +59,35 @@ public class LeaveClock extends ArriveClock {
         if (getDkBegin() != null && dkEnd != null){
             return true;
         }
-
         return false;
+    }
+
+    public String getApplyType(){
+        return applyType;
+    }
+
+    public LeaveClock applyType(String applyType){
+        this.applyType = applyType;
+        return this;
+    }
+
+    public String getApplyTitle(){
+        if ("1".equals(applyType)){
+            return "上班补卡";
+        }
+        if ("2".equals(applyType)){
+            return "下班补卡";
+        }
+        return "";
+    }
+
+    public String getTimes() {
+        return times;
+    }
+
+    public LeaveClock setTimes(String times) {
+        this.times = times;
+        return this;
     }
 
     public String getDkEarly() {

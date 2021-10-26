@@ -2,6 +2,9 @@ package kiun.com.bvroutine.presenters;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
@@ -31,6 +34,7 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
     ServiceRequestView viewInterface;
     LoaderManager loaderManager;
     Map<Integer, ExtraValue<GetTNoParamCall, SetCaller, SetCaller>> requestMaps = new HashMap<>();
+    Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public RetrofitRequestPresenter(ServiceRequestView viewInterface){
         this.viewInterface = viewInterface;
@@ -39,14 +43,11 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
 
     @Override
     public void addRequest(GetTNoParamCall<Void> serviceCaller) {
-        int taskId = (int) (Math.random() * 1000 * 1000 * 1000);
-        requestMaps.put(taskId, new ExtraValue(serviceCaller, null, null));
-        loaderManager.restartLoader(taskId, new Bundle(), this);
+        addRequest(serviceCaller, null,null);
     }
 
     @Override
     public <T> void addRequest(GetTNoParamCall<T> serviceCaller, SetCaller<T> setCaller) {
-
         addRequest(serviceCaller, setCaller, null);
     }
 
@@ -54,7 +55,7 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
     public <T> void addRequest(GetTNoParamCall<T> serviceCaller, SetCaller<T> setCaller, SetCaller<Exception> errCaller) {
         int taskId = (int) (Math.random() * 1000 * 1000 * 1000);
         requestMaps.put(taskId, new ExtraValue<>(serviceCaller, setCaller, errCaller));
-        loaderManager.restartLoader(taskId, new Bundle(), this);
+        mainHandler.post(()->loaderManager.restartLoader(taskId, new Bundle(), this));
     }
 
     @Override
@@ -122,6 +123,8 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
                     ((ServiceRequestLoadingView) viewInterface).loadComplete(asyncLoader);
                 }
                 asyncLoader.getCallback().call(data);
+
+                //销毁异步加载器，防止重复加载数据
                 loaderManager.destroyLoader(loader.getId());
             }
         }

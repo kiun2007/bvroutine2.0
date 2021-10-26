@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--街道领导节点-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.szxgm.gusustreet.ui.activity.workbench.DisposalDepartmentActivity" />
+        <import type="com.szxgm.gusustreet.views.bind.builder.NetSpinnerBuilder" />
+        <import type="kiun.com.bvroutine.utils.ListUtil" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="com.szxgm.gusustreet.net.requests.mobile.TaskDisposalReq" />
+    </data>
+    <LinearLayout
+        style="@style/barVertical"
+        android:background="@color/wrapBackground"
+        android:orientation="vertical">
+        <TextView
+            android:textAlignment="center"
+            android:text="此工单无需处理"
+            android:textColor="@color/gray"
+            android:padding="15dp"
+            style="@style/fill_base" />
+    </LinearLayout>
+</layout>

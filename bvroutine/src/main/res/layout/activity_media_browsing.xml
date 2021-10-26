@@ -8,6 +8,9 @@
         <variable name="type" type="String" />
         <variable name="ready" type="Boolean" />
         <variable name="playing" type="Boolean" />
+        <variable
+            name="isThumb"
+            type="boolean" />
     </data>
     <FrameLayout
         android:background="#000"
@@ -21,10 +24,10 @@
             android:layout_height="match_parent" />
         <kiun.com.bvroutine.views.PhotoView
             android:show="@{(`audio`.equals(type)&amp;&amp;playing)||!ready}"
-            android:isAuthentication="@{false}"
+            android:isAuthentication="@{true}"
             android:url="@{url}"
             android:zoomEnabled="@{`image`.equals(type)}"
-            android:thumbUrl="@{`.thumb.jpg`}"
+            android:thumbUrl="@{isThumb?`.thumb.jpg`:(String)null}"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <LinearLayout

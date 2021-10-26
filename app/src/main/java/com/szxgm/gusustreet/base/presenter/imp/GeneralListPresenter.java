@@ -49,9 +49,14 @@ public class GeneralListPresenter<T> implements ListRequestView<PagerBean, ISusp
         viewPresenter.initRequest(query = controller.getQuery(), this);
 
         controller.getSearchEdit().setOnEditorActionListener((v, actionId, event) -> {
-            if (getQuery().getField() != null){
-                getQuery().put(getQuery().getField(), QueryType.Like, v.getText().toString());
-                refresh();
+
+            if (getQuery().getField() != null && (event == null || event.getAction() == KeyEvent.ACTION_UP)){
+
+                try {
+                    getQuery().put(getQuery().getField(), QueryType.Like, v.getText().toString(), false);
+                    refresh();
+                } catch (Exception e) {
+                }
             }
             return true;
         });
@@ -147,6 +152,8 @@ public class GeneralListPresenter<T> implements ListRequestView<PagerBean, ISusp
                 indexBarList.addAll(list);
             }
         }
+
+        controller.onDataComplete(p.list());
     }
 
     @Override

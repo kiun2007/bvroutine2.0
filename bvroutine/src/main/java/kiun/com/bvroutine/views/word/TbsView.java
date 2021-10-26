@@ -49,6 +49,8 @@ public class TbsView extends FrameLayout implements TypedView, TbsReaderView.Rea
     @Override
     public void initView() {
 
+        tbsReaderTemp = getContext().getFilesDir().getAbsolutePath()+ "/TbsReaderTemp";
+
         File bsReaderTempFile = new File(tbsReaderTemp);
         if (!bsReaderTempFile.exists() && !bsReaderTempFile.mkdir()) {
             Log.e("print","创建/TbsReaderTemp失败！！！！！");
@@ -56,6 +58,7 @@ public class TbsView extends FrameLayout implements TypedView, TbsReaderView.Rea
         mTbsReaderView = new TbsReaderView(getContext(), this);
         addView(mTbsReaderView, new ViewGroup.LayoutParams(-1,-1));
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.layout_loading_base, this, true);
+        binding.webView.loadUrl("https://www.baidu.com");
     }
 
     public void displayFile(File file){

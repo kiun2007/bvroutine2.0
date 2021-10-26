@@ -16,6 +16,7 @@
         <import type="com.szxgm.gusustreet.ui.activity.list.RiverListActivity" />
         <import type="com.szxgm.gusustreet.model.dto.OrderType" />
         <import type="kiun.com.bvroutine.utils.MapUtil" />
+        <import type="java.util.Arrays" />
 
         <variable name="fixedRiver" type="Boolean" />
         <variable name="appealTypeSpinnerData" type="kiun.com.bvroutine.data.viewmodel.SpinnerData" />
@@ -255,6 +256,7 @@
                 <kiun.com.bvroutine.views.MultipleImageGrid
                     android:layout_margin="8dp"
                     app:imageLimit="3"
+                    android:extra="@{Arrays.asList(`|`, `\\|`)}"
                     android:val="@={order.imageData}"
                     android:service="@{part->fileService.commonUpload(part)}"
                     style="@style/multipleUploadGrid" />

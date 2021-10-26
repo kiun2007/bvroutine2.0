@@ -9,6 +9,7 @@ import com.szxgm.gusustreet.MainApplication;
 import com.szxgm.gusustreet.R;
 import com.szxgm.gusustreet.databinding.ActivityRootLoginBinding;
 import com.szxgm.gusustreet.model.dto.user.User;
+import com.szxgm.gusustreet.net.services.TestService;
 
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.utils.SharedUtil;
@@ -24,6 +25,10 @@ public class LoginActivity extends RequestBVActivity<ActivityRootLoginBinding> {
     public void initView() {
         User user = SharedUtil.getValue(User.TAG, new User());
         binding.setUser(user == null ? new User() : user);
+
+        addRequest(()-> rbp.callServiceData(TestService.class, s-> s.login("admin", "123456", "password", "server")), v->{
+            System.out.println(v);
+        });
     }
 
     @Override

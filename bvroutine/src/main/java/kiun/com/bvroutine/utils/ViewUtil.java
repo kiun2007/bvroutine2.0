@@ -113,6 +113,7 @@ public class ViewUtil {
 
         if (isEditMode){
             logError = new StringBuilder();
+
         }
 
         Context context = typedView.getContext();
@@ -168,6 +169,11 @@ public class ViewUtil {
     public static int dp2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+    public static int px2dp(Context context, float pxValue){
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale);
     }
 
     public static<T> T findRootViewTag(View view, Class<T> clz){

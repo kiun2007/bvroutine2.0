@@ -8,6 +8,8 @@ public class RadioGroupBindConvert extends BindConvert<RadioGroup, Object, Objec
 
     private Object selectTag;
 
+    private boolean isSet = false;
+
     public RadioGroupBindConvert(RadioGroup view) {
         super(view);
         view.setOnCheckedChangeListener(this);
@@ -22,9 +24,11 @@ public class RadioGroupBindConvert extends BindConvert<RadioGroup, Object, Objec
     public void setValue(Object value) {
         if (value != null){
             RadioButton radioButton = view.findViewWithTag(value);
+            isSet = true;
             if (radioButton != null){
                 radioButton.setChecked(true);
             }
+            isSet = false;
         }
     }
 
@@ -32,6 +36,9 @@ public class RadioGroupBindConvert extends BindConvert<RadioGroup, Object, Objec
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         View view = group.findViewById(checkedId);
         selectTag = view.getTag();
-        onChanged();
+
+        if (!isSet){
+            onChanged();
+        }
     }
 }

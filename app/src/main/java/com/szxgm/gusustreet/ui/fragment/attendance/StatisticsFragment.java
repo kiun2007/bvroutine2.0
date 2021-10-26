@@ -1,6 +1,9 @@
 package com.szxgm.gusustreet.ui.fragment.attendance;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.widget.Toast;
+
 import com.szxgm.gusustreet.BR;
 import com.szxgm.gusustreet.R;
 import com.szxgm.gusustreet.databinding.FragmentAttendanceStatisticsBinding;
@@ -16,12 +19,15 @@ import com.szxgm.gusustreet.net.requests.ClockHistoryReq;
 import com.szxgm.gusustreet.net.requests.TimeReq;
 import com.szxgm.gusustreet.net.requests.WorkTimeReq;
 import com.szxgm.gusustreet.net.services.AttendanceService;
+import com.szxgm.gusustreet.ui.activity.attendance.CommitAttendanceActivityHandler;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import kiun.com.bvroutine.base.RequestBVFragment;
@@ -38,6 +44,7 @@ import kiun.com.bvroutine.utils.DateUtil;
 import kiun.com.bvroutine.utils.ListUtil;
 import kiun.com.bvroutine.utils.MCString;
 import kiun.com.bvroutine.utils.MapUtil;
+import kiun.com.bvroutine.utils.ObjectUtil;
 import kiun.com.bvroutine.utils.SharedUtil;
 
 /**
@@ -68,6 +75,23 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
     Date monthStart, monthEnd;
     ClockStatistics clockStatistics;
 
+    ListHandler listHandler = new ListHandler(BR.handler,R.layout.list_error_normal){
+        @Override
+        public void onClick(Context context, int tag, Object data) {
+            if (data instanceof WorkTimesRow){
+                WorkTimesRow row = (WorkTimesRow) data;
+                if (row.getExtra() instanceof LeaveClock){
+                    LeaveClock clock = (LeaveClock) row.getExtra();
+                    if (clock.getTimes() == null){
+                        Toast.makeText(context, "未查找到排班信息，无法补卡", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    CommitAttendanceActivityHandler.openByClock(context, clock);
+                }
+            }
+        }
+    };
+
     @Override
     public void initView() {
 
@@ -76,7 +100,7 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
         monthEnd = DateUtil.getMonthEnd(null);
         listViewPresenter = new StepTreePresenter(mViewBinding.mainTree, mViewBinding.mainRefresh, BR.treeHandler);
         listViewPresenter.initRequest(null, this);
-        listViewPresenter.start(new ListHandler(BR.handler,R.layout.list_error_normal), R.layout.item_root, BR.item, getRequestPresenter());
+        listViewPresenter.start(listHandler, R.layout.item_root, BR.item, getRequestPresenter());
     }
 
     private void onDateChanged(ClockStatistics clockStatistics){
@@ -173,21 +197,28 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
         long total = 0;
 
         Map<String, Long> timesCount = new HashMap<>();
+        Map<String, LeaveClock> clockMap = new HashMap<>();
+
         for (LeaveClock clock : clocks){
             if (caller.call(clock)){
                 WorkTime workTime = workTimeMap.get(clock.getDkPbid());
-                if (workTime == null) continue;
+                if (workTime == null || clock.getDkEnd() == null) continue;
 
                 long time = isLate ? clock.getDkBegin().getTime() - workTime.getBegin().getTime() : workTime.getEnd().getTime() - clock.getDkEnd().getTime();
                 total += time;
                 count ++;
 
                 String key = MCString.formatDate("yyyy-MM-dd(HH:mm)", isLate ? workTime.getBegin() : workTime.getEnd());
+                clockMap.put(key, clock);
+                clock.setTimes(workTime.getTimes());
+                clock.applyType(isLate ? "1" : "2");
+
                 time += timesCount.get(key) == null ? 0 : timesCount.get(key);
                 timesCount.put(key, time);
             }
         }
-        rowDataList.add(MapUtil.toList(timesCount,(key, val)-> new WorkTimesRow(key, String.format("%s%d分钟", title, (val/(60*1000))))));
+        rowDataList.add(MapUtil.toList(timesCount,(key, val)->
+                new WorkTimesRow(key, String.format("%s%d分钟", title, (val/(60*1000))), clockMap.get(key))));
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%d次", count));
         if (count != 0){
@@ -196,10 +227,23 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
         rootList.add(new AttendanceRoot(title, sb.toString(), count == 0 ? grayColor : redColor, index,count != 0));
     }
 
+    private String getTimeName(String timesId){
+        WorkTime workTime = workTimeMap.get(timesId);
+        if (workTime != null){
+            return workTime.getTimes();
+        }
+        return null;
+    }
+
+    @SuppressLint("DefaultLocale")
     private void addMissClock(int index){
         List<LeaveClock> missClocks = ListUtil.filter(clocks, item -> !item.isComplete());
+
         rowDataList.add(ListUtil.toList(missClocks,
-                item-> new WorkTimesRow(MCString.formatDate("yyyy-MM-dd(EEE)", item.getDkBegin()), String.format("%s下班缺卡", item.getDkPbname()))));
+                item-> new WorkTimesRow(MCString.formatDate("yyyy-MM-dd(EEE)", item.getDkBegin()),
+                        String.format("%s下班缺卡", item.getDkPbname()),
+                        item.applyType("2").setTimes(getTimeName(item.getDkPbid())))
+        ));
         rootList.add(new AttendanceRoot("缺卡", String.format("%d次", missClocks.size()), missClocks.size() == 0 ? grayColor : redColor, index,missClocks.size() > 0));
     }
 
@@ -270,6 +314,8 @@ public class StatisticsFragment extends RequestBVFragment<FragmentAttendanceStat
         for (WorkTime workTime : workTimes){
             workTimeMap.put(workTime.getPbId(), workTime);
         }
+
+        this.clocks = ListUtil.filter(this.clocks, item -> workTimeMap.containsKey(item.getDkPbid()));
         return true;
     }
 

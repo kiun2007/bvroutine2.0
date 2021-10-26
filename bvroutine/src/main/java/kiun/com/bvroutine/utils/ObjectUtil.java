@@ -1,5 +1,6 @@
 package kiun.com.bvroutine.utils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -21,7 +22,7 @@ import kiun.com.bvroutine.data.KeyValue;
 import kiun.com.bvroutine.data.getter.ObjectGetter;
 import kiun.com.bvroutine.interfaces.callers.BatchVoidCaller;
 
-import static kiun.com.bvroutine.utils.ClassUtil.*;
+import static kiun.com.bvroutine.utils.type.ClassUtil.*;
 
 public class ObjectUtil {
 
@@ -367,6 +368,17 @@ public class ObjectUtil {
             return newObject(clz, params);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static <A extends Annotation> A getFirstAnnotation(Class clz, Class<A> annoClz){
+
+        for (Class itemClz = clz; itemClz != null; itemClz = itemClz.getSuperclass()){
+            A anno = (A) itemClz.getAnnotation(annoClz);
+            if (anno != null){
+                return anno;
+            }
         }
         return null;
     }

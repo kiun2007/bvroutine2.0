@@ -26,6 +26,8 @@ public class ScheduledMethod {
 
     private boolean isAuto;
 
+    private boolean isOnce = false;
+
     public ScheduledMethod(long duration, Method method, Context context, boolean isAsync) {
 
         this.duration = duration;
@@ -52,7 +54,9 @@ public class ScheduledMethod {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-                handler.sendEmptyMessageDelayed(0, duration);
+                if (!isOnce){
+                    handler.sendEmptyMessageDelayed(0, duration);
+                }
                 call();
             }
         };
@@ -103,6 +107,8 @@ public class ScheduledMethod {
                         scheduledMethod.start();
                     }
                 }
+
+                scheduledMethod.isOnce = scheduled.once();
 
                 String key = scheduled.key();
                 if (key.isEmpty()){

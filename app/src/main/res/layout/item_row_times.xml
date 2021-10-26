@@ -17,7 +17,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:gravity="center"
-        android:onClick="@{()->treeHandler.onClick(context, 0, null)}"
+        android:onClick="@{()->handler.onClick(context, 0, item)}"
         android:orientation="vertical">
         <TextView
             style="@style/barVertical"

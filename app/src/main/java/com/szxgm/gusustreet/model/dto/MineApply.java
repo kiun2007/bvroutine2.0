@@ -261,14 +261,14 @@ public class MineApply implements Serializable {
         if ("3".equals(type) && status == 1){
             return "是否同意对方调班请求?";
         }
-        return "通过";
+        return "是否通过审核?";
     }
 
     public String getRefuseMessage(){
         if ("3".equals(type) && status == 1){
             return "是否拒绝对方调班请求?";
         }
-        return "是否驳回审批";
+        return "是否驳回审批?";
     }
 
     public boolean isReplace() {

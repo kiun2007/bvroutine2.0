@@ -9,6 +9,11 @@ public enum TaskDisposalType {
      */
     quickTaskPerson(R.layout.layout_disposal_depart),
 
+    /**
+     * 网格员上报节点
+     */
+    startPerson(R.layout.layout_disposal_start_person),
+
     //联动工作站节点
     workStation(R.layout.layout_disposal_work_station),
 

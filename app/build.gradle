@@ -10,6 +10,12 @@ android {
             keyAlias = 'debug'
             keyPassword 'android'
         }
+        release {
+            storeFile file('gusu.jks')
+            storePassword '123456'
+            keyAlias = 'app'
+            keyPassword '123456'
+        }
     }
 
     compileSdkVersion 29
@@ -20,8 +26,8 @@ android {
         minSdkVersion 23
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 23
-        versionCode 151
-        versionName "V1.0.51"
+        versionCode 1572
+        versionName "V1.0.62"
         multiDexEnabled = true
 
         ndk {
@@ -35,9 +41,10 @@ android {
             buildConfigField("boolean", "Fake", "false")
             buildConfigField('String', 'Other', '"http://106.14.143.145:8080"')
             if (debugLocal){
-                buildConfigField("String", "Prefix", "\"http://192.168.2.103:8180/jdpt/\"")
-//                buildConfigField("String", "Prefix", "\"http://"+getIP()+":80\"")
+//                buildConfigField("String", "Prefix", "\"http://192.168.2.204:8180/jdpt/\"")
+                buildConfigField("String", "Prefix", "\"http://"+getIP()+":80\"")
             }else{
+//                buildConfigField("String", "Prefix", "\"http://2.40.9.167:8180/jdpt/\"")
                 buildConfigField('String', 'Prefix', '"http://222.92.48.28:8180/jdpt/"')
             }
         }
@@ -46,6 +53,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("boolean", "Fake", "false")
             buildConfigField('String', 'Other', '"http://106.14.143.145:8080"')
+//            buildConfigField("String", "Prefix", "\"http://2.40.9.167:8180/jdpt/\"")
+            signingConfig signingConfigs.release
             buildConfigField("String", "Prefix", "\"http://222.92.48.28:8180/jdpt/\"")
 //            buildConfigField("String", "Prefix", "\"http://139.196.72.26:8080\"")
         }
@@ -99,10 +108,9 @@ dependencies {
     implementation 'com.amap.api:location:3.3.0'
     implementation 'com.amap.api:search:5.0.0'
 
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.alibaba:fastjson:1.2.31"
 
-    implementation (project(':bvroutine'))
+    api (project(':bvroutine'))
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     annotationProcessor files('libs/bvroutine_apt.jar')
 

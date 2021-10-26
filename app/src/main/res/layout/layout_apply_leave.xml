@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="kiun.com.bvroutine.utils.MCString" />
-        <import type="com.szxgm.gusustreet.model.base.DictStatic" />
+
         <import type="android.view.View" />
 
         <variable name="item" type="com.szxgm.gusustreet.model.dto.MineApply" />
@@ -29,6 +29,17 @@
                 style="@style/tvNormal" />
         </LinearLayout>
         <LinearLayout
+            android:layout_marginTop="10dp"
+            style="@style/barVertical">
+            <TextView
+                android:text="时间:"
+                android:layout_marginRight="10dp"
+                style="@style/tvNormal" />
+            <TextView
+                android:text="@{MCString.formatDate(`yyyy-MM-dd HH:mm`, item.begin) + `至` + MCString.formatDate(`yyyy-MM-dd HH:mm`, item.end)}"
+                style="@style/tvNormal" />
+        </LinearLayout>
+        <LinearLayout
             android:show="@{item.type.equals(`1`)||item.type.equals(`4`)}"
             android:layout_marginTop="10dp"
             style="@style/barVertical">
@@ -43,7 +54,15 @@
         <kiun.com.bvroutine.views.text.HtmlTextView
             tools:text="请假时长:1"
             android:layout_marginTop="10dp"
-            android:argument="@{MCString.asArray(`请假时长:`, item.totaltime)}"
+            android:argument="@{MCString.asArray(`请假时长:`, item.totaltime, `小时`)}"
+            app:html="@string/doubleDetailedUnit"
+            style="@style/tvNormal" />
+
+        <kiun.com.bvroutine.views.text.HtmlTextView
+            tools:text="请假事由:1"
+            android:show="@{item.reason!=null}"
+            android:layout_marginTop="10dp"
+            android:argument="@{MCString.asArray(`请假事由:`, item.reason)}"
             app:html="@string/doubleDetailed"
             style="@style/tvNormal" />
     </LinearLayout>

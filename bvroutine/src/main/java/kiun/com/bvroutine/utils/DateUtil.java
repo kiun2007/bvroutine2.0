@@ -32,14 +32,15 @@ public class DateUtil {
 
         if (Calendar.getInstance().before(calendar)){
             calendar = Calendar.getInstance();
-//            calendar.add(Calendar.DAY_OF_YEAR, -1);
+            calendar.add(Calendar.DAY_OF_YEAR, -1);
         }
-        return calendar.getTime();
+
+        return getDayEnd(calendar.getTime());
     }
 
     public static float getHours(Date start, Date end){
 
-        return (end.getTime() - start.getTime()) / (3600*1000);
+        return (float) (end.getTime() - start.getTime()) / (3600*1000);
     }
 
     public static List<String> getDays(Date start, Date end, String format){
@@ -47,10 +48,9 @@ public class DateUtil {
         calendar.setTime(start);
 
         List<String> allTimes = new LinkedList<>();
-        allTimes.add(MCString.formatDate(format, start));
         while (calendar.getTime().before(end)){
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
             allTimes.add(MCString.formatDate(format, calendar.getTime()));
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
         }
         return allTimes;
     }

@@ -20,6 +20,8 @@ public interface ListViewPresenter<T,Q,Req extends ListRequestView>{
 
     void notifySet();
 
+    int count();
+
     int[] filterCount(CompareCaller<T>... callers);
 
     int[] filterCount(boolean repeat, CompareCaller<T>... callers);

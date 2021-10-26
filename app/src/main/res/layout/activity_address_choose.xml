@@ -26,6 +26,7 @@
                 style="@style/fill_base">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mainList"
+                    tools:listitem="@layout/item_poi_item"
                     style="@style/fill_base" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>

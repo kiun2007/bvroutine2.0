@@ -17,7 +17,7 @@
             android:orientation="vertical">
             <ImageView
                 android:backgroundUrl="@{String.format(`http://106.14.143.145/image/%s`,item)}"
-                android:background="@drawable/bg_auto_dash_plus"
+                android:background="@{handler.getItem(item)==null?@drawable/bg_auto_dash_plus:null}"
                 android:scaleType="center"
                 android:onClick="@{(v)->handler.onClick(v, item, index.index)}"
                 android:layout_width="match_parent"

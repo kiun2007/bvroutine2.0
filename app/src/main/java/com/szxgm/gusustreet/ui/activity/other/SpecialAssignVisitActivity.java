@@ -2,8 +2,8 @@ package com.szxgm.gusustreet.ui.activity.other;
 
 import android.widget.Toast;
 
+import com.szxgm.gusustreet.BR;
 import com.szxgm.gusustreet.R;
-import com.szxgm.gusustreet.databinding.ActivityGridAssignPatrolBinding;
 import com.szxgm.gusustreet.databinding.ActivityGridAssignVisitBinding;
 import com.szxgm.gusustreet.model.other.GridVisit;
 
@@ -26,7 +26,7 @@ public class SpecialAssignVisitActivity extends RequestBVActivity<ActivityGridAs
 
     @Override
     public void initView() {
-        binding.setData(new GridVisit());
+        setVariable(BR.data, new GridVisit());
     }
 
     public void onComplete(String data){

@@ -6,10 +6,11 @@
     <data>
         <import type="android.graphics.drawable.Drawable" />
         <import type="kiun.com.bvroutine.utils.MCString" />
-        <import type="com.szxgm.gusustreet.model.base.DictStatic"/>
+        <import type="com.szxgm.gusustreet.utils.OrderUtil" />
+
         <import type="com.szxgm.gusustreet.model.base.TaskStatus" />
 
-        <variable name="item" type="com.szxgm.gusustreet.model.dto.mobile.OrderTask" />
+        <variable name="item" type="com.szxgm.gusustreet.model.dto.mobile.ActivityOrderItem" />
         <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
     </data>
 
@@ -31,20 +32,40 @@
                 android:drawableTint="#999"
                 android:drawablePadding="5dp"
                 android:textColor="#333"
-                android:text="@{item.vars.map.orderTitle}"
+                android:text="@{item.title}"
                 tools:text="标题" />
             <kiun.com.bvroutine.views.text.HtmlTextView
                 style="@style/tvNormal"
+                android:show="@{item.duijieId!=null}"
                 app:html="@string/doubleDetailed"
-                android:argument="@{MCString.asArray(`工单编号:`, item.vars.map.orderCode)}"
+                android:argument="@{MCString.asArray(`联动工单编号:`, item.duijieId)}"
+                android:layout_marginTop="5dp"
+                tools:text="联动工单编号: 135778455125665" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                style="@style/tvNormal"
+                android:show="@{item.duijieId==null}"
+                app:html="@string/doubleDetailed"
+                android:argument="@{MCString.asArray(`工单编号:`, item.orderCode)}"
                 android:layout_marginTop="5dp"
                 tools:text="工单编号: 135778455125665" />
             <kiun.com.bvroutine.views.text.HtmlTextView
                 style="@style/tvNormal"
-                app:html="@string/doubleDetailed"
-                android:argument="@{MCString.asArray(`上报时间:`, item.vars.map.orderReportTime)}"
+                app:html="@string/doubleDetailedColor"
+                android:argument="@{OrderUtil.dateToSingle(`上报时间:`, item.reportDate)}"
                 android:layout_marginTop="5dp"
                 tools:text="上报时间: 2020-05-15 10:00:00" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                style="@style/tvNormal"
+                app:html="@string/doubleDetailedColor"
+                android:argument="@{OrderUtil.dateToSingle(`拒绝反馈时间:`, item.refuseDate)}"
+                android:layout_marginTop="5dp"
+                tools:text="拒绝反馈时间: 2020-05-15 10:00:00" />
+            <kiun.com.bvroutine.views.text.HtmlTextView
+                style="@style/tvNormal"
+                app:html="@string/doubleDetailedColor"
+                android:argument="@{OrderUtil.dateToSingle(`工单截止时间:`, item.shouldEndDate)}"
+                android:layout_marginTop="5dp"
+                tools:text="工单截止时间: 2020-05-15 10:00:00" />
             <kiun.com.bvroutine.views.text.HtmlTextView
                 style="@style/tvNormal"
                 app:html="@string/doubleDetailed"
@@ -54,16 +75,15 @@
         </LinearLayout>
         <CheckedTextView
             android:onClick="@{()->handler.onClick(context, 1, item)}"
-            android:checked="@{TaskStatus.claim==item.status}"
+            android:checked="false"
             android:background="@drawable/shape_radius_hollow_blue_t_bg"
             android:backgroundTint="@color/sel_check_text_tint_color"
             android:drawableRight="@drawable/sel_check_sign_button"
             android:textColor="#FFF"
             android:layout_marginLeft="10dp"
             android:padding="6dp"
-            android:text="@{TaskStatus.claim==item.status?`签收`:`处理`}"
-            tools:checked="true"
-            tools:text="签收"
+            android:text="处理"
+            tools:checked="false"
             style="@style/tvMain" />
     </LinearLayout>
 </layout>

@@ -2,9 +2,10 @@ package kiun.com.bvroutine.views.text;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
 
-public class HtmlTextImageGetter implements Html.ImageGetter{
+import kiun.com.bvroutine.text.Html;
+
+public class HtmlTextImageGetter implements Html.ImageGetter {
 
     private Context context;
     float size;
@@ -26,10 +27,21 @@ public class HtmlTextImageGetter implements Html.ImageGetter{
     public Drawable getDrawable(String source) {
 
         try {
-            int id = Integer.parseInt(source);
-            Drawable d = context.getResources().getDrawable(id);
+            int id = -1;
 
-            d.setBounds(0, offsetTop, (int) size, (int) size + offsetTop);
+            if (source.startsWith("@")){
+                String[] names = source.split("/");
+                if (names.length == 2){
+                    id = context.getResources().getIdentifier(names[1], names[0].substring(1), context.getPackageName());
+                }
+            }else{
+                id = Integer.parseInt(source);
+            }
+
+            if (id == -1) return null;
+
+            Drawable d = context.getResources().getDrawable(id);
+            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
             return d;
         }catch (NumberFormatException ex){
         }

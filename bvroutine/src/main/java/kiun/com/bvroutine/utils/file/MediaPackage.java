@@ -3,6 +3,7 @@ package kiun.com.bvroutine.utils.file;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -38,6 +39,8 @@ public class MediaPackage {
 
     private Bitmap thumbBitmap;
 
+    private float compress = 1.0f;
+
     private boolean isThumbEnable = false; //启用缩略图模式.
 
     public MediaPackage(Context context, String filePartName, String thumbPartName){
@@ -60,6 +63,10 @@ public class MediaPackage {
         return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
     }
 
+    public void setCompress(float compress) {
+        this.compress = compress;
+    }
+
     /**
      * 打包主文件.
      * @param uri
@@ -71,6 +78,22 @@ public class MediaPackage {
             return MultipartBody.Part.createFormData(filePartName, requestBody.key(), requestBody.value());
         }
         return null;
+    }
+
+    /**
+     * 压缩主图.
+     * @return
+     */
+    private byte[] compress(byte[] buffer){
+
+        if (compress < 1.0f){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, (int) (compress * 100), outputStream);
+            return outputStream.toByteArray();
+        }
+        return buffer;
     }
 
     private KeyValue<String, RequestBody> packageUriBody(Uri uri){
@@ -95,6 +118,7 @@ public class MediaPackage {
             inputStream.read(buffer);
             inputStream.close();
 
+            buffer = compress(buffer);
             RequestBody requestFile = RequestBody.create(MediaUtil.mediaType(context, fileName), buffer);
             return new KeyValue<>(fileName, requestFile);
         } catch (IOException e) {

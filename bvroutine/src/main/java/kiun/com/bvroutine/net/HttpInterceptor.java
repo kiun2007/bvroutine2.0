@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import kiun.com.bvroutine.ActivityApplication;
+import kiun.com.bvroutine.BuildConfig;
 import kiun.com.bvroutine.security.ConstValue;
 import kiun.com.bvroutine.security.EncodeType;
 import kiun.com.bvroutine.utils.AesEncryptUtils;
@@ -30,7 +31,7 @@ public class HttpInterceptor implements Interceptor {
     private LoginInterceptor loginInterceptor;
     private String key;
     private Class<? extends LoginInterceptor> loginClass;
-    CacheInterceptor cacheInterceptor;
+    private CacheInterceptor cacheInterceptor;
 
     public HttpInterceptor(String key, CacheInterceptor cacheInterceptor){
         this.key = SAVE_KEY + ":" + key;
@@ -52,7 +53,10 @@ public class HttpInterceptor implements Interceptor {
     private boolean loginCreate(String loginClass){
 
         if (!TextUtils.isEmpty(loginClass)) {
-            loginInterceptor = createLogin(loginClass);
+
+            if (loginInterceptor == null){
+                loginInterceptor = createLogin(loginClass);
+            }
             SharedUtil.saveValue(this.key, loginClass);
             return true;
         }
@@ -61,18 +65,16 @@ public class HttpInterceptor implements Interceptor {
 
     private String getAuthorizeToken(boolean isLogin){
         //非登陆操作时恢复登陆对象.
-        if (!isLogin){
-            if (loginInterceptor == null) {
-                if (loginClass != null){
-                    loginInterceptor = ObjectUtil.newObject(loginClass, ActivityApplication.getApplication());
-                }else{
-                    loginInterceptor = createLogin(SharedUtil.getValue(this.key, ""));
-                }
+        if (loginInterceptor == null) {
+            if (loginClass != null){
+                loginInterceptor = ObjectUtil.newObject(loginClass, ActivityApplication.getApplication());
+            }else{
+                loginInterceptor = createLogin(SharedUtil.getValue(this.key, ""));
             }
+        }
 
-            if (loginInterceptor != null){
-                return loginInterceptor.getAuthorizeToken();
-            }
+        if (loginInterceptor != null){
+            return loginInterceptor.getAuthorizeToken();
         }
         return null;
     }
@@ -81,16 +83,23 @@ public class HttpInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         if (cacheInterceptor != null){
-            if (cacheInterceptor.isOffline()){
-                return cacheInterceptor.intercept(chain);
+            if (loginInterceptor != null){
+                cacheInterceptor.setLoginHeader(loginInterceptor.getHeader());
             }
-            cacheInterceptor.intercept(chain);
+
+            Response response = cacheInterceptor.intercept(chain);
+            if (response != null){
+                return response;
+            }
         }
 
         Request request = chain.request();
         EncodeType encodeType = EncodeType.getType(request.header(ConstValue.Security));
 
-        System.out.println(String.format("URL: %s", request.url().toString()));
+        if (BuildConfig.DEBUG){
+            System.out.println(String.format("URL: %s", request.url().toString()));
+        }
+
         String random = MCString.randNum(8);
         String loginClass = request.header("login");
 
@@ -144,7 +153,10 @@ public class HttpInterceptor implements Interceptor {
 
             if (header != null && !header.isEmpty()){
                 for (String key : header.keySet()){
-                    builder.addHeader(key, header.get(key));
+                    String value = header.get(key);
+                    if (value != null){
+                        builder.addHeader(key, value);
+                    }
                 }
             }
         }
@@ -186,14 +198,24 @@ public class HttpInterceptor implements Interceptor {
 
         Response newResponse = responseBuilder.build();
 
+        if (response.header("Set-Cookie") != null){
+            loginInterceptor.refineToken(response.headers(), null);
+        }
+
         //登陆操作.
-        if (isLogin && loginInterceptor != null && TextUtils.isEmpty(security)){
+        if ((isLogin && loginInterceptor != null && TextUtils.isEmpty(security)) || cacheInterceptor != null){
 
             Response.Builder cloneBuilder = response.newBuilder();
             String body = response.body().string();
             cloneBuilder.body(ResponseBody.create(response.body().contentType(), body));
 
-            loginInterceptor.refineToken(response.headers(), body);
+            if (cacheInterceptor != null && !cacheInterceptor.isOffline()){
+                cacheInterceptor.onCacheData(request, body);
+            }
+
+            if ((isLogin && loginInterceptor != null && TextUtils.isEmpty(security))){
+                loginInterceptor.refineToken(response.headers(), body);
+            }
             newResponse = cloneBuilder.build();
         }
         return newResponse;

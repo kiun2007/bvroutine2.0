@@ -158,7 +158,7 @@ public class NormalNavigationPresenter implements NavigationPresenter, FragmentM
 
     @Override
     public void next(BaseBean value) {
-
+        handler.navigationTo(0, value);
     }
 
     @Override

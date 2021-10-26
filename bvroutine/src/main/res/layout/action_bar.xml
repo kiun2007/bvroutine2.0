@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <kiun.com.bvroutine.views.layout.StatusLayout
-            android:visibility="@{barItem.withStatusBar?View.VISIBLE:View.GONE}"
+            android:show="@{barItem.withStatusBar}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </kiun.com.bvroutine.views.layout.StatusLayout>
@@ -31,6 +31,7 @@
             </LinearLayout>
 
             <TextView
+                android:show="@{!barItem.barNoBack}"
                 android:onClick="@{(view)->barItem.handler.onClick(context,100,view)}"
                 android:id="@+id/leftTextView"
                 android:textSize="16sp"

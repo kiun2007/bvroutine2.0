@@ -1,5 +1,6 @@
 package com.szxgm.gusustreet.net.services;
 
+import com.szxgm.gusustreet.model.dto.mobile.ActivityOrderItem;
 import com.szxgm.gusustreet.model.dto.mobile.AppealType;
 import com.szxgm.gusustreet.model.dto.mobile.AreaRiver;
 import com.szxgm.gusustreet.model.dto.mobile.AreaRiverOffice;
@@ -43,6 +44,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 @AutoImport(RetrofitVariableSet.class)
@@ -96,6 +98,7 @@ public interface MobileService {
 
     /**
      * 获取历史记录
+     *
      * @param req
      * @return
      */
@@ -217,4 +220,15 @@ public interface MobileService {
 
     @POST("API/hzz/riverOfficeList")
     Call<NetWrapper<AreaRiverOffice>> riverOfficeList(@Body Map<String, Object> req);
+
+
+    /**
+     * 工单综合查询接口.
+     * @param activity 工单动作
+     * @param pagerBean
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("activiti/{activity}")
+    Call<NetListRowsWrapper<ActivityOrderItem>> getActivityOrder(@Path("activity") String activity, @FieldMap Map<String, String> pagerBean);
 }

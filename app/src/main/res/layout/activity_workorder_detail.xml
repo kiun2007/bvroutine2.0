@@ -22,12 +22,13 @@
             android:val="@={pagerIndex.value}"
             app:tabArray="@array/tabOrderTitle"
             style="@style/tabLayout" />
+
         <kiun.com.bvroutine.views.layout.StaticPager
-            android:val="@={pagerIndex.value}"
-            app:noScroll="true"
-            app:maxCachePageSize="3"
-            app:pagesClzName="@array/fragmentOrder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:val="@={pagerIndex.value}"
+            app:maxCachePageSize="3"
+            app:noScroll="true"
+            app:pagesClzName="@array/fragmentOrder" />
     </LinearLayout>
 </layout>

@@ -17,21 +17,43 @@ import kiun.com.bvroutine.utils.attri.AttributeReaderBase;
  */
 public class AttriUtil {
 
-    private static int getStyleableIndex(Class clz, String name, Context context) {
+    private static Class RClass = null;
+
+    private static Class getRClass(Context context){
+
+        if (RClass != null){
+            return RClass;
+        }
+
+        String packageName = context.getPackageName();
+        if (ActivityApplication.getAppPackageName() != null){
+            packageName = ActivityApplication.getAppPackageName();
+        }
+
+        do {
+            String className = packageName + ".R$styleable";
+            try {
+                RClass = Class.forName(className);
+                return RClass;
+            } catch (ClassNotFoundException e) {
+            }
+
+            packageName = packageName.substring(0, packageName.lastIndexOf("."));
+        }while (packageName.contains("."));
+        return null;
+    }
+
+    private static int getStyleableIndex(Class clz, StringBuilder logError, String name, Context context) {
         try {
             if (context == null)
                 return 0;
 
-            String packageName = context.getPackageName();
-            if (ActivityApplication.getAppPackageName() != null){
-                packageName = ActivityApplication.getAppPackageName();
+            Class rclz = getRClass(context);
+            if (rclz == null){
+                return 0;
             }
 
-            String className = packageName + ".R$styleable";
-            if (clz.getPackage().getName().contains(R.class.getPackage().getName())){
-                className = R.class.getPackage().getName() + ".R$styleable";
-            }
-            Field field = Class.forName(className).getDeclaredField(name);
+            Field field = rclz.getDeclaredField(name);
             int ret = (Integer) field.get(null);
             return ret;
         } catch (Throwable t) {
@@ -57,7 +79,7 @@ public class AttriUtil {
                     String fieldName = field.getName();
                     if (attrId == -1){
                         String name = String.format("%s_%s", typeClz.getSimpleName(), fieldName);
-                        attrId = getStyleableIndex(typeClz, name, context);;
+                        attrId = getStyleableIndex(typeClz, logError, name, context);;
 
                         if (attrId < 0){
                             continue;

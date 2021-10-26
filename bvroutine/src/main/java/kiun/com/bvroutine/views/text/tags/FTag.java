@@ -15,6 +15,11 @@ public class FTag extends TextTagBase {
     }
 
     @Override
+    protected String backgroundColor(Map<String, String> attributes) {
+        return attributes.get("bc");
+    }
+
+    @Override
     protected String show(Map<String, String> attributes) {
         return attributes.get("v");
     }

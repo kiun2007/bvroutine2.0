@@ -23,7 +23,6 @@ public class AttendanceActivity extends RequestBVActivity<ActivityAttendanceMain
     }
 
     public void onClick(View view){
-
     }
 
     @Override

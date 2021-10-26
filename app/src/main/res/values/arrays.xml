@@ -132,4 +132,30 @@
         <item>同意调班</item>
         <item>拒绝调班</item>
     </string-array>
+
+    <string-array name="orderActivityTitles">
+        <item>12345工单</item>
+        <item>寒山闻钟工单</item>
+        <item>街道平台工单</item>
+        <item>网格工单</item>
+    </string-array>
+
+    <string-array name="orderActivityCheckTitles">
+        <item>12345工单</item>
+        <item>寒山闻钟工单</item>
+        <item>街道平台工单</item>
+    </string-array>
+
+    <string-array name="orderActivityValues">
+        <item>getOttffTodoList</item>
+        <item>getHswzTodoList</item>
+        <item>getToDoOrderList</item>
+        <item>gridOrderTodoList</item>
+    </string-array>
+
+    <string-array name="orderActivityCheckValues">
+        <item>getOttffCheckList</item>
+        <item>gethswzCheckList</item>
+        <item>checkOrderList</item>
+    </string-array>
 </resources>

@@ -6,8 +6,8 @@ import androidx.databinding.ViewDataBinding;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import kiun.com.bvroutine.base.EventBean;
+import kiun.com.bvroutine.utils.MCString;
 
 public abstract class VariableBinding<C> {
 
@@ -38,6 +38,13 @@ public abstract class VariableBinding<C> {
         this.viewDataBinding = viewDataBinding;
         this.clz = clz;
         this.method = method;
+    }
+
+    protected String getFieldName(){
+        if (this.method != null){
+            return MCString.getFieldName(this.method.getName());
+        }
+        return null;
     }
 
     /**

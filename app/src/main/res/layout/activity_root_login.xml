@@ -21,6 +21,9 @@
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <kiun.com.bvroutine.views.MultipleImageGrid
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
         <LinearLayout
             android:orientation="vertical"
             android:padding="15dp"

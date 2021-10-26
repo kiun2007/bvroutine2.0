@@ -6,6 +6,8 @@
     <data>
         <import type="com.szxgm.gusustreet.ui.activity.list.GridPersonListActivity" />
         <import type="com.szxgm.gusustreet.ui.activity.AddressChooseActivity" />
+        <import type="kiun.com.bvroutine.utils.MapUtil" />
+        <import type="com.szxgm.gusustreet.model.base.StaticConst" />
 
         <variable name="service" type="com.szxgm.gusustreet.net.services.LinkageService" />
         <variable name="data" type="com.szxgm.gusustreet.model.other.GridVisit" />
@@ -41,6 +43,8 @@
                         android:id="@+id/generalTextDealPerson"
                         android:hint="选择执行人员"
                         android:verifyField="@{`dealPerson`}"
+                        android:text="@{data.dealPersonName}"
+                        app:param="@{MapUtil.as(`single`, true, `isWgz`, StaticConst.GridLeader)}"
                         app:activityClz="@{GridPersonListActivity.clz}"
                         app:listener="@{data}"
                         style="@style/rowEditText"/>
@@ -48,12 +52,14 @@
 
                 <com.szxgm.gusustreet.views.RowLinearLayout
                     app:title="共同执行人"
+                    app:required="false"
                     android:show="@{data.dealPerson!=null}"
                     style="@style/rowInput" >
                     <kiun.com.bvroutine.views.text.GeneralItemText
                         android:id="@+id/generalTextToGoDealPerson"
                         android:hint="选择共同执行人员"
                         android:verifyField="@{`togeDealPerson`}"
+                        app:param="@{MapUtil.as(`isWgz`, StaticConst.GridPerson)}"
                         app:activityClz="@{GridPersonListActivity.clz}"
                         app:listener="@{data}"
                         style="@style/rowEditText"/>

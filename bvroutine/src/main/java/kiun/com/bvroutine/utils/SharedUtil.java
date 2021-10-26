@@ -88,6 +88,9 @@ public class SharedUtil {
         }
 
         if (ret instanceof String && isObject){
+            if (((String) ret).isEmpty()){
+                return defValue;
+            }
             Object object = JSONObject.parseObject((String) ret, defValue.getClass());
             if (object == null){
                 object = defValue;

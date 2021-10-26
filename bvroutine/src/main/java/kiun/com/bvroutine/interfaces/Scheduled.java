@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Scheduled {
 
+    /**
+     * 间隔时长(毫秒)
+     * @return
+     */
     long value() default -1;
 
     /**
@@ -16,6 +20,12 @@ public @interface Scheduled {
      * @return
      */
     boolean auto() default false;
+
+    /**
+     * 是否只执行一次.
+     * @return 默认false
+     */
+    boolean once() default false;
 
     /**
      * 键值.

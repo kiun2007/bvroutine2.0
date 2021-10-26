@@ -9,6 +9,7 @@
         <import type="kiun.com.bvroutine.utils.ListUtil" />
         <import type="com.szxgm.gusustreet.ui.activity.list.BadClockListActivity" />
 
+        <variable name="clock" type="com.szxgm.gusustreet.model.dto.attendance.LeaveClock" />
         <variable name="apply" type="com.szxgm.gusustreet.model.dto.Apply" />
         <variable name="sysService" type="com.szxgm.gusustreet.net.services.SysService" />
         <variable name="attendanceService" type="com.szxgm.gusustreet.net.services.AttendanceService" />
@@ -30,11 +31,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.szxgm.gusustreet.views.RowLinearLayout
-                    app:title="申报原因"
+                    app:title="申报类型"
                     app:required="true"
                     app:bottomLine="true"
                     style="@style/rowInput">
+                    <TextView
+                        android:show="@{clock != null}"
+                        android:gravity="right"
+                        android:text="@{clock.applyTitle}"
+                        android:layout_width="match_parent"
+                        tools:text="上班补卡"
+                        style="@style/tvMain" />
                     <Spinner
+                        tools:visibility="gone"
+                        android:show="@{clock == null}"
                         android:layout_marginLeft="15dp"
                         app:src="@{SpinnerHelper.createDict(sysService.getDict(Dict.create(`shift_pb_sbyy`)))}"
                         app:value="@={apply.sbReason}"
@@ -42,7 +52,20 @@
                         style="@style/spinnerBase" />
                 </com.szxgm.gusustreet.views.RowLinearLayout>
                 <com.szxgm.gusustreet.views.RowLinearLayout
+                    app:title="补卡班次"
+                    android:show="@{clock != null}"
+                    app:required="true"
+                    style="@style/rowInput">
+                    <TextView
+                        android:gravity="right"
+                        android:text="@{clock.times}"
+                        android:layout_width="match_parent"
+                        tools:text="上班补卡"
+                        style="@style/tvMain" />
+                </com.szxgm.gusustreet.views.RowLinearLayout>
+                <com.szxgm.gusustreet.views.RowLinearLayout
                     app:title="异常记录"
+                    android:show="@{clock == null}"
                     app:required="true"
                     style="@style/rowInput">
                     <com.szxgm.gusustreet.views.GeneralItemText

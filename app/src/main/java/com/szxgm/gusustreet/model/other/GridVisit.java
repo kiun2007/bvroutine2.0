@@ -34,12 +34,15 @@ public class GridVisit extends AddressChooseBean implements GeneralItemTextListe
     private String dealPersonId;
 
     //共同执行人姓名.
+    @Verify(value = NotNull.class, pass = "true")
     private String togeDealPersonName;
 
     //共同执行人账户
+    @Verify(value = NotNull.class, pass = "true")
     private String togeDealPerson;
 
     //共同执行人ID
+    @Verify(value = NotNull.class, pass = "true")
     private String togeDealPersonId;
 
     //服务对象姓名.
@@ -57,6 +60,8 @@ public class GridVisit extends AddressChooseBean implements GeneralItemTextListe
 
     //服务内容.
     private String visitProblem;
+
+    private String wgbm;
 
     public Integer getVisitType() {
         return visitType;
@@ -162,18 +167,31 @@ public class GridVisit extends AddressChooseBean implements GeneralItemTextListe
         this.visitProblem = visitProblem;
     }
 
+    public String getWgbm() {
+        return wgbm;
+    }
+
+    public void setWgbm(String wgbm) {
+        this.wgbm = wgbm;
+    }
+
     @Override
     public void onChanged(GeneralItemText view, String id, String title, Object extra) {
         if (view.getId() == R.id.generalTextDealPerson){
             dealPerson = id;
             dealPersonName = title;
-            if (extra instanceof String){
-                dealPersonId = (String) extra;
+            if (extra instanceof GridPerson){
+                dealPersonId = ((GridPerson) extra).getId();
+                wgbm = ((GridPerson) extra).getWgbm();
             }
         }else if (view.getId() == R.id.generalTextToGoDealPerson){
             togeDealPerson = id;
             togeDealPersonName = title;
+            if (extra instanceof String){
+                togeDealPersonId = (String) extra;
+            }
         }
+        onChanged();
     }
 
     @Override

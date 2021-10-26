@@ -61,19 +61,24 @@ public class ImageViewBinding {
         }
     }
 
-    @BindingAdapter(value = {"android:backgroundUrl", "android:url", "android:thumbUrl", "android:isAuthentication"}, requireAll = false)
-    public static void setBackgroundUrlAndAuthenticationThumb(ImageView imageView, String backgroundUrl, String url,  String thumb, Boolean isAuthentication){
+    @BindingAdapter(value = {"android:backgroundUrl", "android:url", "android:thumbUrl", "android:isAuthentication", "android:cache"}, requireAll = false)
+    public static void setBackgroundUrlAndAuthenticationThumb(ImageView imageView,
+                                                              String backgroundUrl,
+                                                              String url,
+                                                              String thumb,
+                                                              Boolean isAuthentication,
+                                                              boolean cache){
 
         if (isAuthentication == null){
             isAuthentication = true;
         }
 
         if (!TextUtils.isEmpty(backgroundUrl)){
-            GlideUtil.into(imageView, backgroundUrl, thumb,true, !isAuthentication);
+            GlideUtil.into(imageView, backgroundUrl, thumb,true, !isAuthentication, !cache);
         }
 
         if (url != null){
-            GlideUtil.into(imageView, url, thumb,false, !isAuthentication);
+            GlideUtil.into(imageView, url, thumb,false, !isAuthentication, !cache);
         }
     }
 

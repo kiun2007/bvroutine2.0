@@ -70,7 +70,6 @@ public class ServiceGenerator {
     public static void putBuild(Interceptor interceptor, String prefix, String key,
                                 Class<? extends LoginInterceptor> loginClz,
                                 SetCaller<OkHttpClient.Builder> builderSetCaller){
-
         ServiceGenerator serviceGenerator = new ServiceGenerator(interceptor, prefix, key, loginClz, builderSetCaller);
         allServices.put(key, serviceGenerator);
     }
