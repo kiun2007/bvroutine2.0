@@ -1,6 +1,5 @@
 package kiun.com.bvroutine.net;
 
-import com.alibaba.fastjson.util.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;

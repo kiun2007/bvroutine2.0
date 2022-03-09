@@ -26,6 +26,9 @@ import okhttp3.internal.http.RealResponseBody;
 
 import static kiun.com.bvroutine.net.LoginInterceptor.SAVE_KEY;
 
+/**
+ * HTTP请求主拦截器
+ */
 public class HttpInterceptor implements Interceptor {
 
     private LoginInterceptor loginInterceptor;
@@ -87,10 +90,7 @@ public class HttpInterceptor implements Interceptor {
                 cacheInterceptor.setLoginHeader(loginInterceptor.getHeader());
             }
 
-            Response response = cacheInterceptor.intercept(chain);
-            if (response != null){
-                return response;
-            }
+            return cacheInterceptor.intercept(chain);
         }
 
         Request request = chain.request();
