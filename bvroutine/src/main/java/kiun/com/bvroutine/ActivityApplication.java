@@ -3,6 +3,9 @@ package kiun.com.bvroutine;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.os.Debug;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,6 +19,7 @@ import kiun.com.bvroutine.net.BuilderSet;
 import kiun.com.bvroutine.net.BuilderSets;
 import kiun.com.bvroutine.net.HttpInterceptor;
 import kiun.com.bvroutine.net.ServiceGenerator;
+import kiun.com.bvroutine.service.DebugService;
 import kiun.com.bvroutine.utils.type.ClassUtil;
 import kiun.com.bvroutine.utils.ObjectUtil;
 import kiun.com.bvroutine.utils.SharedUtil;
@@ -104,6 +108,11 @@ public abstract class ActivityApplication extends Application {
         registerCallbacks(callback = new ActivityCallback.Callback());
         SharedUtil.initContext(this);
         loadAnnotations();
+        ApplicationInfo info = getApplicationInfo();
+
+        if((info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0){
+            startService(new Intent(this, DebugService.class));
+        }
     }
 
     public final void finish(Class notClz){

@@ -138,10 +138,12 @@ public class ViewUtil {
                 if (viewBind != null && View.class.isAssignableFrom(field.getType())){
 
                     int id = viewBind.value();
+                    //默认使用字段名查找资源
                     if (id == -1){
                         id = context.getResources().getIdentifier(field.getName(), "id", context.getPackageName());
                     }
 
+                    //使用ID查找对应的控件
                     View view = root.findViewById(id);
 
                     if (view != null){

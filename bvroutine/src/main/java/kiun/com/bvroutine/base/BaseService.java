@@ -21,10 +21,25 @@ public abstract class BaseService extends Service{
         return new BaseServiceBinder(this);
     }
 
+    /**
+     * 开始任务
+     * @param key
+     */
     public void startScheduled(String key){
         ScheduledMethod method = scheduledMethodMap.get(key);
         if (method != null){
             method.start();
+        }
+    }
+
+    /**
+     * 停止任务
+     * @param key
+     */
+    public void stopScheduled(String key){
+        ScheduledMethod method = scheduledMethodMap.get(key);
+        if (method != null){
+            method.stop();
         }
     }
 

@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.telephony.TelephonyManager;
+import android.util.TypedValue;
 
 import java.util.Locale;
+
+import kiun.com.bvroutine.R;
 
 public class SystemUtil {
 
@@ -69,5 +72,11 @@ public class SystemUtil {
         } catch (Exception e) {
         }
         return "";
+    }
+
+    public static TypedValue getAttr(Context context, int resId){
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(resId, typedValue, true);
+        return typedValue;
     }
 }

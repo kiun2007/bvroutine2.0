@@ -4,8 +4,8 @@ import android.content.Context;
 import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
 
 import kiun.com.bvroutine.R;
@@ -16,7 +16,7 @@ import kiun.com.bvroutine.utils.ViewUtil;
 
 import static kiun.com.bvroutine.text.Html.*;
 
-public class HtmlTextView extends AppCompatTextView implements TypedView {
+public class HtmlTextView extends TextView implements TypedView {
 
     @AttrBind
     private int html = -1;

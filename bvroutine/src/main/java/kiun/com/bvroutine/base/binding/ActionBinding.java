@@ -33,6 +33,7 @@ import kiun.com.bvroutine.interfaces.callers.ObjectSetCaller;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
 import kiun.com.bvroutine.interfaces.callers.StringArrayCaller;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
+import kiun.com.bvroutine.interfaces.wrap.DataWrap;
 import kiun.com.bvroutine.presenters.TextViewLoadingPresenter;
 import kiun.com.bvroutine.utils.DataUtil;
 import kiun.com.bvroutine.utils.ListUtil;
@@ -77,8 +78,6 @@ public class ActionBinding {
             TextViewLoadingPresenter presenter = viewButton != null ? new TextViewLoadingPresenter(viewButton) : null;
             callNoNull(presenter, TextViewLoadingPresenter::begin);
 
-            Call retrofitCall  = (Call) call.call(activity);
-
             if (eventBean != null){
 
                 eventBean.setWithWaring(false);
@@ -116,7 +115,7 @@ public class ActionBinding {
                             new AlertDialog.Builder(activity).setIcon(R.drawable.ic_baseline_warning_24).setTitle("警告")
                                     .setMessage(stringBuilder.toString())
                                     .setPositiveButton("继续提交", (dialog, which) -> {
-                                        commitStart(viewButton, activity, presenter, retrofitCall,true);
+                                        commitStart(viewButton, activity, presenter,true);
                                     }).setNegativeButton("取消", (dialog, which) -> {
                                         Toast.makeText(activity, "提交已取消", Toast.LENGTH_LONG).show();
                                         callNoNull(presenter, TextViewLoadingPresenter::failed);
@@ -126,35 +125,53 @@ public class ActionBinding {
                     }
                 }
             }
-            commitStart(view, activity, presenter, retrofitCall,false);
+            commitStart(view, activity, presenter,false);
         }
 
-        private void commitStart(View view, RequestBVActivity<?> activity, TextViewLoadingPresenter presenter, Call retrofitCall, boolean isWaring){
+        private Object callOfExecute(RequestBVActivity<?> activity) throws Exception {
+            RequestBindingPresenter p = activity.getRequestPresenter();
+            Object result = call.call(activity);
+            if (result instanceof Call){
+                return p.execute((Call<?>) result);
+            }
+            return result;
+        }
+
+        private void commitStart(View view,
+                                 RequestBVActivity<?> activity,
+                                 TextViewLoadingPresenter presenter,
+                                 boolean isWaring){
 
             RequestBVFragment<?> fragment = ViewUtil.findRootViewTag(view, RequestBVFragment.class);
             String tag = view.getTag() instanceof String ? (String) view.getTag() : null;
 
             RequestBindingPresenter p = activity.getRequestPresenter();
-            p.addRequest(()->p.execute(retrofitCall), (v)->{
-                if (v != null){
-                    Object handler = view.getTag(R.id.tagActionHandler);
-                    if (handler == null){
-                        handler = fragment;
-                    }
+            p.addRequest(()-> this.callOfExecute(activity), (v)->{
 
-                    if (handler == null){
-                        handler = activity;
-                    }
-                    boolean isSuccess = DataUtil.dataComplete(tag, v, handler, isWaring);
+                Object handler = view.getTag(R.id.tagActionHandler);
+                if (handler == null){
+                    handler = fragment;
+                }
 
-                    if (isSuccess){
-                        callNoNull(presenter, TextViewLoadingPresenter::complete);
-                        if (onClickListener != null){
-                            onClickListener.onClick(view);
-                        }
-                    }else{
-                        callNoNull(presenter, TextViewLoadingPresenter::error);
+                if (handler == null){
+                    handler = activity;
+                }
+
+                boolean isSuccess = false;
+
+                if (v instanceof DataWrap){
+                    isSuccess = DataUtil.dataComplete(tag, (DataWrap) v, handler, isWaring);
+                }else if (v != null){
+                    isSuccess = DataUtil.dataComplete(tag, v, handler, isWaring);
+                }
+
+                if (isSuccess){
+                    callNoNull(presenter, TextViewLoadingPresenter::complete);
+                    if (onClickListener != null){
+                        onClickListener.onClick(view);
                     }
+                }else{
+                    callNoNull(presenter, TextViewLoadingPresenter::error);
                 }
             }, ex->{
                 callNoNull(presenter, TextViewLoadingPresenter::error);
@@ -318,7 +335,9 @@ public class ActionBinding {
         }
 
         if (builder != null){
-            view.setTag(R.id.tagBinConvert, builder.build(view));
+            if(view.getTag(R.id.tagBinConvert) == null){
+                view.setTag(R.id.tagBinConvert, builder.build(view));
+            }
         }
 
         BindConvert bindConvert = BindConvertBridge.getViewBindConvert(view, null);

@@ -103,6 +103,7 @@ public class SpinnerHelper implements SpinnerView, ServiceRequestView {
 
     @BindingAdapter("src")
     public static void setRequest(Spinner spinner, Src src){
+
         SpinnerPresenter presenter = getHelper(spinner);
         SpinnerHelper helper = (SpinnerHelper) presenter.getSpinnerView();
 

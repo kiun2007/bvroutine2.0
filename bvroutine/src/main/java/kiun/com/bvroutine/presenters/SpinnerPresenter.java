@@ -26,6 +26,9 @@ public class SpinnerPresenter extends ViewsPresenter<Spinner> implements Adapter
     InverseBindingListener valueListener;
     private boolean original = false;
 
+    //是否数据更新后触发选中事件
+    private boolean autoFlush = false;
+
     public SpinnerPresenter(int layout, SpinnerView spinnerView){
     }
 
@@ -44,6 +47,10 @@ public class SpinnerPresenter extends ViewsPresenter<Spinner> implements Adapter
             allViews.get(i).setAdapter(arrayAdapters[i]);
             allViews.get(i).setOnItemSelectedListener(this);
         }
+    }
+
+    public void setAutoFlush(boolean autoFlush) {
+        this.autoFlush = autoFlush;
     }
 
     public void setOriginal(boolean original) {
@@ -93,6 +100,9 @@ public class SpinnerPresenter extends ViewsPresenter<Spinner> implements Adapter
             }
         }
         arrayAdapters[index].notifyDataSetChanged();
+        if(autoFlush && allViews.get(index).getSelectedItemPosition() == value.getPosition()){
+            onItemSelected(allViews.get(index), null, value.getPosition(), 0);
+        }
         allViews.get(index).setSelection(value.getPosition());
     }
 

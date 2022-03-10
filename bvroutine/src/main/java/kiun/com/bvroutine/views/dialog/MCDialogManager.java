@@ -37,6 +37,7 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
     private int colorResId = android.R.color.white;
     private VB binding;
     private int width = 0, height = 0;
+    private OnKeyListener onKeyListener;
 
     private MCDialogManager(Context context, int resId, Object data, int dataBr, int dialogBr) {
         super(BR.handler, 0);
@@ -72,6 +73,9 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
 
         if (alertDialog == null){
             alertDialog = new Dialog(context);
+            if (onKeyListener != null){
+                alertDialog.setOnKeyListener(onKeyListener);
+            }
 
             binding = ViewBindingUtil.inflate(LayoutInflater.from(context), resId, null, false);
             alertDialog.setContentView(binding.getRoot());
@@ -147,6 +151,11 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
         }else{
             selectItem = data;
         }
+    }
+
+    public MCDialogManager<T,VB> setOnKeyListener(OnKeyListener onKeyListener) {
+        this.onKeyListener = onKeyListener;
+        return this;
     }
 
     public MCDialogManager<T,VB> setGravity(int gravity){

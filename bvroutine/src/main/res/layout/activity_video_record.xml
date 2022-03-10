@@ -60,8 +60,8 @@
                     app:backgroundColor="#888888"
                     app:outCircleColor="#FFF"
                     app:innerCircleColor="#38AFFF"
-                    app:recordStart="@{recorder.startRecord}"
-                    app:recordEnd="@{recorder.stopRecord}"
+                    app:recordStart="@{recorder::startRecord}"
+                    app:recordEnd="@{recorder::stopRecord}"
                     android:layout_width="100dp"
                     android:layout_height="match_parent" />
             </LinearLayout>

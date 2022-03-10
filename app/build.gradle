@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.szxgm.gusustreet"
-        minSdkVersion 23
+        minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 23
         versionCode 1572
@@ -45,7 +45,7 @@ android {
                 buildConfigField("String", "Prefix", "\"http://"+getIP()+":80\"")
             }else{
 //                buildConfigField("String", "Prefix", "\"http://2.40.9.167:8180/jdpt/\"")
-                buildConfigField('String', 'Prefix', '"http://222.92.48.28:8180/jdpt/"')
+                buildConfigField('String', 'Prefix', '"shared://BASE_URL=>http://222.92.48.28:8180/jdpt/"')
             }
         }
         release {

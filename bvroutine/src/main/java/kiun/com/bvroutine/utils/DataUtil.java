@@ -19,4 +19,12 @@ public class DataUtil {
         }
         return isSuccess;
     }
+
+    public static boolean dataComplete(String tag, Object data, Object handler, boolean isWithWaring){
+
+        if (tag != null){
+            JexlUtil.run(tag, "handler", handler, "data", data, "waring", isWithWaring);
+        }
+        return true;
+    }
 }

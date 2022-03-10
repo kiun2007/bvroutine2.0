@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <attr name="gridWidth" format="dimension" />
     <attr name="progressBarColor" format="color"/>
     <attr name="paintColor" format="color" />
@@ -7,6 +8,9 @@
     <attr name="iconColor" format="color" />
     <attr name="icon" format="reference" />
     <attr name="uploadReviewIsSrc" format="boolean" />
+
+    <attr name="textViewResourceId" format="reference" />
+    <attr name="dropDownResourceId" format="reference" />
 
     <attr name="flowHorizontalSpacing" format="dimension"/>
     <attr name="flowVerticalSpacing" format="dimension" />

@@ -151,4 +151,27 @@ public class ListUtil {
         }
         return newList;
     }
+
+    /**
+     * 查找元素
+     * @param src
+     * @param caller
+     * @param <T>
+     * @return
+     */
+    public static <T> T find(List<T> src, CompareCaller<T> caller){
+        return ListUtil.first(ListUtil.filter(src, caller));
+    }
+
+    /**
+     * 复制列表.
+     * @param src
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> clone(List<T> src){
+        List<T> list = new LinkedList<>();
+        list.addAll(src);
+        return list;
+    }
 }

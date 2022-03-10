@@ -5,8 +5,11 @@ import android.os.Environment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
+import kiun.com.bvroutine.utils.SharedUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -27,9 +30,24 @@ public class ServiceGenerator {
     private Interceptor interceptor;
     private OkHttpClient okHttpClient;
 
+    private String convertTo(String prefix){
+        if (prefix.startsWith("shared://")){
+            Matcher matcher = Pattern.compile("shared://(.+?)=>(.+?)$").matcher(prefix);
+            if(matcher.find()){
+                return SharedUtil.getValue(matcher.group(1), matcher.group(2));
+            }
+            return prefix;
+        }
+        return prefix;
+    }
+
     private ServiceGenerator(Interceptor interceptor, String prefix, String key, Class<? extends LoginInterceptor> loginClz, SetCaller<OkHttpClient.Builder> builderSetCaller){
 
-        basePrefix = prefix;
+        basePrefix = convertTo(prefix);
+
+        if (!basePrefix.startsWith("http://") && !basePrefix.startsWith("https://")){
+            basePrefix = "http://" + basePrefix;
+        }
 
         // 初始化http请求配置
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -61,7 +79,7 @@ public class ServiceGenerator {
 
         okHttpClient = httpClient.build();
 
-        builder = new Retrofit.Builder().baseUrl(prefix).addConverterFactory(new FastJSONFactory());
+        builder = new Retrofit.Builder().baseUrl(basePrefix).addConverterFactory(new FastJSONFactory());
         retrofit = builder.client(okHttpClient).build();
 
         this.interceptor = interceptor;
