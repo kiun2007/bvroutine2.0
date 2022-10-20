@@ -9,13 +9,14 @@ import kiun.com.bvroutine.data.viewmodel.TreeNode;
 import kiun.com.bvroutine.data.viewmodel.TreeViewNode;
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
+import kiun.com.bvroutine.interfaces.view.LoadStartAdapter;
 import kiun.com.bvroutine.interfaces.view.TreeStepView;
 import kiun.com.bvroutine.views.adapter.StepTreeAdapter;
 
 /**
  *
  */
-public class StepTreePresenter extends RecyclerListPresenter<TreeNode, TreeNode, TreeStepView, LoadAdapter> {
+public class StepTreePresenter extends RecyclerListPresenter<TreeNode, TreeNode, TreeStepView, LoadStartAdapter> {
 
     private int rootLayout;
     private int expHandlerBr;

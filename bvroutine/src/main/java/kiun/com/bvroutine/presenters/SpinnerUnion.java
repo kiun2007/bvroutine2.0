@@ -21,6 +21,7 @@ import kiun.com.bvroutine.interfaces.callers.PagerCaller;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
 import kiun.com.bvroutine.interfaces.handler.ViewLoadHandler;
 import kiun.com.bvroutine.interfaces.wrap.DataWrap;
+import kiun.com.bvroutine.utils.RetrofitUtil;
 import kiun.com.bvroutine.utils.SystemUtil;
 
 /**
@@ -35,6 +36,22 @@ public class SpinnerUnion implements ViewLoadHandler {
 
     private int dropdownItemLayoutId;
 
+    private boolean isInitStart = true;
+
+    public static class Empty {
+
+        private String title;
+
+        public Empty(String title) {
+            this.title = title;
+        }
+
+        @Override
+        public String toString() {
+            return title;
+        }
+    }
+
     private static class UnionSrc implements SetCaller {
 
         private Spinner spinner;
@@ -47,12 +64,18 @@ public class SpinnerUnion implements ViewLoadHandler {
 
         private UnionSrc next;
 
+        private String empty = null;
+
         private int spinnerItemTextLayoutId = R.layout.spinner_normal_item_text;
 
         private int dropdownItemLayoutId = R.layout.spinner_normal_dropdown_item;
 
         public UnionSrc(SpinnerUnion union) {
             this.union = union;
+        }
+
+        public void setEmpty(String empty) {
+            this.empty = empty;
         }
 
         public void setSpinner(Spinner spinner) {
@@ -77,16 +100,21 @@ public class SpinnerUnion implements ViewLoadHandler {
         public void requestData(){
 
             if(union.activity != null && caller != null){
-                union.activity.addRequest(()-> union.activity.getRequestPresenter().execute(caller.get(null)), v->{
 
-                    DataWrap<?> dataWrap = (DataWrap<?>) v;
-                    if(dataWrap != null && dataWrap.getData() instanceof List){
+                union.activity.addRequest(()-> RetrofitUtil.unpackWrap(null, caller.get(null).execute()), v->{
+
+                    List<?> data = (List<?>) v;
+                    if(data != null){
 
                         ArrayAdapter<Object> adapter = new ArrayAdapter<Object>(union.activity, spinnerItemTextLayoutId);
                         adapter.setDropDownViewResource(dropdownItemLayoutId);
 
-                        List<?> list = (List<?>) ((DataWrap<?>) v).getData();
-                        for (Object item: list) {
+                        List<?> list = data;
+                        if (empty != null && list.size() > 1){
+                            adapter.add(new Empty(empty));
+                        }
+
+                        for (Object item : list) {
                             adapter.add(item);
                         }
                         spinner.setAdapter(adapter);
@@ -107,14 +135,22 @@ public class SpinnerUnion implements ViewLoadHandler {
 
     private Integer[] sortItems;
 
+    @BindingAdapter({"android:union", "android:unionSort", "android:unionSource", "android:unionEmpty"})
+    public static void setUnion(Spinner spinner, SpinnerUnion union, Integer sort, PagerCaller caller, String empty){
+
+        if (union != null){
+            union.spinnerViewMap.put(sort, new UnionSrc(union){{
+                setSpinner(spinner);
+                setCaller(caller);
+                setSort(sort);
+                setEmpty(empty);
+            }});
+        }
+    }
+
     @BindingAdapter({"android:union", "android:unionSort", "android:unionSource"})
     public static void setUnion(Spinner spinner, SpinnerUnion union, Integer sort, PagerCaller caller){
-
-        union.spinnerViewMap.put(sort, new UnionSrc(union){{
-            setSpinner(spinner);
-            setCaller(caller);
-            setSort(sort);
-        }});
+        setUnion(spinner, union, sort, caller, null);
     }
 
     @BindingAdapter("android:unionSource")
@@ -128,6 +164,16 @@ public class SpinnerUnion implements ViewLoadHandler {
             spinnerItemTextLayoutId = SystemUtil.getAttr(context, R.attr.textViewResourceId).resourceId;
             dropdownItemLayoutId = SystemUtil.getAttr(context, R.attr.dropDownResourceId).resourceId;
         }
+    }
+
+    @Override
+    public boolean isInitStart() {
+        return isInitStart;
+    }
+
+    public SpinnerUnion initStart(boolean isInitStart){
+        this.isInitStart = isInitStart;
+        return this;
     }
 
     public void start(){

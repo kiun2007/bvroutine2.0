@@ -31,32 +31,33 @@
             </LinearLayout>
 
             <TextView
-                android:show="@{!barItem.barNoBack}"
-                android:onClick="@{(view)->barItem.handler.onClick(context,100,view)}"
                 android:id="@+id/leftTextView"
-                android:textSize="16sp"
-                android:textColor="#FFF"
-                android:gravity="center"
-                android:drawablePadding="5dp"
-                android:layout_centerVertical="true"
-                android:text="@{barItem.backTitle}"
-                android:paddingRight="25dp"
-                android:drawableLeft="@drawable/svg_left_arrow"
-                android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:paddingLeft="12dp"
+                android:drawableLeft="@drawable/svg_left_arrow"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:onClick="@{(view)->barItem.handler.onClick(context, 100, view)}"
+                android:paddingRight="25dp"
+                android:show="@{!barItem.barNoBack}"
+                android:text="@{barItem.backTitle}"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
+
+            <!--android:onClick="@{(view)->barItem.handler.onClick(context, 102, view)}"-->
             <TextView
                 android:id="@+id/rightButton"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:textSize="16sp"
-                android:layout_marginRight="15dp"
-                android:textColor="#FFF"
-                android:onClick="@{(view)->barItem.handler.onClick(context,102,view)}"
-                android:layout_gravity="center"
-                android:text="@{barItem.rightTitle}"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+
+                android:text="@{barItem.rightTitle}"
+                android:textSize="17sp" />
         </RelativeLayout>
     </LinearLayout>
 </layout>

@@ -24,11 +24,11 @@ public class ScheduledMethod {
 
     private Handler handler;
 
-    private boolean isAuto;
-
     private boolean isOnce = false;
 
-    public ScheduledMethod(long duration, Method method, Context context, boolean isAsync) {
+    private boolean isRun = false;
+
+    public ScheduledMethod(long duration, Method method, Context context, boolean isAsync, boolean isAuto) {
 
         this.duration = duration;
         this.method = method;
@@ -39,12 +39,13 @@ public class ScheduledMethod {
                 Looper.prepare();
                 createHandler(Looper.myLooper());
                 if (isAuto){
-                    handler.sendEmptyMessageDelayed(0, duration);
+                    start();
                 }
                 Looper.loop();
             }).start();
         }else {
             createHandler(Looper.getMainLooper());
+            start();
         }
     }
 
@@ -54,7 +55,7 @@ public class ScheduledMethod {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-                if (!isOnce){
+                if (!isOnce&&isRun){
                     handler.sendEmptyMessageDelayed(0, duration);
                 }
                 call();
@@ -77,14 +78,17 @@ public class ScheduledMethod {
     }
 
     public void start(){
-        if (!isAuto){
-            handler.sendEmptyMessageDelayed(0, duration);
-        }
+        handler.sendEmptyMessageDelayed(0, duration);
+        isRun = true;
+    }
+
+    public void beginNow(){
+        handler.sendEmptyMessageDelayed(0, 0);
     }
 
     public void stop(){
         handler.removeMessages(0);
-        isAuto = false;
+        isRun = false;
     }
 
     public static List<ScheduledMethod> getScheduled(Context context){
@@ -101,13 +105,7 @@ public class ScheduledMethod {
             Scheduled scheduled = method.getAnnotation(Scheduled.class);
 
             if (scheduled != null && scheduled.value() > 0){
-                ScheduledMethod scheduledMethod = new ScheduledMethod(scheduled.value(), method, context, scheduled.async());
-                if (scheduledMethod.isAuto = scheduled.auto()){
-                    if (scheduledMethod.handler != null){
-                        scheduledMethod.start();
-                    }
-                }
-
+                ScheduledMethod scheduledMethod = new ScheduledMethod(scheduled.value(), method, context, scheduled.async(), scheduled.auto());
                 scheduledMethod.isOnce = scheduled.once();
 
                 String key = scheduled.key();

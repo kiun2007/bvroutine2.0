@@ -17,6 +17,7 @@
     </style>
 
     <style name="BVAppCompat" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorButtonNormal">#000</item>
         <item name="progressBarColor">#3699FF</item>
         <item name="loadMore">努力加载中...</item>
         <item name="iconColor">#FFF</item>

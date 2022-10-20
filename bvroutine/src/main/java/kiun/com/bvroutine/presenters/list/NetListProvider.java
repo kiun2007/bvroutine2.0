@@ -110,7 +110,6 @@ public class NetListProvider extends ListProvider<PagerBean>{
      */
     public static NetListProvider create(Context context, ListHandler<?> listHandler, int layoutId){
 
-        
         if (context instanceof RequestBVActivity){
             return new NetListProvider((RequestBVActivity<?>) context, layoutId, listHandler, 0);
         }

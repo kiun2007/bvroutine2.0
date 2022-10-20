@@ -14,6 +14,14 @@
 
     <attr name="flowHorizontalSpacing" format="dimension"/>
     <attr name="flowVerticalSpacing" format="dimension" />
+    <attr name="colorButtonNormal" format="color" />
+
+    <declare-styleable name="BindConvertDelegate">
+        <!--绑定的转换类型-->
+        <attr name="bindConvertType" format="string" />
+        <!--初始化参数-->
+        <attr name="initParam" format="string" />
+    </declare-styleable>
 
     <declare-styleable name="NavigatorBar">
         <attr name="barNoback" format="boolean"/>
@@ -31,6 +39,7 @@
         <attr name="titleImage" format="reference"/>
         <attr name="barBackground" format="color" />
         <attr name="rightTag" format="string" />
+        <attr name="withChild" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="HeadViewPager">
@@ -256,7 +265,7 @@
     </declare-styleable>
 
     <declare-styleable name="ShortListView">
-        <attr name="itemLayout" format="reference" />
+        <attr name="itemLayout" />
         <attr name="emptyLayout" format="reference" />
         <attr name="isFlow" format="boolean" />
     </declare-styleable>
@@ -278,6 +287,7 @@
     </declare-styleable>
 
     <declare-styleable name="NavigationRow">
+        <attr name="layoutId" format="reference" />
         <attr name="icon" />
         <attr name="title" />
     </declare-styleable>

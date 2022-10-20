@@ -21,13 +21,14 @@ import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.view.ListRequestView;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
+import kiun.com.bvroutine.interfaces.view.LoadStartAdapter;
 import kiun.com.bvroutine.utils.ListUtil;
 import kiun.com.bvroutine.views.adapter.RecyclerSimpleAdapter;
 
-public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends LoadAdapter>
+public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends LoadStartAdapter>
         extends RecyclerView.OnScrollListener implements ListViewPresenter<T,Q,Req>, SwipeRefreshLayout.OnRefreshListener {
 
-    protected RecyclerView mRecyclerView;
+    protected View mListView;
     protected SwipeRefreshLayout mRefreshLayout;
     protected Req mRequestView;
     protected Q rootRequest;
@@ -37,43 +38,41 @@ public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends L
     int errLayout = 0;
     protected View footerView;
 
-    public RecyclerListPresenter(RecyclerView recyclerView, SwipeRefreshLayout refreshLayout){
-        mRecyclerView = recyclerView;
+    public RecyclerListPresenter(View listView, SwipeRefreshLayout refreshLayout){
+
+        mListView = listView;
         mRefreshLayout = refreshLayout;
         if (refreshLayout != null){
             refreshLayout.setOnRefreshListener(this);
         }
         setFootViewLayout(R.layout.view_footer);
-
     }
 
     public void setFootViewLayout(int layout){
-        footerView = LayoutInflater.from(mRecyclerView.getContext()).inflate(layout, null);
+        footerView = LayoutInflater.from(mListView.getContext()).inflate(layout, null);
     }
 
     @Override
     public Q initRequest(Q request, Req requestView) {
         mRequestView = requestView;
         rootRequest = request;
-
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(requestView.getContext()));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         return request;
     }
 
-    protected BaseRecyclerAdapter getRecyclerAdapter(int itemLayout, int dataBr, ListHandler<T> hanlder){
-        return new RecyclerSimpleAdapter(this, itemLayout, errLayout, dataBr, hanlder);
+    protected ADA getRecyclerAdapter(int itemLayout, int dataBr, ListHandler<T> hanlder){
+        return (ADA) new RecyclerSimpleAdapter(this, itemLayout, errLayout, dataBr, hanlder);
     }
 
     @Override
     public void start(ListHandler<T> handler, int itemLayout, int dataBr, RequestBindingPresenter p) {
         presenter = p;
         errLayout = handler.getErrorLayout();
-        mRecyclerView.setAdapter((BaseRecyclerAdapter) (loadAdapter = (ADA) getRecyclerAdapter(itemLayout, dataBr, handler)));
+        loadAdapter = getRecyclerAdapter(itemLayout, dataBr, handler);
+        loadAdapter.start(mListView);
+
         catcher = new ErrorMessageCatcher(loadAdapter::error, this::onError);
 
-        if (handler.isInitStart()){
+        if (handler == null || handler.isInitStart()){
             reload();
         }
     }

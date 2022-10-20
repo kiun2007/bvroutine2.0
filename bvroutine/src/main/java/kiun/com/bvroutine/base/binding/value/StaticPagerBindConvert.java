@@ -18,7 +18,9 @@ public class StaticPagerBindConvert extends BindConvert<StaticPager, Integer, In
 
     @Override
     public void setValue(Integer value) {
-        view.setCurrentItem(value);
+        if (value != null){
+            view.setCurrentItem(value);
+        }
     }
 
     @Override

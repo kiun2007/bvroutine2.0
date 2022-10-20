@@ -13,11 +13,20 @@ import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.utils.ObjectUtil;
 
+/**
+ * 流式布局分组托管业务
+ */
 public class FlowGroupDelegate extends ViewDelegate<ViewGroup> {
 
+    /**
+     * 流式布局水平间距
+     */
     @AttrBind(def = 10)
     private int flowHorizontalSpacing;
 
+    /**
+     * 流式布局垂直间距
+     */
     @AttrBind(def = 10)
     public int flowVerticalSpacing;
 
@@ -68,29 +77,28 @@ public class FlowGroupDelegate extends ViewDelegate<ViewGroup> {
         ObjectUtil.findMethod(ViewGroup.class, "measureChildren", int.class, int.class)
                 .invoke(view, widthMeasureSpec, heightMeasureSpec);
 
-        //最大的宽
-        int maxWidth = 0;
-        //累计的高
-        int totalHeight = 0;
-
         //当前这一行的累计行宽
         int lineWidth = 0;
         //当前这行的最大行高
-        int maxLineHeight = 0;
-        //用于记录换行前的行宽和行高
-        int oldHeight;
-        int oldWidth;
+        int totalHeight = 0;
 
         int lines = 0;
+        //计算实际能使用宽度
+        int widthUseSize = widthSize - (view.getPaddingLeft() + view.getPaddingRight());
+
+        //二维视图
+        List<List<View>> lineViews = new LinkedList<>();
+        List<View> currentLine = new LinkedList<>();
+        lineViews.add(currentLine);
 
         List<View> visibleViews = getVisibleViews();
-        //假设 widthMode和heightMode都是AT_MOST
         for (int i = 0; i < visibleViews.size(); i++) {
+
             View child = visibleViews.get(i);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
 
             if (columnOfAverage > 0){
-                params.width = (int) (widthSize / columnOfAverage - ((columnOfAverage-1)*flowHorizontalSpacing)/columnOfAverage - 0.5);
+                params.width = (int) (widthUseSize / columnOfAverage - ((columnOfAverage-1)*flowHorizontalSpacing)/columnOfAverage - 0.5);
                 params.height = itemHeight;
                 child.setLayoutParams(params);
 
@@ -99,54 +107,38 @@ public class FlowGroupDelegate extends ViewDelegate<ViewGroup> {
                         .invoke(view, widthMeasureSpec, heightMeasureSpec);
             }
 
-            oldHeight = maxLineHeight;
-            //当前最大宽度
-            oldWidth = maxWidth;
+            //先加元素所需宽度
+            int itemWidth = child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
 
-            int deltaX = child.getMeasuredWidth() + params.leftMargin + params.rightMargin + flowHorizontalSpacing;
+            //预算是否超出宽度
+            if (itemWidth + lineWidth > widthUseSize){
+                //可能超出，则换行
+                lineWidth = 0;
+                lineViews.add(currentLine = new LinkedList<View>());
+            }else{
+                //未超出宽度，继续加宽度并添加水平间隔
+                lineWidth += itemWidth + flowHorizontalSpacing;
+            }
+            currentLine.add(child);
+        }
 
-            if (lineWidth + deltaX + view.getPaddingLeft() + view.getPaddingRight() > widthSize) {
-                //如果折行,height增加
-                //和目前最大的宽度比较,得到最宽。不能加上当前的child的宽,所以用的是oldWidth
-                maxWidth = Math.max(lineWidth, oldWidth);
-                //重置宽度
-                lineWidth = deltaX;
-                //累加高度
-                totalHeight += oldHeight;
-                //重置行高,当前这个View，属于下一行，因此当前最大行高为这个child的高度加上margin
-                maxLineHeight = child.getMeasuredHeight() + params.topMargin + params.bottomMargin + flowVerticalSpacing;
-                //flowHorizontalSpacing
-                //记录换多少行
-                lines++;
-            } else {
-                //不换行，累加宽度
-                lineWidth += deltaX;
-                //不换行，计算行最高
-                int deltaY = child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
-                maxLineHeight = Math.max(maxLineHeight, deltaY);
+        for (List<View> line : lineViews) {
+            int maxHeight = 0;
+            for(View child : line){
+                maxHeight = Math.max(maxHeight, child.getMeasuredHeight());
             }
 
-            if (i == visibleViews.size() - 1) {
-                //前面没有加上下一行的搞，如果是最后一行，还要再叠加上最后一行的最高的值
-                if (columnOfAverage != -1){
-                    if (visibleViews.size() > columnOfAverage * lines){
-                        totalHeight += maxLineHeight;
-                    }
-                }else{
-                    totalHeight += maxLineHeight;
-                }
-
-                //计算最后一行和前面的最宽的一行比较
-                maxWidth = Math.max(lineWidth, oldWidth);
+            totalHeight += maxHeight;
+            if (lineViews.indexOf(line) < (lineViews.size() - 1)){
+                totalHeight += flowVerticalSpacing;
             }
         }
 
         //加上当前容器的padding值
-        maxWidth += view.getPaddingLeft() + view.getPaddingRight();
         totalHeight += view.getPaddingTop() + view.getPaddingBottom();
 
         ObjectUtil.findMethod(View.class, "setMeasuredDimension", int.class, int.class).invoke(view,
-                widthMode == View.MeasureSpec.EXACTLY ? widthSize : maxWidth,
+                widthMode == View.MeasureSpec.EXACTLY ? widthSize : 0,
                 heightMode == View.MeasureSpec.EXACTLY ? heightSize : totalHeight);
     }
 

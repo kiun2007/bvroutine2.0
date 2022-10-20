@@ -7,6 +7,8 @@ import java.util.Map;
 
 import kiun.com.bvroutine.ActivityApplication;
 import kiun.com.bvroutine.BuildConfig;
+import kiun.com.bvroutine.cacheline.CacheLineInterceptor;
+import kiun.com.bvroutine.cacheline.CacheSet;
 import kiun.com.bvroutine.security.ConstValue;
 import kiun.com.bvroutine.security.EncodeType;
 import kiun.com.bvroutine.utils.AesEncryptUtils;
@@ -15,6 +17,7 @@ import kiun.com.bvroutine.utils.MCString;
 import kiun.com.bvroutine.utils.MD5Util;
 import kiun.com.bvroutine.utils.ObjectUtil;
 import kiun.com.bvroutine.utils.SharedUtil;
+import kiun.com.bvroutine.utils.type.ClassUtil;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -23,6 +26,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.internal.http.RealResponseBody;
+import retrofit2.Invocation;
 
 import static kiun.com.bvroutine.net.LoginInterceptor.SAVE_KEY;
 
@@ -85,15 +89,26 @@ public class HttpInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        if (cacheInterceptor != null){
+        Request request = chain.request();
+        Invocation invocation = request.tag(Invocation.class);
+        CacheSet cacheSet = invocation.method().getAnnotation(CacheSet.class);
+
+        if (cacheSet != null){
+
+            if (cacheInterceptor == null){
+                cacheInterceptor = new CacheLineInterceptor();
+            }
+
             if (loginInterceptor != null){
                 cacheInterceptor.setLoginHeader(loginInterceptor.getHeader());
             }
 
-            return cacheInterceptor.intercept(chain);
+            Response response = cacheInterceptor.intercept(chain);
+            if (response != null) {
+                return response;
+            }
         }
 
-        Request request = chain.request();
         EncodeType encodeType = EncodeType.getType(request.header(ConstValue.Security));
 
         if (BuildConfig.DEBUG){
@@ -172,7 +187,16 @@ public class HttpInterceptor implements Interceptor {
         String security = response.header(ConstValue.Security);
 
         if(!response.isSuccessful()){
-            throw new HttpException(response);
+            HttpException exception = new HttpException(response);
+
+            if (loginInterceptor != null && exception.getBody() != null){
+                exception.setBody(loginInterceptor.errorContent(exception.getBody()));
+            }
+            
+            if (exception.getCode() == 401){
+                ServiceGenerator.clearAuthorize();
+            }
+            throw exception;
         }
 
         Response.Builder responseBuilder = response.newBuilder();
@@ -198,7 +222,7 @@ public class HttpInterceptor implements Interceptor {
 
         Response newResponse = responseBuilder.build();
 
-        if (response.header("Set-Cookie") != null){
+        if (response.header("Set-Cookie") != null && loginInterceptor != null){
             loginInterceptor.refineToken(response.headers(), null);
         }
 
@@ -206,9 +230,11 @@ public class HttpInterceptor implements Interceptor {
         if ((isLogin && loginInterceptor != null && TextUtils.isEmpty(security)) || cacheInterceptor != null){
 
             Response.Builder cloneBuilder = response.newBuilder();
-            String body = response.body().string();
-            cloneBuilder.body(ResponseBody.create(response.body().contentType(), body));
+            String body = response.body() == null ? null : response.body().string();
+            MediaType type = response.body() == null ? null : response.body().contentType();
+            cloneBuilder.body(ResponseBody.create(type, body));
 
+            //在线存储数据
             if (cacheInterceptor != null && !cacheInterceptor.isOffline()){
                 cacheInterceptor.onCacheData(request, body);
             }

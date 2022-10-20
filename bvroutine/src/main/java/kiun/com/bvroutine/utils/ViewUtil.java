@@ -22,11 +22,14 @@ import java.util.List;
 import java.util.Map;
 
 import kiun.com.bvroutine.BR;
+import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.BVBaseActivity;
 import kiun.com.bvroutine.base.ViewBind;
 import kiun.com.bvroutine.interfaces.callers.GetBooleanCaller;
+import kiun.com.bvroutine.interfaces.view.TypedBindGroupView;
 import kiun.com.bvroutine.interfaces.view.TypedBindView;
 import kiun.com.bvroutine.interfaces.view.TypedView;
+import kiun.com.bvroutine.views.delegate.BindConvertDelegate;
 
 public class ViewUtil {
 
@@ -109,11 +112,12 @@ public class ViewUtil {
 
         if (typedView instanceof View){
             isEditMode = ((View) typedView).isInEditMode();
+            BindConvertDelegate delegate = new BindConvertDelegate((View)typedView, attrs);
+            ((View) typedView).setTag(R.id.tagExtra, delegate);
         }
 
         if (isEditMode){
             logError = new StringBuilder();
-
         }
 
         Context context = typedView.getContext();
@@ -128,8 +132,10 @@ public class ViewUtil {
     }
 
     private static void bindViews(TypedView typedView, Context context, Class typeClz) {
+
         if (typedView instanceof TypedBindView && typedView instanceof ViewGroup){
             TypedBindView typedBindView = (TypedBindView) typedView;
+            ViewGroup viewGroup = (ViewGroup) typedView;
             View root = LayoutInflater.from(context).inflate(typedBindView.layoutId(), (ViewGroup) typedView, true);
 
             for (Field field : typeClz.getDeclaredFields()){
@@ -155,6 +161,31 @@ public class ViewUtil {
                         }
                     }
                 }
+            }
+
+            if (typedView instanceof TypedBindGroupView){
+
+                int contentId = ((TypedBindGroupView) typedView).contentId();
+                View contentView = contentId == 0 ? null : root.findViewById(contentId);
+                if (!(contentView instanceof ViewGroup)){
+                    //不满足条件 不执行内容转移
+                    return;
+                }
+
+                ViewGroup contentViewGroup = (ViewGroup) contentView;
+                viewGroup.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+
+                    @Override
+                    public void onChildViewAdded(View parent, View child) {
+                        viewGroup.removeView(child);
+                        contentViewGroup.addView(child);
+                    }
+
+                    @Override
+                    public void onChildViewRemoved(View parent, View child) {
+
+                    }
+                });
             }
         }
     }

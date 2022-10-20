@@ -9,6 +9,8 @@ import java.util.Objects;
 
 import kiun.com.bvroutine.interfaces.callers.GetCaller;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
+import kiun.com.bvroutine.presenters.SpinnerUnion;
+import kiun.com.bvroutine.presenters.listener.ListenerController;
 
 public class UnionSpinnerConvert extends BindConvert<AppCompatSpinner, Object, Object> implements AdapterView.OnItemSelectedListener {
 
@@ -25,6 +27,7 @@ public class UnionSpinnerConvert extends BindConvert<AppCompatSpinner, Object, O
 
     public UnionSpinnerConvert(AppCompatSpinner view, GetCaller caller) {
         super(view);
+        ListenerController.regListener(view, this);
         view.setOnItemSelectedListener(this);
         this.valueGetCaller = caller;
     }
@@ -44,22 +47,33 @@ public class UnionSpinnerConvert extends BindConvert<AppCompatSpinner, Object, O
             return;
         }
 
+        int selectIndex = 0;
         for (int i = 0; i < view.getAdapter().getCount(); i++) {
             Object item = view.getAdapter().getItem(i);
+            if (item instanceof SpinnerUnion.Empty){
+                continue;
+            }
             if(item != null){
                 Object itemValue = valueGetCaller.call(item);
                 if (Objects.equals(o, itemValue)){
-                    view.setSelection(i);
+                    selectIndex = i;
                     break;
                 }
             }
         }
+
+        view.setSelection(selectIndex);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ListenerController.execItemClick(this, parent, view, position, id);
         Object selectItem = parent.getAdapter().getItem(position);
-        onChanged(valueGetCaller.call(selectItem));
+        if (selectItem instanceof SpinnerUnion.Empty){
+            onChanged(null);
+        } else {
+            onChanged(valueGetCaller.call(selectItem));
+        }
 
         if(onValueChanged != null){
             onValueChanged.call(selectItem);

@@ -9,7 +9,11 @@ import kiun.com.bvroutine.data.error.ServiceException;
 import kiun.com.bvroutine.interfaces.callers.BatchVoidCaller;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
 import kiun.com.bvroutine.interfaces.presenter.ExceptionCatcher;
+import kiun.com.bvroutine.net.HttpException;
 
+/**
+ * 错误扑捉器
+ */
 public class ErrorMessageCatcher implements ExceptionCatcher {
     private SetCaller<String> messageCaller;
     private BatchVoidCaller<ErrorMessageCatcher> completeCaller;
@@ -28,21 +32,25 @@ public class ErrorMessageCatcher implements ExceptionCatcher {
         if (messageCaller == null) return;
         if (ex instanceof SocketTimeoutException){
             messageCaller.call("连接超时");
-        }else if (ex instanceof TimeoutException){
+        }
+        else if (ex instanceof HttpException){
+            messageCaller.call(ex.getMessage());
+        }
+        else if (ex instanceof TimeoutException){
             messageCaller.call("超时");
         }else if (ex instanceof SocketException){
             messageCaller.call("连接错误");
         }else if (ex instanceof IOException){
-            messageCaller.call("文件读写错误");
+            messageCaller.call("网络读取错误");
         }else if (ex instanceof ServiceException){
             messageCaller.call("服务器错误");
         }else if (ex instanceof NullPointerException){
             messageCaller.call("空指针");
-        }else{
+        }else {
 
             StringBuilder builder = new StringBuilder();
 
-            if (ex.getMessage() != null){
+            if (ex.getMessage() != null) {
                 builder.append(ex.getMessage());
             }
 

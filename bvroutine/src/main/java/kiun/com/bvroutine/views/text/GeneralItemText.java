@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
 
@@ -35,8 +36,7 @@ import kiun.com.bvroutine.views.dialog.MCDialogManager;
  * 创建日期: 2020/5/25 18:23
  * 说明: 通用选项文本
  */
-@SuppressLint("AppCompatCustomView")
-public class GeneralItemText extends TextView implements TypedView, View.OnClickListener, ValListener {
+public class GeneralItemText extends AppCompatTextView implements TypedView, View.OnClickListener, ValListener {
 
     @FunctionalInterface
     public interface GetParamCaller extends GetCaller<GeneralItemText, Object>{}
@@ -147,6 +147,9 @@ public class GeneralItemText extends TextView implements TypedView, View.OnClick
                 }else if (item instanceof String){
                     id = (String) item;
                     setText(id);
+                }else{
+                    extra = item;
+                    setText(extra == null ? "" : extra.toString());
                 }
 
                 if (textListener != null){

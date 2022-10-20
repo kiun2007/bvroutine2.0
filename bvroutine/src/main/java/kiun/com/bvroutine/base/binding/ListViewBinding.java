@@ -9,6 +9,7 @@ import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.interfaces.callers.PagerCaller;
+import kiun.com.bvroutine.interfaces.callers.PagerDataCaller;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.presenters.RecyclerListPresenter;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
@@ -18,6 +19,25 @@ import kiun.com.bvroutine.presenters.list.NetListProvider;
 import kiun.com.bvroutine.presenters.list.TreeProvider;
 
 public class ListViewBinding {
+
+
+    @BindingAdapter("android:dataBlock")
+    public static void setDataBlock(RecyclerView recyclerView, PagerDataCaller caller){
+        NetListProvider listProvider = (NetListProvider) recyclerView.getTag(R.id.tagListPresenter);
+        if (listProvider != null){
+            listProvider.setCaller(caller);
+            listProvider.refresh();
+        }
+    }
+
+    @BindingAdapter({"android:listProvider", "android:dataBlock"})
+    public static void setListDataProvider(RecyclerView recyclerView, NetListProvider listProvider, PagerDataCaller caller){
+
+        if (listProvider != null){
+            listProvider.setCaller(caller);
+        }
+        setListProvider(recyclerView, listProvider);
+    }
 
     @BindingAdapter("android:netBlock")
     public static void setNetBlock(RecyclerView recyclerView, PagerCaller caller){
@@ -57,6 +77,23 @@ public class ListViewBinding {
         recyclerView.setTag(R.id.tagListPresenter, listProvider);
     }
 
+    @BindingAdapter({"android:treeProvider", "android:dataBlock"})
+    public static void setTreeProvider(RecyclerView recyclerView, TreeProvider treeProvider, PagerDataCaller caller){
+        if (!(recyclerView.getContext() instanceof RequestBVActivity) || treeProvider == null){
+            return;
+        }
+
+        if (recyclerView.getTag(R.id.tagListPresenter) instanceof TreeProvider){
+            return;
+        }
+
+        if (treeProvider instanceof ArrayTreeProvider && caller != null){
+            ((ArrayTreeProvider) treeProvider).setCaller(caller);
+        }
+
+        extracted(recyclerView, treeProvider);
+    }
+
     @BindingAdapter({"android:treeProvider", "android:netBlock"})
     public static void setTreeProvider(RecyclerView recyclerView, TreeProvider treeProvider, PagerCaller caller){
 
@@ -72,6 +109,10 @@ public class ListViewBinding {
             ((ArrayTreeProvider) treeProvider).setCaller(caller);
         }
 
+        extracted(recyclerView, treeProvider);
+    }
+
+    private static void extracted(RecyclerView recyclerView, TreeProvider treeProvider) {
         RequestBVActivity activity = (RequestBVActivity) recyclerView.getContext();
         SwipeRefreshLayout swipeRefreshLayout = null;
         if (recyclerView.getParent() instanceof SwipeRefreshLayout){
@@ -88,6 +129,6 @@ public class ListViewBinding {
 
     @BindingAdapter({"android:treeProvider"})
     public static void setTreeProvider(RecyclerView recyclerView, TreeProvider treeProvider){
-        setTreeProvider(recyclerView, treeProvider, null);
+        setTreeProvider(recyclerView, treeProvider, (PagerCaller)null);
     }
 }

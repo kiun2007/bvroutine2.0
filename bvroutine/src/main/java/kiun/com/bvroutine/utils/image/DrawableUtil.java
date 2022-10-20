@@ -3,11 +3,16 @@ package kiun.com.bvroutine.utils.image;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.ContextThemeWrapper;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+
+import kiun.com.bvroutine.R;
 
 public class DrawableUtil {
 
@@ -16,9 +21,9 @@ public class DrawableUtil {
     public static final int RIGHT = 2;
     public static final int BOTTOM = 3;
 
-    private static Drawable getDrawable(Context context, @DrawableRes int drawableId){
+    public static Drawable getDrawable(Context context, @DrawableRes int drawableId){
 
-        Drawable drawable = context.getResources().getDrawable(drawableId);
+        Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableId, context.getTheme());
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         return drawable;
     }
@@ -49,8 +54,10 @@ public class DrawableUtil {
     }
 
     public static Drawable getDrawable(Context context, @DrawableRes int drawableId, Rect rect){
-        Drawable drawable = context.getResources().getDrawable(drawableId);
-        drawable.setBounds(rect);
+        Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableId, context.getTheme());
+        if (drawable != null){
+            drawable.setBounds(rect);
+        }
         return drawable;
     }
 
@@ -102,5 +109,18 @@ public class DrawableUtil {
     public static void setBottomDrawable(TextView view, @DrawableRes int drawableId){
         Drawable drawable = getDrawable(view.getContext(), drawableId);
         setTextDrawable(view, BOTTOM, drawable, false);
+    }
+
+    public static Drawable anim(Drawable drawable, boolean isRun){
+        if (drawable instanceof AnimationDrawable){
+            AnimationDrawable animation = (AnimationDrawable) drawable;
+            if (isRun){
+                animation.run();
+                animation.start();
+            }else{
+                animation.stop();
+            }
+        }
+        return drawable;
     }
 }

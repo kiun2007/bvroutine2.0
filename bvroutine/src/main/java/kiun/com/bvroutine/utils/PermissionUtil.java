@@ -17,7 +17,7 @@ import kiun.com.bvroutine.interfaces.callers.CallBack;
 
 public class PermissionUtil {
 
-    private Activity activity;
+    private final Activity activity;
     Map<Integer, ExtraValue<String[], CallBack, CallBack>> permissionCallBacks = new HashMap<>();
 
     public PermissionUtil(Activity activity) {

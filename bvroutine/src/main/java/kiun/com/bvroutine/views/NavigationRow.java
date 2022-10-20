@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.base.ViewBind;
+import kiun.com.bvroutine.interfaces.view.TypedBindGroupView;
 import kiun.com.bvroutine.interfaces.view.TypedBindView;
 import kiun.com.bvroutine.interfaces.view.TypedView;
 import kiun.com.bvroutine.utils.ViewUtil;
@@ -22,7 +23,7 @@ import kiun.com.bvroutine.utils.ViewUtil;
  * 创建日期: 2020/5/20 22:26
  * 说明: 导航条（行）控件
  */
-public class NavigationRow extends LinearLayout implements TypedBindView {
+public class NavigationRow extends LinearLayout implements TypedBindGroupView {
 
     @AttrBind
     Drawable icon;
@@ -30,11 +31,17 @@ public class NavigationRow extends LinearLayout implements TypedBindView {
     @AttrBind
     String title;
 
+    @AttrBind
+    int layoutId = R.layout.layout_navigation_row;
+
     @ViewBind
     TextView titleTextView;
 
     @ViewBind
     ImageView iconImageView;
+
+    @ViewBind
+    LinearLayout frameContent;
 
     public NavigationRow(Context context) {
         super(context);
@@ -57,7 +64,6 @@ public class NavigationRow extends LinearLayout implements TypedBindView {
 
     @Override
     public void initView() {
-
         titleTextView.setText(title);
         iconImageView.setImageDrawable(icon);
     }
@@ -73,6 +79,11 @@ public class NavigationRow extends LinearLayout implements TypedBindView {
 
     @Override
     public int layoutId() {
-        return R.layout.layout_navigation_row;
+        return layoutId;
+    }
+
+    @Override
+    public int contentId() {
+        return R.id.frameContent;
     }
 }

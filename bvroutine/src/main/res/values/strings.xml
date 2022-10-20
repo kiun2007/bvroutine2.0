@@ -212,6 +212,10 @@
         <item>申</item>
     </string-array>
 
+    <string name="keyValueAndColor" translatable="false">
+        <![CDATA[<f c="#333333" s="15sp">%1$s </f><f c="%3$s" s="15sp">%2$s</f>]]>
+    </string>
+
     <string name="textDouble" translatable="false">objectTell.create(convertPackage+\".TextDouble\")</string>
     <string name="textFloat" translatable="false">objectTell.create(convertPackage+\".TextFloat\")</string>
     <string name="textLong" translatable="false">objectTell.create(convertPackage+\".TextLong\")</string>

@@ -17,7 +17,6 @@ import kiun.com.bvroutine.cacheline.utils.HTTPUtil;
 public class UploadManager implements Runnable {
 
     private Map<String, SqliteDBHelper> dbMap;
-    CacheSettingManager settingManager;
     Thread mThread = null;
     CacheUploadEventer uploadEventer;
     boolean isStop = false;
@@ -30,37 +29,17 @@ public class UploadManager implements Runnable {
     //标志等级.
     Map<String, Integer> errRelationLevel = new HashMap<>();
 
-    public UploadManager(CacheSettingManager settingManager, Map<String,SqliteDBHelper> dbMap){
+    public UploadManager(Map<String,SqliteDBHelper> dbMap){
         this.dbMap = dbMap;
-        this.settingManager = settingManager;
     }
 
     public List<UploadObject> readAllUpload(){
         return readAllUpload(false);
     }
 
-    private List<UploadObject> toUploadObjects(List<Map<String, Object>> array){
-
-        List<UploadObject> list = new LinkedList<>();
-        if (array != null) {
-            for (int i = 0; i < array.size(); i++) {
-                Map<String, Object> item = array.get(i);
-                if(item != null){
-                    list.add(new UploadObject(item, settingManager, dbMap));
-                }
-            }
-        }
-        return list;
-    }
-
     public List<UploadObject> readAllUpload(boolean isUpload){
 
-        if(!dbMap.get(UploadObject.UP_LOAD_DB).isWithTable(UploadObject.UP_LOAD_TABLE)){
-            return null;
-        }
-
-        List array = dbMap.get(UploadObject.UP_LOAD_DB).readDataByWhere(UploadObject.UP_LOAD_TABLE, isUpload ? "out_time>0" : "out_time=0", "in_time");
-        return toUploadObjects(array);
+        return null;
     }
 
     public boolean startUpload(CacheUploadEventer uploadEventer, List<UploadObject> uploadList){
@@ -122,7 +101,7 @@ public class UploadManager implements Runnable {
     }
 
     public SqliteDBHelper getDB(SettingUnit settingUnit){
-        return dbMap.get(settingUnit.SaveDB());
+        return settingUnit.getDbHelper();
     }
 
     @Override
@@ -168,7 +147,7 @@ public class UploadManager implements Runnable {
                 retValue = JSON.parseObject(HTTPUtil.postURL(uploadObject.getUrl(), requestBody, uploadObject.getHeader(), code));
             }else{
                 //多表单提交
-                SqliteDBHelper helper = dbMap.get(settingUnit.SaveDB());
+                SqliteDBHelper helper = settingUnit.getDbHelper();
                 retValue = HTTPUtil.upload(uploadObject.getUrl(), uploadObject.getHeader(), helper.readRowByPK(settingUnit.Name(), settingUnit.Key(), requestBody, null));
             }
 

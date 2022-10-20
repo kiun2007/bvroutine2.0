@@ -15,7 +15,6 @@ import retrofit2.Call;
  */
 public interface RequestBindingPresenter {
 
-
     void addRequest(GetTNoParamCall<Void> serviceCaller);
 
     <T>void addRequest(GetTNoParamCall<T> serviceCaller, SetCaller<T> setCaller);

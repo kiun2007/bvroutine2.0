@@ -1,11 +1,14 @@
 package kiun.com.bvroutine.views.text;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
 
 import kiun.com.bvroutine.R;
@@ -16,7 +19,7 @@ import kiun.com.bvroutine.utils.ViewUtil;
 
 import static kiun.com.bvroutine.text.Html.*;
 
-public class HtmlTextView extends TextView implements TypedView {
+public class HtmlTextView extends AppCompatTextView implements TypedView {
 
     @AttrBind
     private int html = -1;
@@ -72,23 +75,29 @@ public class HtmlTextView extends TextView implements TypedView {
 
     private void show(){
 
-        if (html != -1){
-            String value = null;
-            if (args != null){
-                value = getResources().getString(html, args);
-            }else{
-                value = getResources().getString(html);
-                if (value.matches("%")){
-                    value = null;
+        try {
+            if (html != -1){
+                String value = null;
+                if (args != null){
+                    value = getResources().getString(html, args);
+                }else{
+                    value = getResources().getString(html);
+                    if (value.matches("%")){
+                        value = null;
+                    }
                 }
-            }
 
-            if (value == null){
-                return;
-            }
+                if (value == null){
+                    return;
+                }
 
-            Spanned spanned = Html.fromHtml(value, TO_HTML_PARAGRAPH_LINES_CONSECUTIVE, htmlTextImageGetter, new HtmlTag());
-            setText(spanned);
+                Spanned spanned = Html.fromHtml(value, TO_HTML_PARAGRAPH_LINES_CONSECUTIVE, htmlTextImageGetter, new HtmlTag());
+                setText(spanned);
+            }
+        }catch (Exception ex){
+            System.out.println(html);
+            ex.printStackTrace();
+            Toast.makeText(getContext(), "请检查参数类型与输出格式是否一致", Toast.LENGTH_LONG).show();
         }
     }
 

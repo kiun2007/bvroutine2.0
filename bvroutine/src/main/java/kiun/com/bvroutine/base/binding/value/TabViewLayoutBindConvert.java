@@ -20,15 +20,18 @@ public class TabViewLayoutBindConvert extends BindConvert<TabViewLayout, Object,
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof Integer){
-            Integer index = (Integer) value;
-            Objects.requireNonNull(view.getTabAt(index)).select();
+
+        for (int i = 0; i < view.getTabCount(); i++) {
+            Object item = view.getTabAt(i).getTag();
+            if (Objects.hash(item) == Objects.hash(value)){
+                Objects.requireNonNull(view.getTabAt(i)).select();
+            }
         }
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        onChanged(tab.getPosition());
+        onChanged(tab.getTag());
     }
 
     @Override

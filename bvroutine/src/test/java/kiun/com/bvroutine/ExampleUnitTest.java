@@ -2,10 +2,13 @@ package kiun.com.bvroutine;
 
 import org.junit.Test;
 
+import java.security.NoSuchAlgorithmException;
+
 import kiun.com.bvroutine.data.verify.NotNull;
 import kiun.com.bvroutine.interfaces.verify.Verify;
 import kiun.com.bvroutine.interfaces.verify.Verifys;
 import kiun.com.bvroutine.utils.ObjectUtil;
+import kiun.com.bvroutine.utils.RsaEncryptUtil;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -35,6 +38,11 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
 
+    }
+
+    @Test
+    public void testRsa() throws NoSuchAlgorithmException {
+        RsaEncryptUtil.createKey();
     }
 
     @Test

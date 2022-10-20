@@ -106,7 +106,7 @@ public class MediaPackage {
 
             String fileName = uri.getPath();
             if (metaCursor != null && metaCursor.moveToFirst()){
-                if (metaCursor.getColumnCount() > 0){
+                if (metaCursor.getColumnCount() > 0 && metaCursor.getString(0) != null){
                     fileName = metaCursor.getString(0);
                 }
                 metaCursor.close();

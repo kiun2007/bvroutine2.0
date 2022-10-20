@@ -2,8 +2,8 @@ package com.szxgm.gusustreet.utils;
 
 import android.location.Location;
 
-import com.amap.api.maps.CoordinateConverter;
-import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps2d.CoordinateConverter;
+import com.amap.api.maps2d.model.LatLng;
 import com.szxgm.gusustreet.MainApplication;
 
 public class LatLng3DUtil {
@@ -18,7 +18,7 @@ public class LatLng3DUtil {
 
     public static LatLng convert(Location sourceLatLng, CoordinateConverter.CoordType coord) {
 
-        CoordinateConverter converter  = new CoordinateConverter(MainApplication.getApplication());
+        CoordinateConverter converter  = new CoordinateConverter();
         // CoordType.GPS 待转换坐标类型
         converter.from(coord);
         // sourceLatLng待转换坐标点

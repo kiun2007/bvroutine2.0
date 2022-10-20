@@ -145,7 +145,7 @@
 
                 <LinearLayout
                     tools:visibility="visible"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:padding="10dp"
                     android:orientation="vertical"
                     style="@style/barVertical">

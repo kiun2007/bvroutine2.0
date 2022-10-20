@@ -21,9 +21,18 @@ public abstract class TagBase {
 
         String showValue = show(attributes);
         if (!TextUtils.isEmpty(showValue)){
-            String[] values = showValue.split("==");
-            if (values.length == 2 && !values[0].equals(values[1])){
-                output.delete(start, end);
+            if (showValue.contains("==")){
+                String[] values = showValue.split("==");
+                if (values.length == 2 && !values[0].equals(values[1])){
+                    output.delete(start, end);
+                }
+            }
+
+            if (showValue.contains("!=")){
+                String[] values = showValue.split("!=");
+                if (values.length == 2 && values[0].equals(values[1])){
+                    output.delete(start, end);
+                }
             }
             return true;
         }

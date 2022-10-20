@@ -1,8 +1,8 @@
 package kiun.com.bvroutine.presenters.list;
 
+import android.app.Activity;
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +13,9 @@ import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 
+/**
+ * 普通数组列表驱动器
+ */
 public class ArrayListProvider extends ListProvider{
 
     private static int itemBr = BR.item;
@@ -35,6 +38,7 @@ public class ArrayListProvider extends ListProvider{
         }
         this.listHandler = listHandler;
         this.list = list;
+        listHandler.setTag(this);
     }
 
     @Override

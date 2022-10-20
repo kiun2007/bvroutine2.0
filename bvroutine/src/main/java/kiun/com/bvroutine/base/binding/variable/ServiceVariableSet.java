@@ -36,7 +36,10 @@ public class ServiceVariableSet extends VariableBinding<Service> implements Serv
     public void onServiceConnected(ComponentName name, IBinder service) {
 
         if (service instanceof ServiceBinder){
-            setVariable(((ServiceBinder) service).getService());
+            Service bindService = ((ServiceBinder) service).getService();
+            if (bindService.getClass().equals(clz)){
+                setVariable(bindService);
+            }
         }
     }
 

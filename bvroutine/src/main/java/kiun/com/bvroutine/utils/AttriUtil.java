@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import kiun.com.bvroutine.ActivityApplication;
 import kiun.com.bvroutine.R;
@@ -17,29 +19,27 @@ import kiun.com.bvroutine.utils.attri.AttributeReaderBase;
  */
 public class AttriUtil {
 
-    private static Class RClass = null;
+    private static Map<String, Class> packageAndRClz = new HashMap<>();
 
-    private static Class getRClass(Context context){
+    private static Class getRClass(Class viewClz){
 
-        if (RClass != null){
-            return RClass;
+        for (String key : packageAndRClz.keySet()) {
+            if (viewClz.getPackage().getName().startsWith(key)){
+                return packageAndRClz.get(key);
+            }
         }
 
-        String packageName = context.getPackageName();
-        if (ActivityApplication.getAppPackageName() != null){
-            packageName = ActivityApplication.getAppPackageName();
-        }
-
+        String packageName = viewClz.getPackage().getName();
         do {
             String className = packageName + ".R$styleable";
             try {
-                RClass = Class.forName(className);
-                return RClass;
+                Class rClass = Class.forName(className);
+                packageAndRClz.put(packageName, rClass);
+                return rClass;
             } catch (ClassNotFoundException e) {
             }
-
             packageName = packageName.substring(0, packageName.lastIndexOf("."));
-        }while (packageName.contains("."));
+        } while (packageName.contains("."));
         return null;
     }
 
@@ -48,9 +48,9 @@ public class AttriUtil {
             if (context == null)
                 return 0;
 
-            Class rclz = getRClass(context);
+            Class rclz = getRClass(clz);
             if (rclz == null){
-                return 0;
+                throw new RuntimeException("not found R class");
             }
 
             Field field = rclz.getDeclaredField(name);
@@ -62,6 +62,7 @@ public class AttriUtil {
     }
 
     public static void readAllAttri(TypedView typedView, StringBuilder logError, boolean isEditMode, Context context, TypedArray array, Class typeClz) {
+
         for (Field field : typeClz.getDeclaredFields()){
 
             AttrBind attrBind = field.getAnnotation(AttrBind.class);
@@ -87,7 +88,6 @@ public class AttriUtil {
                     }
 
                     AttributeReaderBase attributeReader = AttributeReaderBase.find(field.getType());
-
                     if (attributeReader != null){
                         value = attributeReader.read(context, typedView, array, attrId, attrBind);
                     }

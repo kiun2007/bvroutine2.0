@@ -42,7 +42,8 @@ public class AutoFitLayout extends FrameLayout implements TypedView {
 
     }
 
-    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         if (scaleHeight != 0) {
             float height = width / scaleHeight;

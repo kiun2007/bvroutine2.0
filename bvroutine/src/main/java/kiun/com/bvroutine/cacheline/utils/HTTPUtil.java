@@ -12,6 +12,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +21,7 @@ import kiun.com.bvroutine.cacheline.BodyConvertBridge;
 import kiun.com.bvroutine.cacheline.body.BaseBodyBuilder;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -55,6 +58,14 @@ public class HTTPUtil {
         httpClient.writeTimeout(120, TimeUnit.SECONDS);
         // 链接读取超时时间
         httpClient.readTimeout(120, TimeUnit.SECONDS);
+
+        List protocols = new ArrayList<>();
+        protocols.add(Protocol.HTTP_1_0);
+        protocols.add(Protocol.HTTP_1_1);
+        protocols.add(Protocol.HTTP_2);
+        protocols.add(Protocol.SPDY_3);
+        protocols.add(Protocol.QUIC);
+        httpClient.protocols(protocols);
 
         Request.Builder requestBuilder = new Request.Builder().url(uploadUrl);
 

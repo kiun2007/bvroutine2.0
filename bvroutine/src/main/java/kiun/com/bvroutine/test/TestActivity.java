@@ -25,7 +25,6 @@ public class TestActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         ActivityTestBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_test);
-
         List<String> list = new LinkedList<>();
         list.add("abc");
         binding.setList(list);

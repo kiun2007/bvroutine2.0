@@ -6,5 +6,7 @@ public interface ViewLoadHandler {
 
     void setContext(Context context);
 
+    boolean isInitStart();
+
     void start();
 }

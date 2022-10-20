@@ -2,6 +2,7 @@ package kiun.com.bvroutine;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.HashMap;
@@ -37,8 +38,9 @@ public class ActivityCallback {
 
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            String guid = activity.getIntent().getStringExtra(ACTIVITY_GUID);
 
+            System.out.println(activity.getClass());
+            String guid = activity.getIntent().getStringExtra(ACTIVITY_GUID);
             if (guid != null){
                 SetCaller<Activity> caller = activityCallerMap.get(guid);
                 if (caller != null){
@@ -49,6 +51,10 @@ public class ActivityCallback {
             activityList.add(activity);
         }
 
+        /**
+         * 退出所有页面，除notClz外
+         * @param notClz 不退出的页面
+         */
         public void allFinish(Class notClz){
             for (Activity activity : activityList) {
                 if (!activity.getClass().equals(notClz)){

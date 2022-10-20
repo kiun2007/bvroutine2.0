@@ -12,14 +12,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.interfaces.view.TypedView;
 import kiun.com.bvroutine.utils.ViewUtil;
 
-@SuppressLint("AppCompatCustomView")
-public class DrawTextView extends TextView implements TypedView {
+public class DrawTextView extends AppCompatTextView implements TypedView {
 
     @AttrBind
     private String[] labels;
@@ -132,6 +132,14 @@ public class DrawTextView extends TextView implements TypedView {
         canvas.save();
         canvas.translate(rect.centerX() - textWidth / 2, rect.top);
         canvas.drawText(drawText, 0,paint.getTextSize() + (rect.height() - paint.getTextSize())/2 - 2, paint);
+    }
+
+    public void setColors(int[] colors) {
+        this.colors = colors;
+    }
+
+    public void setLabels(String[] labels) {
+        this.labels = labels;
     }
 
     public void setIndex(int index) {

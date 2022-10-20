@@ -40,4 +40,5 @@ public class MainActivity extends RequestBVActivity<ActivityRootMainBinding> {
         VersionUpdate versionUpdate = new VersionUpdatePresenter(this);
         versionUpdate.compound();
     }
+
 }

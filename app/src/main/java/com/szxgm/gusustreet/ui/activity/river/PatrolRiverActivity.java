@@ -4,7 +4,7 @@ import android.location.Location;
 import android.view.View;
 import android.widget.Toast;
 
-import com.amap.api.maps.LocationSource;
+import com.amap.api.maps2d.LocationSource;
 import com.szxgm.gusustreet.R;
 import com.szxgm.gusustreet.databinding.ActivityRiverPatrolBinding;
 import com.szxgm.gusustreet.model.dto.river.RiverPatrol;

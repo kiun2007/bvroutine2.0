@@ -6,7 +6,7 @@ import android.widget.EditText;
 
 public class EditTextBindConvert extends BindConvert<EditText, Object, Object> implements TextWatcher {
 
-    private Object lastValue = null;
+    private boolean isSet = false;
 
     public EditTextBindConvert(EditText view) {
         super(view);
@@ -21,14 +21,17 @@ public class EditTextBindConvert extends BindConvert<EditText, Object, Object> i
         }
 
         String value = view.getText().toString();
-        return lastValue = convert(value);
+        return convert(value);
     }
 
     @Override
     public void setValue(Object value) {
-        if (value != null && !value.equals(lastValue)) {
-            view.setText((String)convertFrom(value));
-        }
+        isSet = true;
+        view.setText((String)convertFrom(value));
+        isSet = false;
+//        if (value != null && !value.equals(lastValue)) {
+//            view.setText((String)convertFrom(value));
+//        }
     }
 
     @Override
@@ -37,7 +40,7 @@ public class EditTextBindConvert extends BindConvert<EditText, Object, Object> i
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (listener != null && view.isEnabled()){
+        if (listener != null && view.isEnabled() && !isSet){
             listener.onChange();
         }
     }

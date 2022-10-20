@@ -31,54 +31,59 @@ public class AMapLocationUtil {
     }
 
     public static AMapLocationClient startLocation(Context context, int interval, AMapLocationListener setCaller, boolean isOnce){
-        AMapLocationClient locationClient = new AMapLocationClient(context);
-        AMapLocationClientOption option = new AMapLocationClientOption();
 
-        if (BuildConfig.DEBUG){
-            option.setMockEnable(true);
-            option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        }else{
-            option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        }
+        try{
+            AMapLocationClient locationClient = new AMapLocationClient(context);
+            AMapLocationClientOption option = new AMapLocationClientOption();
 
-        option.setInterval(interval);
-
-        locationClient.setLocationOption(option);
-        locationClient.setLocationListener(aMapLocation -> {
-            if (aMapLocation.getErrorCode() == 0){
-
-                if (setCaller != null){
-
-                    if (isOnce){
-                        locationClient.stopLocation();
-                    }
-
-                    if (!aMapLocation.getAddress().isEmpty()){
-                        setCaller.onLocationChanged(aMapLocation);
-                        return;
-                    }
-
-                    new AgileThread(context, v -> {
-
-                        GeocodeSearch geocoderSearch = new GeocodeSearch(context);
-                        RegeocodeQuery regeocodeQuery = new RegeocodeQuery(new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude()), 100, GeocodeSearch.AMAP);
-                        RegeocodeAddress regeocodeAddress = geocoderSearch.getFromLocation(regeocodeQuery);
-
-                        aMapLocation.setAdCode(regeocodeAddress.getAdCode());
-                        aMapLocation.setAddress(regeocodeAddress.getFormatAddress());
-                        aMapLocation.setCity(regeocodeAddress.getCity());
-                        aMapLocation.setDistrict(regeocodeAddress.getDistrict());
-                        aMapLocation.setProvince(regeocodeAddress.getProvince());
-                        v.into(()->setCaller.onLocationChanged(aMapLocation));
-                    }).start();
-                }
-
+            if (BuildConfig.DEBUG){
+                option.setMockEnable(true);
+                option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             }else{
-                Log.e("Localtion", aMapLocation.getErrorInfo());
+                option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             }
-        });
-        locationClient.startLocation();
-        return locationClient;
+
+            option.setInterval(interval);
+
+            locationClient.setLocationOption(option);
+            locationClient.setLocationListener(aMapLocation -> {
+                if (aMapLocation.getErrorCode() == 0){
+
+                    if (setCaller != null){
+
+                        if (isOnce){
+                            locationClient.stopLocation();
+                        }
+
+                        if (!aMapLocation.getAddress().isEmpty()){
+                            setCaller.onLocationChanged(aMapLocation);
+                            return;
+                        }
+
+                        new AgileThread(context, v -> {
+
+                            GeocodeSearch geocoderSearch = new GeocodeSearch(context);
+                            RegeocodeQuery regeocodeQuery = new RegeocodeQuery(new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude()), 100, GeocodeSearch.AMAP);
+                            RegeocodeAddress regeocodeAddress = geocoderSearch.getFromLocation(regeocodeQuery);
+
+                            aMapLocation.setAdCode(regeocodeAddress.getAdCode());
+                            aMapLocation.setAddress(regeocodeAddress.getFormatAddress());
+                            aMapLocation.setCity(regeocodeAddress.getCity());
+                            aMapLocation.setDistrict(regeocodeAddress.getDistrict());
+                            aMapLocation.setProvince(regeocodeAddress.getProvince());
+                            v.into(()->setCaller.onLocationChanged(aMapLocation));
+                        }).start();
+                    }
+
+                }else{
+                    Log.e("Localtion", aMapLocation.getErrorInfo());
+                }
+            });
+            locationClient.startLocation();
+            return locationClient;
+        } catch (Exception exception){
+            return null;
+        }
     }
 
     public static AMapLocationClient startLocation(Context context, int interval, AMapLocationListener setCaller){

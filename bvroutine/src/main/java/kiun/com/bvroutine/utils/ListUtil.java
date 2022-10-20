@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import kiun.com.bvroutine.data.KeyValue;
+import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.interfaces.callers.CompareCaller;
 import kiun.com.bvroutine.interfaces.callers.GetCaller;
 import kiun.com.bvroutine.interfaces.callers.GetObjectCaller;
@@ -117,7 +118,7 @@ public class ListUtil {
             }
         }
 
-        return buffer.length() == 0 ? buffer.toString() : buffer.substring(0, buffer.length() - 1);
+        return buffer.length() == 0 ? buffer.toString() : buffer.substring(0, buffer.length() - join.length());
     }
 
     public static<T,L extends List> L copyList(List src, Class<T> clz){
@@ -161,6 +162,25 @@ public class ListUtil {
      */
     public static <T> T find(List<T> src, CompareCaller<T> caller){
         return ListUtil.first(ListUtil.filter(src, caller));
+    }
+
+    /**
+     * 数组分页
+     * @param src
+     * @param pagerBean
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> page(List<T> src, PagerBean pagerBean){
+        int index = (pagerBean.getPageNum() - 1) * pagerBean.getPageSize();
+        int to = index + pagerBean.getPageSize();
+        try {
+            return src.subList(Math.min(index, src.size()), Math.min(to, src.size()));
+        }catch (IllegalArgumentException ex){
+            System.out.println(String.format("size = %d, form = %d, to =%d.", src.size(), index, Math.min(to, src.size())));
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     /**

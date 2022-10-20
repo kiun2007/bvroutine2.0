@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import kiun.com.bvroutine.base.BVBaseActivity;
 import kiun.com.bvroutine.base.EventBean;
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.base.RequestBVFragment;
+import kiun.com.bvroutine.base.TransmitView;
 import kiun.com.bvroutine.base.binding.value.BindConvert;
 import kiun.com.bvroutine.base.binding.value.BindConvertBuilder;
 import kiun.com.bvroutine.data.verify.Problem;
@@ -38,7 +40,9 @@ import kiun.com.bvroutine.presenters.TextViewLoadingPresenter;
 import kiun.com.bvroutine.utils.DataUtil;
 import kiun.com.bvroutine.utils.ListUtil;
 import kiun.com.bvroutine.utils.ViewUtil;
+import kiun.com.bvroutine.views.events.ActionListener;
 import kiun.com.bvroutine.views.events.BeforehandClickListener;
+import kiun.com.bvroutine.views.events.EventAdapter;
 import retrofit2.Call;
 
 @InverseBindingMethods({
@@ -47,147 +51,39 @@ import retrofit2.Call;
 })
 public class ActionBinding {
 
-    public static final class ActionListener extends BeforehandClickListener {
-
-        private FormViewCaller call;
-        private EventBean eventBean;
-        //结束后调用 onClick
-        private View.OnClickListener onClickListener;
-
-        public ActionListener(FormViewCaller call, EventBean eventBean, String[] beforehand, StringArrayCaller arrayCaller, View.OnClickListener onClickListener) {
-            super(beforehand, arrayCaller);
-            this.call = call;
-            this.eventBean = eventBean;
-            this.onClickListener = onClickListener;
-        }
-
-        private void callNoNull(TextViewLoadingPresenter presenter, SetCaller<TextViewLoadingPresenter> caller){
-            if (presenter != null && caller != null){
-                caller.call(presenter);
-            }
-        }
-
-        @SuppressLint("DefaultLocale")
-        @Override
-        protected void implement(View view) {
-
-            TextView viewButton = view instanceof TextView ? (TextView) view : null;
-            RequestBVActivity<?> activity = (RequestBVActivity<?>) view.getContext();
-            RequestBVFragment<?> fragment = ViewUtil.findRootViewTag(view, RequestBVFragment.class);
-
-            TextViewLoadingPresenter presenter = viewButton != null ? new TextViewLoadingPresenter(viewButton) : null;
-            callNoNull(presenter, TextViewLoadingPresenter::begin);
-
-            if (eventBean != null){
-
-                eventBean.setWithWaring(false);
-
-                List<Problem> problems = eventBean.verify();
-                if (!problems.isEmpty()){
-
-                    VerifyBinder verifyBinder = new VerifyBinder(view.getRootView());
-                    verifyBinder.sendProblem(problems, eventBean);
-
-                    List<Problem> warringProblems = ListUtil.filter(problems, item -> !item.isForce());
-
-                    problems = ListUtil.filter(problems, Problem::isForce);
-
-                    if (!problems.isEmpty()){
-                        if (problems.size() == 1){
-                            Toast.makeText(activity, problems.get(0).getDesc(), Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(activity, "页面有多个验证错误,请按照提示填写!", Toast.LENGTH_LONG).show();
-                        }
-                        callNoNull(presenter, TextViewLoadingPresenter::failed);
-                        return;
-                    }else{
-                        if (!warringProblems.isEmpty()){
-
-                            eventBean.setWithWaring(true);
-                            StringBuilder stringBuilder = new StringBuilder();
-                            stringBuilder.append("提交前请先确认如下问题:\n");
-                            for (int i = 0; i < warringProblems.size(); i++) {
-                                Log.w("Verify", warringProblems.get(i).getField() + ":" + warringProblems.get(i).getDesc());
-                            }
-                            stringBuilder.append(String.format("%d处警告, 取消提交后可在页面查看详细\n", warringProblems.size()));
-                            stringBuilder.append("是否继续提交?");
-
-                            new AlertDialog.Builder(activity).setIcon(R.drawable.ic_baseline_warning_24).setTitle("警告")
-                                    .setMessage(stringBuilder.toString())
-                                    .setPositiveButton("继续提交", (dialog, which) -> {
-                                        commitStart(viewButton, activity, presenter,true);
-                                    }).setNegativeButton("取消", (dialog, which) -> {
-                                        Toast.makeText(activity, "提交已取消", Toast.LENGTH_LONG).show();
-                                        callNoNull(presenter, TextViewLoadingPresenter::failed);
-                                    }).show();
-                            return;
-                        }
-                    }
-                }
-            }
-            commitStart(view, activity, presenter,false);
-        }
-
-        private Object callOfExecute(RequestBVActivity<?> activity) throws Exception {
-            RequestBindingPresenter p = activity.getRequestPresenter();
-            Object result = call.call(activity);
-            if (result instanceof Call){
-                return p.execute((Call<?>) result);
-            }
-            return result;
-        }
-
-        private void commitStart(View view,
-                                 RequestBVActivity<?> activity,
-                                 TextViewLoadingPresenter presenter,
-                                 boolean isWaring){
-
-            RequestBVFragment<?> fragment = ViewUtil.findRootViewTag(view, RequestBVFragment.class);
-            String tag = view.getTag() instanceof String ? (String) view.getTag() : null;
-
-            RequestBindingPresenter p = activity.getRequestPresenter();
-            p.addRequest(()-> this.callOfExecute(activity), (v)->{
-
-                Object handler = view.getTag(R.id.tagActionHandler);
-                if (handler == null){
-                    handler = fragment;
-                }
-
-                if (handler == null){
-                    handler = activity;
-                }
-
-                boolean isSuccess = false;
-
-                if (v instanceof DataWrap){
-                    isSuccess = DataUtil.dataComplete(tag, (DataWrap) v, handler, isWaring);
-                }else if (v != null){
-                    isSuccess = DataUtil.dataComplete(tag, v, handler, isWaring);
-                }
-
-                if (isSuccess){
-                    callNoNull(presenter, TextViewLoadingPresenter::complete);
-                    if (onClickListener != null){
-                        onClickListener.onClick(view);
-                    }
-                }else{
-                    callNoNull(presenter, TextViewLoadingPresenter::error);
-                }
-            }, ex->{
-                callNoNull(presenter, TextViewLoadingPresenter::error);
-                Toast.makeText(activity, ex.getMessage(), Toast.LENGTH_LONG).show();
-            });
-        }
-    }
-
     @BindingAdapter("android:iconGravity")
     public static void setIconGravity(TextView view, int gravity){
         view.setTag(R.id.tagIconGravity, gravity);
     }
 
+    /**
+     *
+     * @param button
+     * @param call
+     * @param eventBean
+     * @param beforehand
+     * @param onClickListener
+     * @param arrayCaller
+     */
     @BindingAdapter(value = {"android:action", "android:verify", "android:beforehand", "android:onClick", "android:beforeAction"}, requireAll = false)
-    public static void setActionAndVerifyAndBeforehand(View button, FormViewCaller call, EventBean eventBean,
-                                                       String[] beforehand, View.OnClickListener onClickListener, StringArrayCaller arrayCaller){
+    public static void setActionAndVerifyAndBeforehand(View button,
+                                                       FormViewCaller call,
+                                                       EventBean eventBean,
+                                                       String[] beforehand,
+                                                       View.OnClickListener onClickListener,
+                                                       StringArrayCaller arrayCaller){
+        //全部为空不做任何处理
+        if (call == null && onClickListener == null) return;
+
+        if (button instanceof TransmitView){
+            View source = button;
+            button = ((TransmitView) button).child();
+            if (button == null) return;
+
+            if (source.getTag() != null){
+                button.setTag(source.getTag());
+            }
+        }
 
         if (onClickListener != null && call == null){
             if (beforehand == null){
@@ -204,15 +100,21 @@ public class ActionBinding {
         }
 
         if (button.getContext() instanceof RequestBVActivity){
-            button.setOnClickListener(new ActionListener(call, eventBean, beforehand, arrayCaller, onClickListener));
+            new ActionListener(call, eventBean, beforehand, arrayCaller, onClickListener)
+                    .setEventAdapter(new EventAdapter(button));
         }
     }
 
     @BindingAdapter("android:startActivity")
     public static void setStartActivity(View button, Class clz){
+
         if (button.getContext() instanceof Activity){
+            if (button instanceof TransmitView && ((TransmitView) button).child() != null){
+                button = ((TransmitView) button).child();
+            }
+
             button.setOnClickListener((view)-> {
-                button.getContext().startActivity(new Intent(button.getContext(), clz));
+                view.getContext().startActivity(new Intent(view.getContext(), clz));
             });
         }
     }
@@ -224,9 +126,14 @@ public class ActionBinding {
 
     @BindingAdapter("android:startIntent")
     public static void startIntent(View button, Intent intent){
+
         if (button.getContext() instanceof Activity && intent != null){
+            if (button instanceof TransmitView && ((TransmitView) button).child() != null){
+                button = ((TransmitView) button).child();
+            }
+
             button.setOnClickListener((view)-> {
-                button.getContext().startActivity(intent);
+                view.getContext().startActivity(intent);
             });
         }
     }

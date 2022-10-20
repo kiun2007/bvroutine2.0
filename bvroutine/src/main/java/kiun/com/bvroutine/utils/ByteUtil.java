@@ -24,7 +24,7 @@ public class ByteUtil {
 
         StringBuilder stringBuilder = new StringBuilder(src.length * 3);
         stringBuilder.append("");
-        if (src == null || src.length <= 0) {
+        if (src.length <= 0) {
             return null;
         }
         for (int i = 0; i < src.length; i++) {

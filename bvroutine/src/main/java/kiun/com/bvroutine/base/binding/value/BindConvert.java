@@ -25,6 +25,8 @@ public abstract class BindConvert<V extends View, F, T> {
 
     protected T nowValue;
 
+    protected String initParam;
+
     public abstract T getValue();
 
     public abstract void setValue(F value);
@@ -42,12 +44,21 @@ public abstract class BindConvert<V extends View, F, T> {
         }
     }
 
+    public void initOfParam(String param){
+        initParam = param;
+    }
+
     public void setListener(InverseBindingListener listener) {
         this.listener = listener;
     }
 
     public void setChangedCaller(ObjectSetCaller changedCaller) {
         this.changedCaller = changedCaller;
+    }
+
+    public void replace(BindConvert bindConvert){
+        bindConvert.setListener(listener);
+        bindConvert.setChangedCaller(changedCaller);
     }
 
     public void onChanged(){

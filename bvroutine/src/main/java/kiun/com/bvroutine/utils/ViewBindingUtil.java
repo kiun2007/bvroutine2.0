@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -75,22 +78,38 @@ public class ViewBindingUtil {
      * 自动填充服务到ViewDataBinding
      * @param binding 需要填充的 ViewDataBinding.
      */
-    private static void fullServiceVariable(ViewDataBinding binding, Context context){
-        binding.setLifecycleOwner(new AutoVariableLifecycleOwner(context));
+    private static void fullServiceVariable(ViewDataBinding binding, Context context, LifecycleOwner lifecycleOwner){
+        binding.setLifecycleOwner(new AutoVariableLifecycleOwner(context, lifecycleOwner));
+    }
+
+    public static<T extends ViewDataBinding> T setContentView(Activity activity, int layoutId, LifecycleOwner lifecycleOwner){
+        T viewBinding = DataBindingUtil.setContentView(activity, layoutId);
+        readSetting(activity, viewBinding);
+        fullServiceVariable(viewBinding, activity, lifecycleOwner);
+        return viewBinding;
     }
 
     public static<T extends ViewDataBinding> T setContentView(Activity activity, int layoutId){
-
-         T viewBinding = DataBindingUtil.setContentView(activity, layoutId);
-         readSetting(activity, viewBinding);
-         fullServiceVariable(viewBinding, activity);
-         return viewBinding;
+         return setContentView(activity, layoutId, null);
     }
 
-    public static <T extends ViewDataBinding> T inflate(@NonNull LayoutInflater inflater, int layoutId, @Nullable ViewGroup parent, boolean attachToParent){
+    public static <T extends ViewDataBinding> T inflate(
+            @NonNull LayoutInflater inflater,
+            int layoutId,
+            @Nullable ViewGroup parent,
+            boolean attachToParent){
+        return inflate(inflater, layoutId, parent, attachToParent, null);
+    }
+
+    public static <T extends ViewDataBinding> T inflate(
+            @NonNull LayoutInflater inflater,
+            int layoutId,
+            @Nullable ViewGroup parent,
+            boolean attachToParent,
+            LifecycleOwner lifecycleOwner){
 
         T viewBinding = DataBindingUtil.inflate(inflater, layoutId, parent, attachToParent);
-        fullServiceVariable(viewBinding, inflater.getContext());
+        fullServiceVariable(viewBinding, inflater.getContext(), lifecycleOwner);
         return viewBinding;
     }
 }

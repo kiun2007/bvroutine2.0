@@ -6,55 +6,68 @@ import androidx.annotation.Nullable;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.JavaBeanSerializer;
+import com.google.gson.annotations.Expose;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import kiun.com.bvroutine.base.EventBean;
+import kiun.com.bvroutine.utils.ObjectUtil;
+import kiun.com.bvroutine.utils.type.ClassUtil;
 
+@JSONType(ignores = {"entries", "values", "keys", "size"})
 public class QueryBean<T> extends EventBean implements Map<String, Object> {
 
     @JSONField(serialize = false)
     private T extra;
 
     @JSONField(serialize = false)
-    private Map<String, Object> values;
+    private Map<String, Object> __values;
 
-    public QueryBean(){
+    public QueryBean() {
     }
 
-    protected void initValues(){
-        JavaBeanSerializer javaBeanSerializer = new JavaBeanSerializer(this.getClass());
+    private LinkedHashMap<String, Object> changeValue(){
+
+        LinkedHashMap<String, Object> values = new LinkedHashMap<>();
         try {
-            if (values == null){
-                values = new LinkedHashMap<>();
-            }
 
-            values.putAll(javaBeanSerializer.getFieldValuesMap(this));
-            List<String> emptyKeys = new LinkedList<>();
+            for (Field field : ClassUtil.getRangeField(this.getClass(), QueryBean.class)){
 
-            for (String key : values.keySet()){
-                if(values.get(key) == null){
-                    emptyKeys.add(key);
+                JSONField jsonField = field.getAnnotation(JSONField.class);
+                Expose expose = field.getAnnotation(Expose.class);
+
+                if ((jsonField != null && !jsonField.serialize()) || (expose != null && !expose.deserialize())){
+                    continue;
+                }
+
+                field.setAccessible(true);
+                Object value = field.get(this);
+                if (value != null){
+                    values.put(field.getName(), value);
                 }
             }
 
-            for (String key : emptyKeys){
-                values.remove(key);
-            }
         } catch (Exception e) {
-            throw new JSONException("toJSON error", e);
+            e.printStackTrace();
         }
+
+        if(!Objects.equals(__values, values)){
+            __values = values;
+        }
+        return values;
     }
 
     public QueryBean(T extra){
-        this();
         setExtra(extra);
     }
     
@@ -64,50 +77,50 @@ public class QueryBean<T> extends EventBean implements Map<String, Object> {
 
     public void setExtra(T extra) {
         this.extra = extra;
-        initValues();
+        changeValue();
 
         if (extra != null){
             if (extra instanceof Map){
-                values.putAll((Map<? extends String, ? extends Object>) extra);
+                __values.putAll((Map<? extends String, ? extends Object>) extra);
             }else{
                 JSONObject extraObject = (JSONObject) JSONObject.toJSON(extra);
-                values.putAll(extraObject);
+                __values.putAll(extraObject);
             }
         }
     }
 
     @Override
     public int size() {
-        initValues();
-        return values.size();
+        changeValue();
+        return __values.size();
     }
 
     @Override
     @JSONField(serialize = false)
     public boolean isEmpty() {
-        if (values != null){
-            return values.isEmpty();
+        if (__values != null){
+            return __values.isEmpty();
         }
         return true;
     }
 
     @Override
     public boolean containsKey(@Nullable Object key) {
-        initValues();
-        return values.containsKey(key);
+        changeValue();
+        return __values.containsKey(key);
     }
 
     @Override
     public boolean containsValue(@Nullable Object value) {
-        initValues();
-        return values.containsValue(value);
+        changeValue();
+        return __values.containsValue(value);
     }
 
     @Nullable
     @Override
     public Object get(@Nullable Object key) {
-        initValues();
-        return values.get(key);
+        changeValue();
+        return __values.get(key);
     }
 
     @Nullable
@@ -154,22 +167,22 @@ public class QueryBean<T> extends EventBean implements Map<String, Object> {
     @NonNull
     @Override
     public Set<String> keySet() {
-        initValues();
-        return values.keySet();
+        changeValue();
+        return __values.keySet();
     }
 
     @NonNull
     @Override
     public Collection<Object> values() {
-        initValues();
-        return values.values();
+        changeValue();
+        return __values.values();
     }
 
     @NonNull
     @Override
     public Set<Entry<String, Object>> entrySet() {
-        initValues();
-        return values.entrySet();
+        changeValue();
+        return __values.entrySet();
     }
 
     public static QueryBean create(){

@@ -28,7 +28,7 @@ public class MainApplication extends ActivityApplication {
 
         ServiceGenerator.putBuild(new SimulationInterceptor(), BuildConfig.Prefix, "Fake");
         ServiceGenerator.putBuild(BuildConfig.Prefix);
-        ServiceGenerator.putBuild(BuildConfig.Other, "other");
+        ServiceGenerator.putBuild(null, BuildConfig.Other,"other" , OtherAppLogin.class);
         ServiceGenerator.putBuild("http://2.45.0.38:8080/gsld/", "linkage");
         ServiceGenerator.putBuild("http://192.168.1.55:9999/auth/", "test");
 

@@ -2,7 +2,10 @@
 package kiun.com.bvroutine;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Debug;
@@ -71,7 +74,6 @@ public abstract class ActivityApplication extends Application {
         }
 
         ClassUtil.initAllClass(packageNames);
-
         BindConvertImport bindConvertImport = this.getClass().getAnnotation(BindConvertImport.class);
         if (bindConvertImport != null && bindConvertImport.value().length > 0){
             BindConvertBridge.loadPackage(bindConvertImport.value());
@@ -110,9 +112,20 @@ public abstract class ActivityApplication extends Application {
         loadAnnotations();
         ApplicationInfo info = getApplicationInfo();
 
-        if((info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0){
-            startService(new Intent(this, DebugService.class));
-        }
+//        if((info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0){
+        startService(new Intent(this, DebugService.class));
+//        }
+    }
+
+    public void restart(){
+
+        //使用AlarmManger  延时重启
+        Intent intent2 = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+        PendingIntent restartIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent2, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        // 延时1秒重启
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 500, restartIntent);
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     public final void finish(Class notClz){

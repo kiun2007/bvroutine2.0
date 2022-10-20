@@ -2,6 +2,10 @@ package kiun.com.bvroutine.utils.type;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -118,6 +122,16 @@ public class ClassUtil {
         return null;
     }
 
+    public static<A extends Annotation> A getAnnotation(Class<A> annotationClass, Method method) {
+        A anno = method.getAnnotation(annotationClass);
+        if (anno != null){
+            return anno;
+        }
+
+        anno = method.getDeclaringClass().getAnnotation(annotationClass);
+        return anno;
+    }
+
     public static boolean isBaseType(Class clz){
         return MCString.isWith(clz, int.class, short.class, byte.class, float.class,
                 long.class, double.class, boolean.class, char.class,
@@ -145,5 +159,42 @@ public class ClassUtil {
 
     public static boolean isCharType(Class clz){
         return MCString.isWith(clz, char.class, Character.class);
+    }
+
+    /**
+     * 从开始类型上推所有字段到结束类型， 两个类型必须在继承链路中
+     * @param beginClz 开始类型
+     * @param endClz 结束类型
+     * @return 中间所有字段
+     */
+    public static List<Field> getRangeField(Class beginClz, Class endClz){
+
+        List<Field> allFields = new LinkedList<>();
+        Class curClz = beginClz;
+        for (;!curClz.equals(endClz) && !curClz.equals(Object.class); curClz = curClz.getSuperclass()) {
+            allFields.addAll(Arrays.asList(curClz.getDeclaredFields()));
+        }
+        return allFields;
+    }
+
+    /**
+     * 搜索实现指定接口的泛型类型
+     * @param clz 搜索的类
+     * @param interfaceClz 实现的接口
+     * @param index 索引
+     * @return
+     */
+    public static Class findInterfaceGenericType(Class clz, Class interfaceClz, int index){
+        for (Type type : clz.getGenericInterfaces()){
+            if (type instanceof ParameterizedType){
+                ParameterizedType parameterizedType = (ParameterizedType) type;
+                if (parameterizedType.getRawType().equals(interfaceClz)){
+                    if (parameterizedType.getActualTypeArguments().length >= index){
+                        return (Class) parameterizedType.getActualTypeArguments()[index];
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

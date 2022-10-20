@@ -1,35 +1,33 @@
 package kiun.com.bvroutine.cacheline;
 
 import android.content.Context;
-import android.os.Debug;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import kiun.com.bvroutine.cacheline.body.BaseBodyBuilder;
-import kiun.com.bvroutine.cacheline.data.CacheSettingManager;
 import kiun.com.bvroutine.cacheline.data.MapExtractor;
 import kiun.com.bvroutine.cacheline.data.SqliteDBHelper;
-import kiun.com.bvroutine.cacheline.data.UploadManager;
 import kiun.com.bvroutine.cacheline.data.UploadRelationManager;
 import kiun.com.bvroutine.cacheline.data.beans.Pager;
-import kiun.com.bvroutine.cacheline.data.beans.RelationObject;
 import kiun.com.bvroutine.cacheline.data.beans.SettingUnit;
 import kiun.com.bvroutine.cacheline.data.beans.UploadObject;
 import kiun.com.bvroutine.cacheline.utils.JSONUtil;
 import kiun.com.bvroutine.cacheline.utils.JexlUtil;
-import kiun.com.bvroutine.data.ExtractorBase;
-import kiun.com.bvroutine.utils.MCString;
+import kiun.com.bvroutine.cacheline.utils.ParamUtil;
+import kiun.com.bvroutine.net.ServiceGenerator;
+import kiun.com.bvroutine.utils.ByteUtil;
+import kiun.com.bvroutine.utils.MD5Util;
 import kiun.com.bvroutine.utils.ObjectUtil;
+import retrofit2.Invocation;
 
 /**
  * 缓存核心业务类.
@@ -37,64 +35,35 @@ import kiun.com.bvroutine.utils.ObjectUtil;
 class CacheKernel {
 
     public final String TAG = this.getClass().getSimpleName();
-
-    /**
-     * 缓存配置管理.
-     */
-    private CacheSettingManager manager;
-    private UploadManager uploadManager;
-    private Map<String, SqliteDBHelper> dbMap;
-    private UploadRelationManager relationManager;
+    final UploadRelationManager relationManager;
     private Context context;
 
     /**
      * 根据配置接口类型创建缓存核心.
      * @param context APP上下文.
-     * @param settings 接口类型集合.
      */
-    CacheKernel(Context context, String userField, CacheSettingInterface[] settings) throws Exception {
+    CacheKernel(Context context) throws Exception {
 
         BodyConvertBridge.loadPackage(BaseBodyBuilder.class.getPackage().getName());
-
-        manager = new CacheSettingManager(settings);
-        dbMap = new HashMap<>();
         this.context = context;
-
-        File dbRoot = new File(context.getFilesDir(), "cache_db");
-        if(!dbRoot.exists()) dbRoot.mkdir();
-
-        for (CacheSettingInterface cacheInterface : settings){
-            String dbPath = cacheInterface.theDbPath();
-            File dbFile = new File(dbRoot, dbPath);
-
-            if(!dbMap.containsKey(dbPath)) dbMap.put(dbPath, new SqliteDBHelper(dbFile.getAbsolutePath()));
-        }
-
-        SqliteDBHelper dbHelper = new SqliteDBHelper(new File(dbRoot, userField + UploadObject.UP_LOAD_DB).getAbsolutePath());
-        dbMap.put(UploadObject.UP_LOAD_DB, dbHelper);
-        relationManager = new UploadRelationManager(dbHelper);
-        uploadManager = new UploadManager(manager, dbMap);
+        relationManager = new UploadRelationManager(SettingUnit.getUploadDb());
     }
 
     public void release(){
-        for (SqliteDBHelper dbHelper : dbMap.values()) dbHelper.release();
     }
 
     /**
      * 匹配缓存数据.
-     * @param url 请求原始URL.
-     * @param requestBody 请求参数.
+     * @param invocation 请求时方法描述
      * @param header 请求头部信息.
      * @param inBytes 请求Body内容.
      * @return 返回匹配后的数据.
      * @throws IOException 可能存在字符串转化错误.
      */
-    public byte[] cacheIn(String url, Object requestBody, Map<String, String> header, byte[] inBytes) throws IOException, InterruptedException {
+    public byte[] cacheIn(Invocation invocation,Map<String, String> header, byte[] inBytes) throws IOException, InterruptedException {
 
         String inDateString = null;
-        Map<String, Object> jsonParams = requestBody instanceof Map ? (Map<String, Object>) requestBody : null; //入参内容.
-
-        SettingUnit settingUnit = manager.matchUnitByURL(url, jsonParams);
+        SettingUnit settingUnit = SettingUnit.createByInvocation(invocation);
 
         if(settingUnit != null){
             if(inBytes != null){
@@ -103,166 +72,61 @@ class CacheKernel {
 
                     //服务器返回实际数据.
                     Map<String, Object> jsonObject = (Map<String, Object>) JSONUtil.getJSONData(inDateString);
-                    Map<String, String> urlParam = settingUnit.getURLParams(url);
-                    if(requestBody == null && urlParam != null && !urlParam.isEmpty()) requestBody = new HashMap<>();
-                    JSONUtil.addMap((Map<String, Object>) requestBody, urlParam);
 
                     if (jsonObject != null)
-                        saveCache(settingUnit, url, jsonObject, (Map<String, Object>) requestBody, null);
+                        saveCache(settingUnit, invocation, jsonObject);
                 }
             }else{
                 //上行离线.
                 if(settingUnit.CacheType() == CacheType.CacheUpLoad){
-                    Map<String, String> urlParam = settingUnit.getURLParams(url);
 
                     //jsonParams body参数, urlParam URL 参数.
-                    boolean isSueccess = saveCache(settingUnit, url, jsonParams == null ? requestBody : jsonParams, urlParam, header);
-                    if(isSueccess){
-                        List array = new LinkedList();
+                    boolean isSuccess = saveCache(settingUnit, invocation, null);
+                    if(isSuccess){
+                        List<Map<String, Object>> array = new LinkedList<>();
                         if(settingUnit.Return().isEmpty()){
-                            if(jsonParams != null) array.add(jsonParams);
+//                            if(jsonParams != null) array.add(jsonParams);
                         }else{
-                            array.add(JexlUtil.exeCodeByParams(settingUnit.Return(), jsonParams,dbMap.get(settingUnit.SaveDB())));
+                            array.add(JexlUtil.exeCodeByParams(settingUnit.Return(), null, settingUnit.getDbHelper()));
                         }
                         String jsonString = JSON.toJSONString(JSONUtil.createStandardSuccess(array.isEmpty() ? null : array.get(0), null, false, settingUnit));
-                        inBytes = jsonString.getBytes("utf-8");
+                        inBytes = jsonString.getBytes(StandardCharsets.UTF_8);
                     }
                 }else if (settingUnit.CacheType() == CacheType.CacheDownLoad){ //下行离线.
-                    Thread.sleep(500);
-                    inBytes = loadCache(settingUnit, url, jsonParams);
+                    inBytes = loadCache(settingUnit, invocation);
                 }
             }
-        }
-        if (Debug.isDebuggerConnected() && !url.equals("http://sv.goldenwater.com.cn/pers/position/insertList")){
-            if(inDateString == null && inBytes != null){
-                inDateString = new String(inBytes, "utf-8");
-            }
-            Log.d(TAG, String.format("URL:%s, Param:%s, Data:(%s)", url, requestBody == null ? "null" : requestBody, inDateString));
         }
         return inBytes;
     }
 
     /**
      * 填充数据到本地.
-     * @param url 请求地址.
+     * @param settingUnit 请求地址.
      * @param data 存储的数据.
      */
-    private boolean fillData(SettingUnit settingUnit, String url, Object data, Map<String, Object> urlParams, Map<String, String> header){
+    private boolean fillData(SettingUnit settingUnit, Object data, Map<String, Object> param){
 
         String tableName = settingUnit.Name(), keyName = settingUnit.Key();
+        if(tableName == null || settingUnit.NoSave()) return settingUnit.NoSave();
 
-        if(tableName == null || (header == null && settingUnit.NoSave())) return settingUnit.NoSave();
-
-        SqliteDBHelper sqliteDBHelper = dbMap.get(settingUnit.SaveDB()), uploadDb = dbMap.get(UploadObject.UP_LOAD_DB);
-
+        SqliteDBHelper sqliteDBHelper = settingUnit.getDbHelper(), uploadDb = settingUnit.getUploadHelper();
         //数据库存在问题 返回存储失败.
         if(sqliteDBHelper == null || uploadDb == null) return false;
 
         //插入数据到上传表格.
         if (settingUnit.CacheType() == CacheType.CacheUpLoad){
-
-            Object uploadData = data;
-            String dummyKey = null;
-            Map<String, Object> newParams = null;
-            Map<String, Object> whereJSON = null;
-
-            if (data instanceof Map){
-                whereJSON = settingUnit.getFilterObject((Map<String, Object>) data);
-                Map<String, Object> upJSON = JSONUtil.clone(new HashMap<>(), (Map<String, Object>) data);
-
-                Map<String, Object> newParam = settingUnit.getParamDB((Map<String, Object>) data, sqliteDBHelper);
-                if (newParam != null) JSONUtil.fillJSON((Map<String, Object>) data, newParam);
-
-                if (data != null && TextUtils.isEmpty((dummyKey = (String) ((Map<String, Object>) data).get(settingUnit.Key())))
-                        && whereJSON == null){ //如果主键不存在先创建一个虚拟的主键,虚拟的主键不能用于上传参数.
-                    ((Map<String, Object>) data).put(settingUnit.Key(), dummyKey = MCString.randUUID());
-                }
-
-                newParams = JSONUtil.addJSON(urlParams, (Map<String, Object>) data);
-                if(!settingUnit.Intercept().isEmpty()){
-                    //拦截操作,可能存在重复.
-                    Object isIntercept = JexlUtil.exeCode(settingUnit.Intercept(), newParams, sqliteDBHelper);
-                    if ((isIntercept instanceof Boolean) && ((Boolean) isIntercept).booleanValue() == true){
-                        return false;
-                    }
-                }
-                uploadData = settingUnit.IsDelete() ? newParams : upJSON;
-            }
-
-            UploadObject uploadObject = new UploadObject(url, settingUnit, uploadData , header, dummyKey);
-
-            if (newParams != null){
-                RelationObject relationObject = relationManager.requestRelation(settingUnit.Update(), settingUnit.ReplaceKey(), JSONUtil.clone(new HashMap<>(), newParams));
-                uploadObject.setRelation(relationObject);
-            }
-
-            if (!UploadObject.putUpload(uploadObject, uploadDb)){
-                return false;
-            }
-
-            //插入关联表逻辑, 关联操作不做特别事务, 主要数据成功就成功, 主要数据失败也失败.
-            for (String aboutExpress : settingUnit.About()){
-                String[] express = aboutExpress.split("=");
-                if(express.length == 2){
-                    //关联表格.
-                    String aboutTable = express[0];
-                    boolean isDel = aboutTable.indexOf("<DEL>") == 0;
-                    boolean isIns = aboutTable.indexOf("<INS>") == 0;
-                    if(isDel || isIns) aboutTable = aboutTable.substring(5);
-
-                    //关联参数表达式.
-                    String exp = express[1];
-                    //生成参数.
-                    Object retValue = JexlUtil.exeCode(exp, newParams, sqliteDBHelper);
-
-                    if(retValue != null){
-
-                        if (retValue instanceof Map){
-                            Map<String, Object> jsonValue = (Map<String, Object>)retValue;
-                            if (isDel){
-                                //对表格进行删除操作.
-                                sqliteDBHelper.delByValue(aboutTable, jsonValue);
-                            }else{
-                                sqliteDBHelper.updateValue(aboutTable, jsonValue, isIns);
-                            }
-                        }else if (retValue instanceof List){
-                            for (int i = 0; i < ((List) retValue).size(); i++) {
-                                sqliteDBHelper.updateValue(aboutTable, (Map<String, Object>) ((List) retValue).get(i));
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (settingUnit.IsDelete()){
-
-                if(newParams != null){
-                    if (!settingUnit.Params().isEmpty()){
-                        newParams = JexlUtil.exeCodeByParams(settingUnit.Params(), newParams);
-                    }
-                    Map<String, Object> keyValues = new HashMap<>();
-                    keyValues.put("key_value", (String) newParams.get(settingUnit.Key()));
-
-                    //删除本地上传表数据.
-                    int uploadDelSize = uploadDb.delByValue(UploadObject.UP_LOAD_TABLE, keyValues);
-                    int dataDelSize = sqliteDBHelper.delByValue(settingUnit.Name(), newParams);
-                    return saveTransaction(uploadDelSize > 0 && dataDelSize > 0, sqliteDBHelper, uploadDb);
-                }
-                return true;
-            }
-
-            if (whereJSON != null){
-                return saveTransaction(sqliteDBHelper.updateValueWhere(tableName, (Map<String, Object>) data, whereJSON), sqliteDBHelper, uploadDb);
-            }
+            Boolean result = CacheUtil.fillUpload(data, settingUnit, this.relationManager);
+            if (result != null) return result;
         }else{
             //下行插入,将服务数据经过一定运算修改,暂时还不能应对多层嵌套的子母表替换逻辑.
             if (!settingUnit.Return().isEmpty()){
                 if (data instanceof Map){
-                    data = JexlUtil.exeCodeByParams(settingUnit.Return(), (Map<String, Object>) data, urlParams, sqliteDBHelper);
+                    data = JexlUtil.exeCodeByParams(settingUnit.Return(), (Map<String, Object>) data, param, sqliteDBHelper);
                 }else if (data instanceof List){
                     List<Map<String, Object>> arrayNew = new LinkedList<>();
                     for (int i = 0; i < ((List) data).size(); i++) {
-                        arrayNew.add(JexlUtil.exeCodeByParams(settingUnit.Return(), (Map<String, Object>) ((List) data).get(i), urlParams, sqliteDBHelper));
+                        arrayNew.add(JexlUtil.exeCodeByParams(settingUnit.Return(), (Map<String, Object>) ((List) data).get(i), param, sqliteDBHelper));
                     }
                     data = arrayNew;
                 }
@@ -277,81 +141,72 @@ class CacheKernel {
         if (!settingUnit.Igs().isEmpty()){
             igs = settingUnit.Igs().split(",");
         }
-        return saveTransaction(settingUnit.NoSave() || sqliteDBHelper.createTableAndFill(tableName, keyName, data, settingUnit.getCluster(), igs), sqliteDBHelper, uploadDb);
-    }
-
-    private boolean saveTransaction(boolean isSuccess, SqliteDBHelper dataDb, SqliteDBHelper uploadDb){
-        //保存成功确认事务.
-        if (isSuccess) ObjectUtil.batchCall(item -> item.setTransactionSuccessful(), dataDb, uploadDb);
-        return isSuccess;
+        return CacheUtil.saveTransaction(settingUnit.NoSave() || sqliteDBHelper.createTableAndFill(tableName, keyName, data, settingUnit.getCluster(), igs), sqliteDBHelper, uploadDb);
     }
 
     /**
      * 存储缓存,下行时将服务器的数据保存到本地,上行时将请求的参数存起来,并且将数据分散到各个需要的表格.
      * @param settingUnit 配置单元对象.
-     * @param url 服务器请求地址.
-     * @param value 存储的数据.
-     * @param params 下行为body请求参数, 上行为URL Query 参数.
-     * @param header 上传时用的header.
+     * @param invocation 服务器请求地址.
      * @return 存储是否成功.
      */
-    private boolean saveCache(SettingUnit settingUnit, String url, Object value, Map<String, ? extends Object> params, Map<String, String> header){
+    private boolean saveCache(SettingUnit settingUnit, Invocation invocation, Object value){
 
+        Object params = ParamUtil.paramFormInvocation(invocation);
         boolean isSuc = false;
         synchronized (CacheKernel.class) {
             try{
                 //开启事务.
-                ObjectUtil.batchCall(item -> item.beginTransaction(), dbMap.get(settingUnit.SaveDB()), dbMap.get(UploadObject.UP_LOAD_DB));
+                ObjectUtil.batchCall(item -> item.beginTransaction(), settingUnit.getDbHelper(), settingUnit.getUploadHelper());
 
                 if(settingUnit.CacheType() == CacheType.CacheDownLoad){ //下行数据.
 
                     MapExtractor dataExtractor = new MapExtractor(value);
                     Object data = dataExtractor.extract(settingUnit.Data());
                     if(data != null){
-                        isSuc = fillData(settingUnit, url, data, (Map<String, Object>) params, null);
+                        isSuc = fillData(settingUnit, data, (Map<String, Object>) params);
                     }else{
                         return false;
                     }
-                }else{ //上行数据.
-                    isSuc = fillData(settingUnit, url, value, (Map<String, Object>) params, header);
+                }else{
+                    if (!settingUnit.Data().isEmpty()){
+                        MapExtractor dataExtractor = new MapExtractor(params);
+                        params = dataExtractor.extract(settingUnit.Data());
+                    }
+                    //上行数据保存.
+                    isSuc = fillData(settingUnit, params, null);
                 }
             }catch (Exception ex){
                 ex.printStackTrace();
             } finally {
                 //结束事务.
-                ObjectUtil.batchCall(item -> item.endTransaction(), dbMap.get(settingUnit.SaveDB()), dbMap.get(UploadObject.UP_LOAD_DB));
+                ObjectUtil.batchCall(item -> item.endTransaction(), settingUnit.getDbHelper(), settingUnit.getUploadHelper());
             }
         }
         return isSuc;
     }
 
+
+
     /**
      * 加载离线数据, 根据配置单元的规则逻辑加载指定的数据
      * @param settingUnit 配置单元对象.
-     * @param url 服务器请求地址.
-     * @param param 请求参数.
+     * @param invocation 服务器请求地址.
      * @return 返回缓存的数据.
      */
-    private byte[] loadCache(SettingUnit settingUnit, String url, Map<String, Object> param){
+    private byte[] loadCache(SettingUnit settingUnit, Invocation invocation){
 
         if(settingUnit == null){
             return null;
         }
 
-        if(param == null){
-            param = new HashMap<>();
-        }
-
-        Map<String, String> urlParams = settingUnit.getURLParams(url);
-
-        //加入URL 参数.
-        JSONUtil.addMap(param, urlParams);
+        Map<String, Object> param = ParamUtil.paramFormInvocation(invocation);
 
         //从参数中提取分页信息, 如果没有分页大小则为0.
         Integer pageSize = (Integer) param.get("pageSize"), pageNum = (Integer) param.get("pageNum");
         Pager pager = (settingUnit.IsList() || pageSize == null) ? null : new Pager(pageSize, pageNum);
 
-        SqliteDBHelper sqliteDBHelper = dbMap.get(settingUnit.SaveDB());
+        SqliteDBHelper sqliteDBHelper = settingUnit.getDbHelper();
 
         Map<String, Object> newParam = settingUnit.getParamObject(param);
         if (newParam != null){
@@ -417,16 +272,5 @@ class CacheKernel {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public List<UploadObject> readAllUpload(){
-        return uploadManager != null ? uploadManager.readAllUpload() : null;
-    }
-    public void startUpload(CacheUploadEventer eventer, List<UploadObject> uploadList){
-        if (uploadManager != null) uploadManager.startUpload(eventer, uploadList);
-    }
-
-    public void stopUpload(){
-        if (uploadManager != null) uploadManager.stopUpload();
     }
 }

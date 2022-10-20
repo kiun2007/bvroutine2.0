@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.math.BigInteger;
@@ -18,6 +19,7 @@ import kiun.com.bvroutine.cacheline.data.beans.Pager;
 import kiun.com.bvroutine.cacheline.data.beans.TableCluster;
 import kiun.com.bvroutine.cacheline.utils.JSONUtil;
 import kiun.com.bvroutine.cacheline.utils.ObjectUtil;
+import kiun.com.bvroutine.utils.ListUtil;
 import kiun.com.bvroutine.utils.LogUtil;
 import kiun.com.bvroutine.utils.MCString;
 
@@ -362,7 +364,7 @@ public class SqliteDBHelper {
 
     private String getPKByFields(Map<String,Map<String, Object>> tableColumns){
         for (String key : tableColumns.keySet()){
-            if ((Long)tableColumns.get(key).get("pk") == 1){
+            if ((Integer) tableColumns.get(key).get("pk") == 1){
                 return (String) tableColumns.get(key).get("name");
             }
         }
@@ -415,11 +417,11 @@ public class SqliteDBHelper {
             return null;
         }
 
-        StringBuffer sb = new StringBuffer(512);
+        WhereBuilder builder = WhereBuilder.create();
         for (String key : whereParams.keySet() ) {
-            sb.append(String.format("%s='%s' AND ", key, whereParams.get(key)));
+            builder.addParam(key, whereParams.get(key));
         }
-        return sb.substring(0, sb.length() - 4);
+        return builder.build(" AND ");
     }
 
     public boolean updateValueWhere(String tableName, Map<String, Object> data, Map<String, Object> whereParams){
@@ -484,7 +486,7 @@ public class SqliteDBHelper {
         }
 
         long ret = -1;
-        if(where != null){
+        if(!TextUtils.isEmpty(where)){
             ret = db.update(tableName, values, where, null);
         }else{
             ret = db.replace(tableName, null, values);
@@ -508,7 +510,7 @@ public class SqliteDBHelper {
 
                 if(type >= 5) continue;
 
-                ObjectUtil.GetObjectCall<Cursor> nullCall = obj -> null, intCall = obj -> obj.getLong(i),
+                ObjectUtil.GetObjectCall<Cursor> nullCall = obj -> null, intCall = obj -> obj.getInt(i),
                         floatCall = obj -> obj.getDouble(i),
                         stringCall = obj -> obj.getString(i),
                         blobCall = obj -> obj.getBlob(i);
@@ -547,6 +549,14 @@ public class SqliteDBHelper {
         if (!isWithTable(tableName)){
             return 0;
         }
+
+        Map<String, Map<String, Object>> fields = getTableFields(tableName);
+        for (String key : value.keySet()){
+            if (!fields.containsKey(key)){
+                value.remove(key);
+            }
+        }
+
         int delRet = db.delete(tableName, getWhereByJSON(value), null);
         return delRet;
     }

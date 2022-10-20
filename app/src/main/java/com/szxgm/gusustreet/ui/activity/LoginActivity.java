@@ -25,10 +25,6 @@ public class LoginActivity extends RequestBVActivity<ActivityRootLoginBinding> {
     public void initView() {
         User user = SharedUtil.getValue(User.TAG, new User());
         binding.setUser(user == null ? new User() : user);
-
-        addRequest(()-> rbp.callServiceData(TestService.class, s-> s.login("admin", "123456", "password", "server")), v->{
-            System.out.println(v);
-        });
     }
 
     @Override

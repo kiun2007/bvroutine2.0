@@ -1,6 +1,7 @@
 package kiun.com.bvroutine.views;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 
@@ -19,11 +21,14 @@ import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.base.EventBean;
 import kiun.com.bvroutine.base.RequestBVActivity;
+import kiun.com.bvroutine.base.TransmitView;
 import kiun.com.bvroutine.base.binding.ActionBinding;
 import kiun.com.bvroutine.databinding.ActionBarBinding;
 import kiun.com.bvroutine.interfaces.callers.FormViewCaller;
 import kiun.com.bvroutine.interfaces.view.TypedView;
+import kiun.com.bvroutine.utils.SystemUtil;
 import kiun.com.bvroutine.utils.ViewUtil;
+import kiun.com.bvroutine.views.events.ActionListener;
 import kiun.com.bvroutine.views.viewmodel.ActionBarItem;
 
 /**
@@ -33,7 +38,7 @@ import kiun.com.bvroutine.views.viewmodel.ActionBarItem;
  * @author kiun_2007 on 2018/3/29.
  * Copyright (media_menu) 2017-2018 The Popchain Core Developers
  */
-public class NavigatorBar extends LinearLayout implements TypedView {
+public class NavigatorBar extends LinearLayout implements TypedView, TransmitView {
 
     private TextView titleTextView;
     private TextView leftTextView;
@@ -71,6 +76,9 @@ public class NavigatorBar extends LinearLayout implements TypedView {
     private boolean barNoback;
 
     @AttrBind
+    private boolean withChild = false;
+
+    @AttrBind
     private int barStyle = 0;
 
     @AttrBind
@@ -83,16 +91,17 @@ public class NavigatorBar extends LinearLayout implements TypedView {
     public NavigatorBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setId(R.id.actionBarViewBinding);
-        ViewUtil.initTyped(this, attrs);
+
+        String error = ViewUtil.initTyped(this, attrs);
     }
 
     public NavigatorBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setId(R.id.actionBarViewBinding);
-        ViewUtil.initTyped(this, attrs);
+        String error = ViewUtil.initTyped(this, attrs);
     }
 
-    private void loadView(){
+    private void loadView() {
 
         int initCount = getChildCount();
         View firstChild = null;
@@ -117,6 +126,10 @@ public class NavigatorBar extends LinearLayout implements TypedView {
         titleTextView = findViewById(R.id.titleTextView);
         rightButton = findViewById(R.id.rightButton);
 
+        int colorButtonNormal = SystemUtil.getAttr(getContext(), R.attr.colorButtonNormal).resourceId;
+        rightButton.setForegroundTintList(ColorStateList.valueOf(getResources().getColor(colorButtonNormal)));
+        rightButton.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(colorButtonNormal)));
+
         if (rightTag != null){
             rightButton.setTag(rightTag);
         }
@@ -126,7 +139,6 @@ public class NavigatorBar extends LinearLayout implements TypedView {
             LinearLayout centerPanel = findViewById(R.id.centerPanel);
             centerPanel.removeAllViews();
             centerPanel.addView(firstChild);
-
             rightButton.setVisibility(View.GONE);
         }
 
@@ -153,7 +165,7 @@ public class NavigatorBar extends LinearLayout implements TypedView {
             leftTextView.setCompoundDrawables(barLeftImage, null, null, null);
         }
 
-        if (titleImage != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (titleImage != null) {
             titleTextView.setBackground(titleImage);
         }
 
@@ -171,30 +183,27 @@ public class NavigatorBar extends LinearLayout implements TypedView {
             case 2:
                 titleTextView.setTextColor(0xFF000000);
                 leftTextView.setTextColor(0xFF000000);
-                rightButton.setTextColor(R.attr.colorButtonNormal);
                 setLeftImage(R.drawable.svg_left_arrow_black);
                 break;
             case 1:
                 titleTextView.setTextColor(0xFFFFFFFF);
                 leftTextView.setTextColor(0xFFFFFFFF);
-                rightButton.setTextColor(0xFFFFFFFF);
                 setLeftImage(R.drawable.svg_left_arrow);
                 break;
         }
 
-        if (rightListener != null){
-            rightButton.setOnClickListener(rightListener);
-            barItem.getHandler().setRightCallBack(()->{
-                rightListener.onClick(this);
-            });
-        }
+        rightButton.setOnClickListener((view)-> {
+            barItem.getHandler().onClick(getContext(), 102, null);
+        });
     }
 
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        loadView();
+        if (withChild){
+            loadView();
+        }
     }
 
     private void setLeftImage(int res){
@@ -232,6 +241,9 @@ public class NavigatorBar extends LinearLayout implements TypedView {
 
     @Override
     public void initView() {
+        if (!withChild){
+            loadView();
+        }
     }
 
     @Override
@@ -244,24 +256,8 @@ public class NavigatorBar extends LinearLayout implements TypedView {
         navigatorBar.barItem.setTitle(title);
     }
 
-    @BindingAdapter({"rightAction", "rightVerify"})
-    public static void setOnRightClickVerify(NavigatorBar navigatorBar, FormViewCaller call, EventBean eventBean){
-
-        if (navigatorBar.getContext() instanceof RequestBVActivity){
-            navigatorBar.rightListener = new ActionBinding.ActionListener(call, eventBean, null, null, null);
-            if (navigatorBar.rightButton != null){
-                navigatorBar.rightButton.setOnClickListener(navigatorBar.rightListener);
-            }
-        }
-    }
-
-    @BindingAdapter("rightAction")
-    public static void setOnRightClick(NavigatorBar navigatorBar, FormViewCaller call){
-        setOnRightClickVerify(navigatorBar, call, null);
-    }
-
-    @BindingAdapter("onRightClick")
-    public static void setOnRightClick(NavigatorBar navigatorBar, OnClickListener onClickListener){
-        navigatorBar.rightListener = onClickListener;
+    @Override
+    public View child() {
+        return rightButton;
     }
 }

@@ -3,10 +3,12 @@ package kiun.com.bvroutine.cacheline.utils;
 import com.alibaba.fastjson.JSON;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import kiun.com.bvroutine.cacheline.data.WhereBuilder;
 import kiun.com.bvroutine.cacheline.data.beans.Pager;
 import kiun.com.bvroutine.cacheline.data.beans.SettingUnit;
 import kiun.com.bvroutine.utils.MCString;
@@ -71,7 +73,8 @@ public class JSONUtil {
     }
 
     public static void fillJSON(Map<String, Object> src, Map<String, Object> des){
-        des.putAll(src);
+        src.clear();
+        addJSON(src, des);
     }
 
     public static Map<String, Object> addJSON(Map<String, Object> src, Map<String, Object> adds){
@@ -151,14 +154,11 @@ public class JSONUtil {
 
     public static String getWhereJSON(Map<String, Object> data){
 
-        final String[] where = new String[1];
+        WhereBuilder builder = WhereBuilder.create();
         removeAndCall(data, "<WHE>", ((input, output) -> {
-            if (where[0] == null) where[0] = "";
-            where[0] += String.format("%s = '%s',", input, data.get(output));
+            builder.addParam(input, data.get(output));
         }));
-
-        if (where[0] != null) where[0] = where[0].substring(0, where[0].length() - 1);
-        return where[0];
+        return builder.build(" AND ");
     }
 
     public static Map<String, Object> createStandardNull(String nullString){

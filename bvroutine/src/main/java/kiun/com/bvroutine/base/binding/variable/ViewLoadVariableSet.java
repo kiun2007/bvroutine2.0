@@ -16,7 +16,9 @@ public class ViewLoadVariableSet extends ObjectVariableSet<ViewLoadHandler> {
         public void onBound(ViewDataBinding binding) {
             super.onBound(binding);
             viewDataBinding.removeOnRebindCallback(onRebindCallback);
-            value.start();
+            if (value.isInitStart()){
+                value.start();
+            }
         }
     };
 

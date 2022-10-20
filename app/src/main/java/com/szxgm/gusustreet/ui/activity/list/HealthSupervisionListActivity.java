@@ -53,7 +53,9 @@ public class HealthSupervisionListActivity extends ClassifyListActivity<KeyValue
     public List requestPager(RequestBindingPresenter p, PagerBean bean) throws Exception {
 
         if (selectType == 0){
-            return p.callServiceData(OtherService.class, s -> s.getAllSentinelSurveillance());
+            return p.callServiceData(OtherService.class,
+                    s -> s.getAllSentinelSurveillance()
+            );
         }else if (selectType == 1){
             return p.callServiceData(OtherService.class, s -> s.getAllPublicity());
         }

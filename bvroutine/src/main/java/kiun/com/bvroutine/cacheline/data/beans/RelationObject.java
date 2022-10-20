@@ -1,6 +1,7 @@
 package kiun.com.bvroutine.cacheline.data.beans;
 
 public class RelationObject {
+
     private String id;
     private int level;
 

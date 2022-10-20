@@ -40,15 +40,15 @@ public class AddressChooseActivity extends AMapActivity<ActivityAddressChooseBin
 
     public static final Class clz = AddressChooseActivity.class;
 
-    ListViewPresenter listViewPresenter = null;
+    private ListViewPresenter listViewPresenter = null;
 
-    LatLonPoint searchPoint;
+    private LatLonPoint searchPoint;
 
-    PoiChooseItem lastChooseItem;
+    private PoiChooseItem lastChooseItem;
 
-    Marker centerMarker;
+    private Marker centerMarker;
 
-    GeocodeSearch geocoderSearch;
+    private GeocodeSearch geocoderSearch;
 
     private boolean isNoTitle = false;
 

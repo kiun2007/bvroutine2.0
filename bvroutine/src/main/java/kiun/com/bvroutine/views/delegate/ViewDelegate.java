@@ -9,6 +9,11 @@ import androidx.annotation.NonNull;
 import kiun.com.bvroutine.interfaces.view.TypedView;
 import kiun.com.bvroutine.utils.ViewUtil;
 
+/**
+ * 视图代理基类
+ * 主要用于视图的逻辑代理处理, 比如流式布局器, 容器视图使用该代理器之后，布局遵循流式布局规则.
+ * @param <V> 代理类作用于的视图类型
+ */
 public abstract class ViewDelegate<V extends View> implements TypedView {
 
     protected V view;

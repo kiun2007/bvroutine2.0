@@ -2,6 +2,7 @@ package kiun.com.bvroutine.cacheline.data.beans;
 
 import com.alibaba.fastjson.JSON;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -9,98 +10,111 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import kiun.com.bvroutine.ActivityApplication;
+import kiun.com.bvroutine.cacheline.CacheDatabase;
 import kiun.com.bvroutine.cacheline.CacheSet;
 import kiun.com.bvroutine.cacheline.CacheType;
+import kiun.com.bvroutine.cacheline.data.SqliteDBHelper;
 import kiun.com.bvroutine.cacheline.utils.JexlUtil;
+import kiun.com.bvroutine.net.ServiceGenerator;
+import kiun.com.bvroutine.utils.ByteUtil;
 import kiun.com.bvroutine.utils.MCString;
+import kiun.com.bvroutine.utils.MD5Util;
+import kiun.com.bvroutine.utils.type.ClassUtil;
+import retrofit2.Invocation;
 
 /**
  * 设置存储单元.
  */
 public class SettingUnit implements CacheSet {
 
-    private List<String> restfulValues;
-    private CacheSet cacheSet = null;
-    private CacheType cacheType;
-    private String saveDB;
+    private static Map<String, SqliteDBHelper> sqliteDBHelperCache = new HashMap<>();
+
+    private CacheSet cacheSet;
+    private String dbName;
     private String id;
-    private String urlFeature;
     private TableCluster cluster;
-    private Map<String, Object> filterJSON = null;
-    private static final String[] PATTERNS = new String[]{"[0-9,a-z,A-Z]","[0-9,a-z,A-Z]","\\d"};
+    private SqliteDBHelper dbHelper;
+    private SqliteDBHelper uploadHelper;
+    private Invocation invocation;
 
-    public SettingUnit(Field field, String savedb, CacheType cacheType) throws Exception {
+    private SettingUnit(CacheSet cacheSet, String id, String dbName, Invocation invocation) throws Exception {
 
-        if (field == null){
-            throw new Exception("Field is Null");
-        }
-        cacheSet = field.getAnnotation(CacheSet.class);
-        id = field.getDeclaringClass().getName()+"/"+field.getName();
-        this.cacheType = cacheType;
-        saveDB = savedb;
-
-        if(cacheSet == null){
-            throw new Exception(field.getName() + " is Not CacheSet Annotation Field");
-        }
-
-        String splits[] = Url().indexOf("?") < 0 ? Url().split("/\\{") : Url().split("\\?");
-        if (splits.length > 0){
-            if(Url().indexOf("/{") > 0){
-                String maths[] = MCString.patternValues("\\{(.+?):(.+?)\\}", Url());
-                if(maths.length > 0){
-
-                    restfulValues = new LinkedList<>();
-                    for (int i = 0; i < maths.length; i += 2){
-                        String value = maths[i + 1];
-                        String type = "s", patt = null;
-                        int min = 1, max = -1;
-
-                        String[] pattParams = MCString.patternValues("(.+?)\\[(.+?),(.+?)\\]", value); //最全参数.
-                        if (pattParams.length == 0){
-                            pattParams = MCString.patternValues("(.+?)\\[(.+?)\\]", value); //两个参数.
-                            if (pattParams.length == 0){
-                                pattParams = MCString.patternValues("([0-9]{2,6})", value); //一个参数.
-                            }
-                        }
-
-                        if (pattParams.length > 0){
-                            type = pattParams[0];
-                            boolean isNumber;
-                            if(isNumber = ("sd".indexOf(type) < 0)){
-                                max = min = Integer.parseInt(type);
-                                type = "s";
-                            }
-                            boolean typeNumber = "d".equals(type);
-
-                            if (!isNumber){
-                                max = pattParams.length == 3 ? MCString.toNumber(pattParams[2]).intValue() :
-                                        (pattParams.length == 2 ? MCString.toNumber(pattParams[1]).intValue() : (typeNumber ? 20 : 1024));
-                                min = pattParams.length == 3 ? MCString.toNumber(pattParams[1]).intValue() : max;
-                            }
-                            patt = String.format("%s{%d,%d}", PATTERNS["sd".indexOf(type)], min, max);
-                        }
-
-                        if (patt != null){
-                            restfulValues.add(patt);
-                        }
-                    }
-                }
-            }
-            urlFeature = splits[0];
-        }
-
-        if(cacheSet.Name().indexOf("=") > -1 && cacheSet.Key().indexOf("=") > -1) {
+        this.cacheSet = cacheSet;
+        this.dbName = dbName;
+        this.invocation = invocation;
+        this.id = id;
+        if(cacheSet.Name().contains("=") && cacheSet.Key().contains("=")) {
             cluster = new TableCluster(cacheSet.Name(), cacheSet.Key(), Extra());
         }
 
-        if (!Filter().isEmpty()){
-            filterJSON = (Map<String, Object>) JSON.parse(Filter());
+        String allName = String.format("normal_%s", dbName);
+        String uploadName = "normal_upload_cache";
+        if (ServiceGenerator.getLogin().getAuthorizeToken() != null){
+            allName = String.format("%s_%s", ByteUtil.bytesToHexString(MD5Util.MD5(ServiceGenerator.getLogin().getAuthorizeToken())), dbName);
+            uploadName = String.format("%s_upload_cache", ByteUtil.bytesToHexString(MD5Util.MD5(ServiceGenerator.getLogin().getAuthorizeToken())));
+        }
+
+        uploadHelper = getDbByName(uploadName);
+        dbHelper = getDbByName(allName);
+
+        if (!Filter().isEmpty()) {
+            Map<String, Object> filterJSON = (Map<String, Object>) JSON.parse(Filter());
         }
     }
 
-    @Override
-    public String Url() {
-        return cacheSet.Url();
+    public static SqliteDBHelper getDbByName(String name){
+        if(sqliteDBHelperCache.containsKey(name)){
+            return sqliteDBHelperCache.get(name);
+        }else{
+            File dbRoot = new File(ActivityApplication.getApplication().getFilesDir(), "cache_db");
+            if(!dbRoot.exists()) dbRoot.mkdir();
+
+            File dbFile = new File(dbRoot, name + ".db");
+            SqliteDBHelper sqliteDBHelper = new SqliteDBHelper(dbFile.getPath());
+            sqliteDBHelperCache.put(name, sqliteDBHelper);
+            return sqliteDBHelper;
+        }
+    }
+
+    public static SqliteDBHelper getUploadDb(){
+
+        String uploadName = "normal_upload_cache";
+        if (ServiceGenerator.getLogin().getAuthorizeToken() != null){
+            uploadName = String.format("%s_upload_cache", ByteUtil.bytesToHexString(MD5Util.MD5(ServiceGenerator.getLogin().getAuthorizeToken())));
+        }
+        return getDbByName(uploadName);
+    }
+
+    /**
+     * 根据 方法描述 生成设置
+     * @param invocation 方法描述
+     * @return
+     */
+    public static SettingUnit createByInvocation(Invocation invocation) {
+
+        if (invocation == null){
+            return null;
+        }
+
+        CacheSet cacheSet = invocation.method().getAnnotation(CacheSet.class);
+        if (cacheSet == null){
+            return null;
+        }
+
+        String dbName = "cache_line_main";
+        CacheDatabase cacheDatabase = ClassUtil.getAnnotation(CacheDatabase.class, invocation.method());
+        if (cacheDatabase != null){
+            dbName = cacheDatabase.value();
+        }
+        String id = invocation.method().getDeclaringClass().getName() + "/" + invocation.method().getName();
+        try {
+            SettingUnit settingUnit = new SettingUnit(cacheSet, id, dbName, invocation);
+            return settingUnit;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -210,19 +224,24 @@ public class SettingUnit implements CacheSet {
     }
 
     public CacheType CacheType() {
-        return cacheType;
+        return cacheSet.CacheType();
     }
 
-    public String SaveDB() {
-        return saveDB;
+    @Override
+    public boolean OnlyCache() {
+        return cacheSet.OnlyCache();
+    }
+
+    public SqliteDBHelper getDbHelper() {
+        return dbHelper;
+    }
+
+    public SqliteDBHelper getUploadHelper() {
+        return uploadHelper;
     }
 
     public String Id() {
         return id;
-    }
-
-    public String getUrlFeature(){
-        return urlFeature;
     }
 
     public TableCluster getCluster(){
@@ -236,11 +255,11 @@ public class SettingUnit implements CacheSet {
         return JexlUtil.exeCodeByParams(Params(), paramObj);
     }
 
-    public Map<String, Object> getParamDB(Map<String, Object> paramObj, Object db){
+    public Map<String, Object> getParam(Map<String, Object> paramObj){
         if (Params().length() == 0 || paramObj == null){
             return null;
         }
-        return JexlUtil.exeCodeByParams(Params(), paramObj, db);
+        return JexlUtil.exeCodeByParams(Params(), paramObj, dbHelper);
     }
 
     public Map<String, Object> getFilterObject(Map<String, Object> paramObj) {
@@ -250,56 +269,7 @@ public class SettingUnit implements CacheSet {
         return JexlUtil.exeCodeByParams(Filter(), paramObj);
     }
 
-    /**
-     * 提取URL内的参数.
-     * @param url 访问服务地址.
-     * @return 提取到参数的Map
-     */
-    public Map<String, String> getURLParams(String url)
-    {
-        Map<String, String> paramMap = new HashMap<>();
-        boolean isQuery = Url().indexOf("?") > -1;
-        String[] keys = MCString.patternValues(isQuery ? "(?:\\?|&)(\\w+)={0,1}" : "\\{(.+?):.+?\\}", Url());
-
-        if(isQuery){
-            for (int i = 0; i < keys.length; i++) {
-                String values[] = MCString.patternValues("[^\\?&]?"+keys[i]+"=([^&]+)", url);
-                if(values != null && values.length > 0){
-                    String value = values[0];
-                    paramMap.put(keys[i], value);
-                }
-            }
-        }else {
-            String[] paths = url.split("/");
-            if(paths.length > keys.length){
-                for (int i = 0; i < keys.length; i++) {
-                    String key = keys[i];
-                    String value = paths[paths.length - (keys.length - i)];
-                    paramMap.put(key, value);
-                }
-            }
-        }
-        return paramMap;
-    }
-
-    public boolean matchRestful(String url){
-
-        if(restfulValues == null || restfulValues.size() == 0){
-            return false;
-        }
-
-        String[] paths = url.split("/");
-        if(paths.length > restfulValues.size()){
-            int start = paths.length - restfulValues.size();
-
-            for (int i = start, item = 0; i < paths.length; i++,item++) {
-                if(!paths[i].matches(restfulValues.get(item))) {
-                    return false;
-                }
-            }
-        }else{
-            return false;
-        }
-        return true;
+    public Invocation getInvocation() {
+        return invocation;
     }
 }

@@ -62,6 +62,10 @@ public class MCString {
         return newStrings;
     }
 
+    public static Integer[] asByInt(Integer ... ints){
+        return ints;
+    }
+
     public static Object[] asArray(Object... objects){
         return objects;
     }

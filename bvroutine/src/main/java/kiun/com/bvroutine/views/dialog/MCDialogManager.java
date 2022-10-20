@@ -38,9 +38,10 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
     private VB binding;
     private int width = 0, height = 0;
     private OnKeyListener onKeyListener;
+    private DialogLifecycleOwner dialogLifecycleOwner;
 
     private MCDialogManager(Context context, int resId, Object data, int dataBr, int dialogBr) {
-        super(BR.handler, 0);
+        super(BR.handler, R.layout.list_error_normal_base);
         this.context = context;
         this.resId = resId;
         this.data = data;
@@ -77,7 +78,8 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
                 alertDialog.setOnKeyListener(onKeyListener);
             }
 
-            binding = ViewBindingUtil.inflate(LayoutInflater.from(context), resId, null, false);
+            dialogLifecycleOwner = new DialogLifecycleOwner(alertDialog);
+            binding = ViewBindingUtil.inflate(LayoutInflater.from(context), resId, null, false, dialogLifecycleOwner);
             alertDialog.setContentView(binding.getRoot());
             alertDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
@@ -91,7 +93,7 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
             binding.setVariable(dialogBr, this);
 
             Window window = alertDialog.getWindow();
-            if (gravity != Gravity.FILL){
+            if (gravity != Gravity.FILL) {
                 window.setBackgroundDrawableResource(this.colorResId);
 
                 if (width != 0 && height != 0){
@@ -166,7 +168,6 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
     public MCDialogManager<T,VB> bindValue(int br, Object data){
 
         assert binding != null;
-
         binding.setVariable(br, data);
         return this;
     }
@@ -187,5 +188,9 @@ public class MCDialogManager<T,VB extends ViewDataBinding> extends ListHandler<T
     @Override
     public void errorMsg(String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

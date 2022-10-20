@@ -50,6 +50,7 @@ public class BindConvertBridge {
     }
 
     public static void loadPackage(String... packageName){
+
         List<String> clsName = ClassUtil.getClassName(packageName);
         for (String name : clsName){
             try {

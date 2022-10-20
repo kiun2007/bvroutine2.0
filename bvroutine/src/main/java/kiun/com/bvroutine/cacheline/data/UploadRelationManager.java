@@ -7,15 +7,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import kiun.com.bvroutine.cacheline.data.beans.RelationObject;
+import kiun.com.bvroutine.cacheline.data.beans.UploadObject;
 import kiun.com.bvroutine.cacheline.data.beans.XJSONObject;
+import kiun.com.bvroutine.interfaces.wrap.DataWrap;
 import kiun.com.bvroutine.utils.ByteUtil;
 import kiun.com.bvroutine.utils.MCString;
 import kiun.com.bvroutine.utils.MD5Util;
+import kiun.com.bvroutine.utils.RetrofitUtil;
+import retrofit2.Call;
 
 /**
  * 上传关系管理.
@@ -141,5 +147,54 @@ public class UploadRelationManager {
             });
         }
         return relationObject;
+    }
+
+    public SqliteDBHelper getDbHelper() {
+        return dbHelper;
+    }
+
+    private List<UploadObject> toUploadObjects(List<Map<String, Object>> array){
+
+        List<UploadObject> list = new LinkedList<>();
+        if (array != null) {
+            for (int i = 0; i < array.size(); i++) {
+                Map<String, Object> item = array.get(i);
+                if(item != null){
+                    list.add(new UploadObject(item));
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取符合条件的上传数据
+     * @param isUpload 是否已经上传成功
+     * @return
+     */
+    public List<UploadObject> readUpload(boolean isUpload){
+        List<Map<String, Object>> array = getDbHelper().readDataByWhere(UploadObject.UP_LOAD_TABLE, isUpload ? "out_time>0" : "out_time=0", "in_time");
+        return toUploadObjects(array);
+    }
+
+    /**
+     * 提交保存对象
+     * @param uploadObject
+     * @return
+     * @throws Exception
+     */
+    public boolean upload(UploadObject uploadObject) throws Exception{
+        Call netCall = uploadObject.getNetCall();
+        if (netCall != null){
+            Object body = netCall.execute().body();
+            if (body instanceof DataWrap){
+                DataWrap wrap = (DataWrap) body;
+                if (wrap.isSuccess()){
+                    return true;
+                }
+                throw new Exception(wrap.getMsg());
+            }
+        }
+        return false;
     }
 }

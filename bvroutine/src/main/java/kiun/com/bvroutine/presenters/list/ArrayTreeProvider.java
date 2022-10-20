@@ -17,6 +17,7 @@ import kiun.com.bvroutine.data.viewmodel.TreeViewNode;
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.TreeItem;
 import kiun.com.bvroutine.interfaces.callers.PagerCaller;
+import kiun.com.bvroutine.interfaces.callers.PagerDataCaller;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
 import kiun.com.bvroutine.utils.ListUtil;
@@ -34,6 +35,8 @@ public class ArrayTreeProvider extends TreeProvider{
     private int indent = 0;
 
     private PagerCaller caller;
+
+    private PagerDataCaller dataCaller;
 
     private FieldEvent selectListener;
 
@@ -89,6 +92,10 @@ public class ArrayTreeProvider extends TreeProvider{
         this.caller = caller;
     }
 
+    public void setCaller(PagerDataCaller caller) {
+        this.dataCaller = caller;
+    }
+
     @Override
     public int getDataBind() {
         return BR.item;
@@ -121,6 +128,8 @@ public class ArrayTreeProvider extends TreeProvider{
                 list = netTree.itemList();
             }else if (caller != null){
                 list = RetrofitUtil.unpackWrap(null, caller.get(null).execute());
+            }else if (dataCaller != null){
+                list = dataCaller.get(null);
             }
         }else if (bean.getExtra() instanceof TreeItem){
             bean.getPager();

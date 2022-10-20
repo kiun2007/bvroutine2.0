@@ -5,9 +5,12 @@ import android.os.Environment;
 
 import java.io.File;
 
+import kiun.com.bvroutine.ActivityApplication;
 import kiun.com.bvroutine.base.EventBean;
 import kiun.com.bvroutine.base.binding.variable.AutoImport;
 import kiun.com.bvroutine.base.binding.variable.ContextHandlerVariableSet;
+import kiun.com.bvroutine.interfaces.callers.GetCaller;
+import kiun.com.bvroutine.interfaces.callers.SetCaller;
 import kiun.com.bvroutine.utils.MCString;
 import kiun.com.bvroutine.utils.SharedUtil;
 
@@ -15,9 +18,11 @@ import kiun.com.bvroutine.utils.SharedUtil;
 public class CacheManage extends EventBean {
 
     private Context context;
+    private File file;
 
     public CacheManage(Context context){
         this.context = context;
+        file = context.getCacheDir();
     }
 
     /**
@@ -26,23 +31,40 @@ public class CacheManage extends EventBean {
      */
     public String getTotalSize(){
 
-        long cacheSize = getFolderSize(context.getCacheDir());
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheSize += getFolderSize(context.getExternalCacheDir());
-        }
+        if (file == null) return "0";
+
+        long cacheSize = getFolderSize(file);
         return MCString.byteFormat(cacheSize);
+    }
+
+    public CacheManage files(File file){
+        this.file = file;
+        return this;
+    }
+
+    public void clear() {
+        clear(false, true);
+    }
+
+    public void clear(boolean restart)
+    {
+        clear(restart, false);
     }
 
     /***
      * 清理所有缓存
      */
-    public void clear() {
-        deleteDir(context.getCacheDir());
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            deleteDir(context.getExternalCacheDir());
+    public void clear(boolean restart, boolean isShareClear) {
+
+        deleteDir(file);
+        if (isShareClear){
+            SharedUtil.clear();
         }
-        SharedUtil.clear();
         onChanged(false);
+
+        if (restart){
+            ActivityApplication.getApplication().restart();
+        }
     }
 
     private boolean deleteDir(File dir) {

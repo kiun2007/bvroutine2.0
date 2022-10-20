@@ -1,29 +1,25 @@
 package kiun.com.bvroutine.views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Outline;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.interfaces.view.TypedView;
 import kiun.com.bvroutine.utils.ViewUtil;
-import okhttp3.internal.Util;
 
-@SuppressLint("AppCompatCustomView")
 public class DrawLinearLayout extends LinearLayout implements TypedView {
 
     @AttrBind(dimension = true)

@@ -13,10 +13,16 @@ public class HttpException extends IOException {
     private int code = 200;
     Response response;
     private Map<Integer, String> codeMap = new HashMap<>();
+    private String body;
 
     public HttpException(Response response){
         super();
         this.response = response;
+        try{
+            body = response.body().string();
+        } catch (Exception ex){
+
+        }
         code = response.code();
         codeMap.put(401, "授权无效!");
         codeMap.put(403, "请求被拒绝!");
@@ -33,9 +39,20 @@ public class HttpException extends IOException {
         return code;
     }
 
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
     @Nullable
     @Override
     public String getMessage() {
+        if (body != null){
+            return body;
+        }
         return response.request().url().toString() + "\n"
                 + codeMap.get(response.code()) + ":" + response.message();
     }

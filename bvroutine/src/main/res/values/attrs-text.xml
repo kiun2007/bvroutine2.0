@@ -2,6 +2,12 @@
 <resources>
     <attr name="valueArray" format="reference" />
     <attr name="titleArray" format="reference" />
+    <attr name="enableFlow" format="boolean" />
+    <attr name="title" format="string" />
+    <attr name="idArray" format="reference" />
+    <attr name="colorArray" format="reference" />
+    <attr name="itemLayout" format="reference" />
+    <attr name="layout" format="reference" />
 
     <declare-styleable name="HtmlTextView">
         <attr name="nullText" format="string" />
@@ -59,4 +65,23 @@
 
         <attr name="text" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="FlowRadioGroup">
+        <attr name="itemLayout" />
+        <attr name="enableFlow" />
+        <attr name="titleArray" />
+        <attr name="valueArray" />
+    </declare-styleable>
+
+    <declare-styleable name="RadioGroupRow">
+        <attr name="titleWeight" format="float" />
+        <!--自定义布局,但是基本控件ID要相同,否则功能无法实现-->
+        <attr name="layout" />
+        <attr name="itemLayout" />
+        <attr name="enableFlow" />
+        <attr name="titleArray" />
+        <attr name="valueArray" />
+        <attr name="title" />
+    </declare-styleable>
+
 </resources>

@@ -30,21 +30,21 @@ public interface OtherService {
      * 获取全部上报信息.
      * @return
      */
-    @GET("api/interface/getAllSentinelSurveillance")
+    @GET("api/xgm/getAllSentinelSurveillance")
     Call<NetOtherWrapper<List<SentinelSurveillance>>> getAllSentinelSurveillance();
 
     /**
      * 获取全部调查信息.
      * @return
      */
-    @GET("api/interface/getAllSentinelSuggestion")
+    @GET("api/xgm/getAllSentinelSuggestion")
     Call<NetOtherWrapper<List<Publicity>>> getAllSentinelSuggestion();
 
     /**
      * 获取全部宣传信息.
      * @return
      */
-    @GET("api/interface/getAllPublicity")
+    @GET("api/xgm/getAllPublicity")
     Call<NetOtherWrapper<List<Publicity>>> getAllPublicity();
 
 
@@ -54,7 +54,7 @@ public interface OtherService {
      * @param req 事件内容.
      * @return
      */
-    @POST("api/interface/submitByLevelTwo")
+    @POST("api/xgm/submitByLevelTwo")
     Call<NetOtherWrapper<String>> submitByLevelTwo(@Body SentinelReq req);
 
     /**
@@ -62,7 +62,7 @@ public interface OtherService {
      * @param req 事件内容.
      * @return
      */
-    @POST("api/interface/submitPublicity")
+    @POST("api/xgm/submitPublicity")
     Call<NetOtherWrapper<String>> submitPublicity(@Body PublicityReq req);
 
     /**
@@ -70,7 +70,7 @@ public interface OtherService {
      * @param file
      * @return
      */
-    @POST("api/file/upload")
+    @POST("api/xgm/upload")
     @Multipart
     Call<NetOtherWrapper<String>> uploadFile(@Part MultipartBody.Part file);
 }

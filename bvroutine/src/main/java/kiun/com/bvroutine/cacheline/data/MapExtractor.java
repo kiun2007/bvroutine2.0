@@ -82,7 +82,7 @@ public class MapExtractor extends ExtractorBase<Object> {
                         }
                     }
                     extractorBase.isMerge = isMerge;
-                    if(express != null && mData instanceof List) {
+                    if(express != null && mData instanceof Map) {
                         String exps[] = express.split("\\.");
                         if (exps.length > 1 && exps[0].indexOf(dataName) > -1){
                             String lastKey = exps[exps.length-1];

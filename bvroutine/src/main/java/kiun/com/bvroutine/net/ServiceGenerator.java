@@ -2,17 +2,21 @@ package kiun.com.bvroutine.net;
 
 import android.os.Environment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
+import kiun.com.bvroutine.utils.ListUtil;
 import kiun.com.bvroutine.utils.SharedUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import retrofit2.Retrofit;
 
 public class ServiceGenerator {
@@ -41,7 +45,13 @@ public class ServiceGenerator {
         return prefix;
     }
 
-    private ServiceGenerator(Interceptor interceptor, String prefix, String key, Class<? extends LoginInterceptor> loginClz, SetCaller<OkHttpClient.Builder> builderSetCaller){
+    private ServiceGenerator(
+            Interceptor interceptor,
+            String prefix,
+            String key,
+            Class<? extends LoginInterceptor> loginClz,
+            SetCaller<OkHttpClient.Builder> builderSetCaller)
+    {
 
         basePrefix = convertTo(prefix);
 
@@ -57,6 +67,14 @@ public class ServiceGenerator {
         httpClient.writeTimeout(120, TimeUnit.SECONDS);
         // 链接读取超时时间
         httpClient.readTimeout(120, TimeUnit.SECONDS);
+
+        //多协议支持
+        List<Protocol> protocols = new ArrayList<>();
+//        protocols.add(Protocol.HTTP_1_0);
+        protocols.add(Protocol.HTTP_1_1);
+        protocols.add(Protocol.HTTP_2);
+        protocols.add(Protocol.QUIC);
+        httpClient.protocols(protocols);
 
         if (interceptor == null || (interceptor instanceof CacheInterceptor)){
 
@@ -79,33 +97,49 @@ public class ServiceGenerator {
 
         okHttpClient = httpClient.build();
 
-        builder = new Retrofit.Builder().baseUrl(basePrefix).addConverterFactory(new FastJSONFactory());
-        retrofit = builder.client(okHttpClient).build();
-
+        builder = new Retrofit.Builder().baseUrl(basePrefix); //
         this.interceptor = interceptor;
     }
 
-    public static void putBuild(Interceptor interceptor, String prefix, String key,
-                                Class<? extends LoginInterceptor> loginClz,
-                                SetCaller<OkHttpClient.Builder> builderSetCaller){
+    private void init(){
+        if (retrofit == null){
+            if (ListUtil.isEmpty(builder.converterFactories())){
+                builder.addConverterFactory(new FastJSONFactory());
+            }
+            retrofit = builder.client(okHttpClient).build();
+        }
+    }
+
+    public Retrofit.Builder builder() {
+        return builder;
+    }
+
+    public static ServiceGenerator putBuild(
+            Interceptor interceptor,
+            String prefix,
+            String key,
+            Class<? extends LoginInterceptor> loginClz,
+            SetCaller<OkHttpClient.Builder> builderSetCaller
+    ){
         ServiceGenerator serviceGenerator = new ServiceGenerator(interceptor, prefix, key, loginClz, builderSetCaller);
         allServices.put(key, serviceGenerator);
+        return serviceGenerator;
     }
 
-    public static void putBuild(Interceptor interceptor, String prefix, String key, Class<? extends LoginInterceptor> loginClz){
-        putBuild(interceptor, prefix, key, loginClz, null);
+    public static ServiceGenerator putBuild(Interceptor interceptor, String prefix, String key, Class<? extends LoginInterceptor> loginClz){
+         return putBuild(interceptor, prefix, key, loginClz, null);
     }
 
-    public static void putBuild(Interceptor interceptor, String prefix, String key){
-        putBuild(interceptor, prefix, key, null);
+    public static ServiceGenerator putBuild(Interceptor interceptor, String prefix, String key){
+        return putBuild(interceptor, prefix, key, null);
     }
 
-    public static void putBuild(String prefix, String key){
-        putBuild(null, prefix, key);
+    public static ServiceGenerator putBuild(String prefix, String key){
+        return putBuild(null, prefix, key);
     }
 
-    public static void putBuild(String prefix){
-        putBuild(prefix, MAIN);
+    public static ServiceGenerator putBuild(String prefix){
+        return putBuild(prefix, MAIN);
     }
 
     public static String getBasePrefix(String key) {
@@ -203,7 +237,9 @@ public class ServiceGenerator {
 
     public static <S> S createService(Class<S> serviceClass) {
         String key = getKeyName(serviceClass);
-        if (allServices.get(key) != null){
+        ServiceGenerator serviceGenerator = allServices.get(key);
+        if (serviceGenerator != null){
+            serviceGenerator.init();
             return allServices.get(key).retrofit.create(serviceClass);
         }
         return null;

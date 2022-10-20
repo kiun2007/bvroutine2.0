@@ -15,6 +15,11 @@ public abstract class BeforehandClickListener implements View.OnClickListener{
         this.arrayCaller = arrayCaller;
     }
 
+    public BeforehandClickListener setEventAdapter(EventAdapter eventAdapter) {
+        eventAdapter.setListener(this);
+        return this;
+    }
+
     protected abstract void implement(View view);
 
     @Override

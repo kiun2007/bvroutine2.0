@@ -30,6 +30,9 @@ public class FastJSONResponseConverter implements Converter<ResponseBody, Object
         if (type instanceof Class && Number.class.isAssignableFrom((Class<?>) type)){
             ret = ObjectUtil.newObject((Class<?>)type, bodyString);
         }else{
+            if(type.equals(String.class)){
+                return bodyString;
+            }
             ret = JSONObject.parseObject(bodyString, type);
         }
 
@@ -50,7 +53,7 @@ public class FastJSONResponseConverter implements Converter<ResponseBody, Object
 
                         JSONObject source = listWrap.wrapList().get(i) instanceof JSONObject ? (JSONObject) listWrap.wrapList().get(i) : null;
                         if (source != null){
-                            listWrap.wrapList().set(i, source.toJavaObject((Class<?>) itemType));
+                            listWrap.wrapList().set(i, JSONObject.parseObject(source.toJSONString(), itemType));
                         }
                     }
                 }

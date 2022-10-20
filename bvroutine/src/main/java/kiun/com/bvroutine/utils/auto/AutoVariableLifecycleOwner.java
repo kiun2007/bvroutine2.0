@@ -7,22 +7,42 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
 import kiun.com.bvroutine.base.BVBaseActivity;
 import kiun.com.bvroutine.base.binding.variable.AutoImport;
 import kiun.com.bvroutine.base.binding.variable.VariableBinding;
 
-public class AutoVariableLifecycleOwner implements LifecycleOwner {
+public class AutoVariableLifecycleOwner implements LifecycleOwner, LifecycleObserver {
 
     private Context context;
 
-    public AutoVariableLifecycleOwner(Context context) {
+    private List<VariableBinding> variableBindingList = new LinkedList<>();
+
+    public AutoVariableLifecycleOwner(Context context, LifecycleOwner lifecycleOwner) {
         this.context = context;
+
+        if (lifecycleOwner != null){
+            lifecycleOwner.getLifecycle().addObserver(this);
+        }
+
+        if (context instanceof LifecycleOwner){
+            ((LifecycleOwner) context).getLifecycle().addObserver(this);
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void onDestroy(){
+        for (VariableBinding variableBinding : variableBindingList){
+            variableBinding.end();
+        }
     }
 
     @NonNull
@@ -43,10 +63,8 @@ public class AutoVariableLifecycleOwner implements LifecycleOwner {
                         VariableBinding<?> variableBinding = autoImport.value().
                                 getConstructor(Context.class,ViewDataBinding.class,Class.class, Method.class).newInstance(context, binding, parameterClz, method);
                         variableBinding.start();
+                        variableBindingList.add(variableBinding);
 
-                        if (context instanceof BVBaseActivity){
-                            ((BVBaseActivity) context).addVariableBinding(variableBinding);
-                        }
                     } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
@@ -91,7 +109,7 @@ public class AutoVariableLifecycleOwner implements LifecycleOwner {
 
         @Override
         public void removeObserver(@NonNull LifecycleObserver observer) {
-
+            int a = 0;
         }
 
         @NonNull

@@ -14,5 +14,9 @@
     <item name="tagExtra" type="id" />
     <item name="tagActionHandler" type="id" />
 
+    <item name="tagListener" type="id" />
+    <item name="tagEventIsRun" type="id" />
     <item name="actionBarViewBinding" type="id" />
+
+    <item type="id" name="tagSpinnerValues" />
 </resources>

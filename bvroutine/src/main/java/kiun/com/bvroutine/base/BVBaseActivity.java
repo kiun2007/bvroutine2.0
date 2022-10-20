@@ -15,8 +15,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -45,7 +48,7 @@ import kiun.com.bvroutine.utils.ViewBindingUtil;
 import kiun.com.bvroutine.views.NavigatorBar;
 import kiun.com.bvroutine.views.viewmodel.ActionBarItem;
 
-public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompatActivity implements BindingView {
+public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompatActivity implements BindingView, LifecycleOwner {
 
     /**
      * 事件响应接口
@@ -66,8 +69,6 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     //碎片对象监听.
     private Map<Fragment, EventPutCall> fragmentSetCallerMap = new HashMap<>();
 
-    private List<VariableBinding> variableBindingList = new LinkedList<>();
-
     //原返回值
     private Intent resultIntent = null;
 
@@ -86,10 +87,6 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
 
     protected int getOrientation(){
         return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-    }
-
-    public void addVariableBinding(VariableBinding variableBinding){
-        variableBindingList.add(variableBinding);
     }
 
     private void create(){
@@ -180,6 +177,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         this.transfer = ObjectUtil.getFirstAnnotation(getClass(), StateTransfer.class);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         onCreateBefore();
         super.onCreate(savedInstanceState);
         create();
@@ -281,11 +279,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     protected void onDestroy() {
         super.onDestroy();
 
-        for (VariableBinding variableBinding : variableBindingList){
-            variableBinding.end();
-        }
         fragmentSetCallerMap.clear();
-        variableBindingList = null;
         fragmentSetCallerMap = null;
     }
 
@@ -320,6 +314,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
         transferToIntent(intent, inIntent, false);
     }
 
+    //透传参数
     private void transferToIntent(Intent intent, Intent inIntent, boolean isOver){
 
         if (inIntent == null || inIntent.getExtras() == null || intent == null){
@@ -391,5 +386,11 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
             setResult(resultCode, resultIntent);
         }
         super.finish();
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return super.getLifecycle();
     }
 }

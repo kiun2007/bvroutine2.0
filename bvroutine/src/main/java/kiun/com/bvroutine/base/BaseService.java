@@ -32,6 +32,13 @@ public abstract class BaseService extends Service{
         }
     }
 
+    public void sendOnce(String key) {
+        ScheduledMethod method = scheduledMethodMap.get(key);
+        if (method != null){
+            method.beginNow();
+        }
+    }
+
     /**
      * 停止任务
      * @param key

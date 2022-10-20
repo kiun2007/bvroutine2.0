@@ -6,15 +6,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Retention(RUNTIME)
 public @interface CacheSet {
-
-    /**
-     * 关联URL.
-     * @return 配置的服务地址.
-     */
-    String Url();
 
     /**
      * 关联表格名称.
@@ -139,4 +133,16 @@ public @interface CacheSet {
      * @return
      */
     String Data() default "";
+
+    /**
+     * 缓存类型
+     * @return
+     */
+    CacheType CacheType() default CacheType.CacheDownLoad;
+
+    /**
+     * 只使用缓存
+     * @return
+     */
+    boolean OnlyCache() default false;
 }

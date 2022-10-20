@@ -23,8 +23,9 @@
         <activity android:name=".media.MediaPlayActivity" />
         <activity android:name=".test.TestActivity" />
         <activity android:name=".media.MediaBrowsingActivity" />
+        <activity android:name=".cacheline.UploadTaskActivity" />
 
-<!--        <provider-->
+        <!--        <provider-->
 <!--            android:authorities="com.kiun.bvroutine.rootProvider"-->
 <!--            android:name="androidx.core.content.FileProvider"-->
 <!--            android:exported="false">-->

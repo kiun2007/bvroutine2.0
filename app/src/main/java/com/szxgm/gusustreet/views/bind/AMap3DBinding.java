@@ -1,16 +1,17 @@
 package com.szxgm.gusustreet.views.bind;
 
 import android.view.View;
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.Polyline;
-import com.amap.api.maps.model.PolylineOptions;
+
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.Polyline;
+import com.amap.api.maps2d.model.PolylineOptions;
 import com.szxgm.gusustreet.R;
 import com.szxgm.gusustreet.model.base.LastLocation;
 import com.szxgm.gusustreet.model.base.MapPoint;
@@ -33,8 +34,8 @@ public class AMap3DBinding extends BindConvert<MapView, Object, Object> {
     public AMap3DBinding(MapView view) {
         super(view);
         mapBase = view.getMap();
-        polylineOptions.setCustomTexture(BitmapDescriptorFactory.fromResource(R.mipmap.texture_polyline_blue));
-        polylineOptions.setUseTexture(true);
+//        polylineOptions.setCustomTexture(BitmapDescriptorFactory.fromResource(R.mipmap.texture_polyline_blue));
+//        polylineOptions.setUseTexture(true);
         polylineOptions.width(32);
         polyline = mapBase.addPolyline(polylineOptions);
     }
@@ -88,7 +89,7 @@ public class AMap3DBinding extends BindConvert<MapView, Object, Object> {
                 mapBase.moveCamera(CameraUpdateFactory.newLatLngBounds(LatLngBounds.builder().include(latLngs.get(0)).include(latLngs.get(latLngs.size() - 1)).build(), 10));
             }
             polyline.setPoints(latLngs);
-            mapBase.reloadMap();
+//            mapBase.reloadMap();
         }
     }
 }

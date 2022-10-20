@@ -18,10 +18,12 @@ import org.junit.runner.RunWith;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import kiun.com.bvroutine.test.TestActivity;
 import kiun.com.bvroutine.utils.HTTPUtil;
 import kiun.com.bvroutine.utils.JexlUtil;
+import kiun.com.bvroutine.utils.RsaEncryptUtil;
 import kiun.com.bvroutine.utils.file.MimeTypeUtil;
 
 /**
@@ -36,6 +38,11 @@ public class ExampleInstrumentedTest {
 
     @Rule
     public ActivityTestRule<TestActivity> mActivityRule = new ActivityTestRule<>(TestActivity.class);
+
+    @Test
+    public void testRsa() throws NoSuchAlgorithmException {
+        RsaEncryptUtil.createKey();
+    }
 
     @Test
     public void testShortListView(){

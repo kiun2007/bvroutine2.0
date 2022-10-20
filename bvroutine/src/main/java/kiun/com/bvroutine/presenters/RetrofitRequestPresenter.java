@@ -74,7 +74,7 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
     }
 
     @Override
-    public DataWrap execute(Call call) throws Exception{
+    public DataWrap execute(Call call) throws Exception {
 
         try {
             Response response = call.execute();
@@ -107,6 +107,7 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
 
     @Override
     public void onLoadFinished(@NonNull Loader loader, Object data) {
+
         if (loader instanceof GetAsyncLoader){
             GetAsyncLoader asyncLoader = (GetAsyncLoader) loader;
             if (data instanceof Exception){
@@ -123,11 +124,10 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
                     ((ServiceRequestLoadingView) viewInterface).loadComplete(asyncLoader);
                 }
                 asyncLoader.getCallback().call(data);
-
-                //销毁异步加载器，防止重复加载数据
-                loaderManager.destroyLoader(loader.getId());
             }
         }
+        //销毁异步加载器，防止重复加载数据
+        loaderManager.destroyLoader(loader.getId());
     }
 
     @Override

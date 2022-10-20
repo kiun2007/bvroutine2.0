@@ -16,7 +16,7 @@
         <LinearLayout
             android:orientation="vertical"
             style="@style/fill_base">
-            <com.amap.api.maps.MapView
+            <com.amap.api.maps2d.MapView
                 android:val="@{points}"
                 android:id="@+id/mainMapView"
                 style="@style/fill_base" />

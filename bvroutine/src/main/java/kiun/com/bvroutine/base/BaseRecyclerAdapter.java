@@ -1,15 +1,13 @@
 package kiun.com.bvroutine.base;
 
-import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.LinkedList;
@@ -17,10 +15,10 @@ import java.util.List;
 
 import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
-import kiun.com.bvroutine.interfaces.view.LoadAdapter;
+import kiun.com.bvroutine.interfaces.view.LoadStartAdapter;
 import kiun.com.bvroutine.utils.ViewBindingUtil;
 
-public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extends RecyclerView.Adapter<BindingHolder> implements LoadAdapter<T> {
+public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extends RecyclerView.Adapter<BindingHolder> implements LoadStartAdapter<T, RecyclerView> {
 
     protected static final int LOADING_VIEW = -100;
     protected static final int ERROR_VIEW = -101;
@@ -157,5 +155,13 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     @Override
     public void notifySet() {
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void start(RecyclerView view) {
+        view.setAdapter(this);
+        view.setHasFixedSize(true);
+        view.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        view.setItemAnimator(new DefaultItemAnimator());
     }
 }

@@ -66,7 +66,7 @@ public class RetrofitUtil {
             dataIsSuccess(dataWarp, serviceClass);
             return (E) dataWarp.getData();
         }
-        return null;
+        return warp;
     }
 
     /**

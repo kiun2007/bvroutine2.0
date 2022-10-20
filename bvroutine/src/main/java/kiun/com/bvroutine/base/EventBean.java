@@ -1,11 +1,16 @@
 package kiun.com.bvroutine.base;
 
+import android.app.Activity;
 import android.util.Log;
+import android.view.View;
 
+import androidx.databinding.BaseObservable;
 import androidx.databinding.ViewDataBinding;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,29 +20,36 @@ import kiun.com.bvroutine.data.verify.ProblemExport;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
 import kiun.com.bvroutine.utils.VerifyUtil;
 
-public abstract class EventBean {
+public abstract class EventBean extends BaseObservable implements Serializable {
 
     @JSONField(serialize = false)
-    private ViewDataBinding binding;
+    private transient ViewDataBinding binding;
 
     @JSONField(serialize = false)
-    private int dataBR = -1;
+    private transient int dataBR = -1;
 
     @JSONField(serialize = false)
-    private SetCaller listener;
+    private transient SetCaller listener;
 
     @JSONField(serialize = false)
-    private SetCaller<String> errorListener;
+    private transient SetCaller<String> errorListener;
 
     @JSONField(serialize = false)
-    protected boolean isWithWaring = false;
+    protected transient boolean isWithWaring = false;
 
     @JSONField(serialize = false)
-    protected Map<String, ProblemExport> problemExports = new HashMap<>();
+    @Expose(serialize = false, deserialize = false)
+    protected transient Map<String, ProblemExport> problemExports = new HashMap<>();
+
+    /**
+     * 数据传递给下个页面 的名称
+     */
+    @JSONField(serialize = false)
+    protected transient String transfer;
 
     public<T extends EventBean> T bind(int br, ViewDataBinding viewDataBinding){
-        this.binding = viewDataBinding;
-        this.dataBR = br;
+        binding = viewDataBinding;
+        dataBR = br;
         return (T) this;
     }
 
@@ -62,6 +74,11 @@ public abstract class EventBean {
 
     public void onChanged(){
         onChanged(true);
+    }
+
+    public<T extends EventBean> T transfer(String transfer) {
+        this.transfer = transfer;
+        return (T) this;
     }
 
     protected void onError(String error){
@@ -110,6 +127,15 @@ public abstract class EventBean {
     }
 
     /**
+     * 单独通知给监听者
+     */
+    public void notifyListener(){
+        if (listener != null){
+            listener.call(this);
+        }
+    }
+
+    /**
      * 值变化后通知界面.
      * @param onlyBr 是否只通知界面变化, 不通知监听.
      * @param fieldName 变化的字段名.
@@ -120,8 +146,12 @@ public abstract class EventBean {
             listener.call(this);
         }
 
-        if (binding != null && dataBR != -1){
-            binding.invalidateAll();
+        if (binding != null){
+            if (dataBR == -1){
+                binding.invalidateAll();
+            }else{
+                binding.setVariable(dataBR, this);
+            }
         }
 
         if (problemExports.isEmpty()) return;
@@ -138,13 +168,28 @@ public abstract class EventBean {
         if (export != null){
             export.clear();
         }
+
+        transferChanged();
     }
 
-    protected void beforeVerify(){
+    protected void beforeVerify(View view){
     }
 
-    public List<Problem> verify(){
-        beforeVerify();
+    public List<Problem> verify(View view){
+        beforeVerify(view);
         return VerifyUtil.verify(this);
+    }
+
+    @Override
+    public void notifyPropertyChanged(int fieldId) {
+        super.notifyPropertyChanged(fieldId);
+        transferChanged();
+    }
+
+    private void transferChanged(){
+        if (transfer != null && binding != null && binding.getRoot().getContext() instanceof Activity){
+            Activity activity = (Activity) binding.getRoot().getContext();
+            activity.getIntent().putExtra(transfer, this);
+        }
     }
 }

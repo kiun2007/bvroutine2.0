@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 
 import androidx.databinding.ViewDataBinding;
 
@@ -16,10 +17,15 @@ import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.base.BindingHolder;
 import kiun.com.bvroutine.interfaces.callers.CallBack;
 import kiun.com.bvroutine.interfaces.presenter.GridPresenter;
+import kiun.com.bvroutine.interfaces.view.LoadAdapter;
+import kiun.com.bvroutine.interfaces.view.LoadStartAdapter;
 import kiun.com.bvroutine.utils.ViewBindingUtil;
 
-public class BaseListAdapter<T> extends BaseAdapter implements GridPresenter<T> {
+public class BaseListAdapter<T> extends BaseAdapter implements GridPresenter<T>, LoadStartAdapter<T, GridView> {
 
+    protected boolean isError = false;
+    protected boolean isEmpty = false;
+    protected boolean isLoading = true;
     protected List<T> listData = new LinkedList();
     Context context;
     int itemLayout;
@@ -63,14 +69,48 @@ public class BaseListAdapter<T> extends BaseAdapter implements GridPresenter<T> 
         notifyDataSetChanged();
     }
 
+    @Override
+    public void add(List<T> list) {
+        if(list != null){
+            isEmpty = list.size() == 0;
+            listData.addAll(list);
+            notifySet();
+        }
+    }
+
     public void clear(){
         listData.clear();
         notifyDataSetChanged();
     }
 
     @Override
+    public void clearData() {
+
+    }
+
+    @Override
+    public List<T> getAll() {
+        return null;
+    }
+
+    @Override
     public void notifySet() {
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void error(String err) {
+
+    }
+
+    @Override
+    public void addFooterView(View footerView) {
+
+    }
+
+    @Override
+    public void removeFooter() {
+
     }
 
     @Override
@@ -115,5 +155,10 @@ public class BaseListAdapter<T> extends BaseAdapter implements GridPresenter<T> 
         holder.getBinding().setVariable(BR.index, new Indexer(position, listData.size()));
         holder.getBinding().setVariable(itemHandler.getBR(), itemHandler);
         return holder.itemView;
+    }
+
+    @Override
+    public void start(GridView view) {
+        view.setAdapter(this);
     }
 }

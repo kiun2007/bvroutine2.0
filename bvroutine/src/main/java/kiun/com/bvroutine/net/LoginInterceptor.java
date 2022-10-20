@@ -88,6 +88,13 @@ public abstract class LoginInterceptor<APP extends ActivityApplication> {
      */
     public abstract void clear();
 
+    /**
+     * 获取错误信息
+     * @param content
+     * @return
+     */
+    public abstract String errorContent(String content);
+
     public boolean isLogin(){
         return !TextUtils.isEmpty(authorizeToken);
     }

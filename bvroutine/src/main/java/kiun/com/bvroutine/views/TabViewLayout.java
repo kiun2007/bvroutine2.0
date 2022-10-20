@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
+
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.interfaces.view.TypedView;
@@ -43,6 +46,16 @@ public class TabViewLayout extends TabLayout implements TypedView {
                 tab.setText(tabArray[i]);
                 addTab(tab);
             }
+        }
+    }
+
+    public void setTabArray(List<?> array){
+        removeAllTabs();
+        for (Object item : array){
+            TabLayout.Tab tab = newTab();
+            tab.setTag(item);
+            tab.setText(item.toString());
+            addTab(tab);
         }
     }
 
