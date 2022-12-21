@@ -2,6 +2,7 @@ package kiun.com.bvroutine.base.binding.value;
 
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.appcompat.widget.AppCompatSpinner;
 
@@ -9,10 +10,12 @@ import java.util.Objects;
 
 import kiun.com.bvroutine.interfaces.callers.GetCaller;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
+import kiun.com.bvroutine.interfaces.view.FormView;
 import kiun.com.bvroutine.presenters.SpinnerUnion;
 import kiun.com.bvroutine.presenters.listener.ListenerController;
+import kiun.com.bvroutine.utils.JexlUtil;
 
-public class UnionSpinnerConvert extends BindConvert<AppCompatSpinner, Object, Object> implements AdapterView.OnItemSelectedListener {
+public class UnionSpinnerConvert extends BindConvert<Spinner, Object, Object> implements AdapterView.OnItemSelectedListener, FormView {
 
     /**
      * 值获取接口
@@ -25,7 +28,7 @@ public class UnionSpinnerConvert extends BindConvert<AppCompatSpinner, Object, O
         this.onValueChanged = onValueChanged;
     }
 
-    public UnionSpinnerConvert(AppCompatSpinner view, GetCaller caller) {
+    public UnionSpinnerConvert(Spinner view, GetCaller caller) {
         super(view);
         ListenerController.regListener(view, this);
         view.setOnItemSelectedListener(this);
@@ -84,7 +87,26 @@ public class UnionSpinnerConvert extends BindConvert<AppCompatSpinner, Object, O
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    public static class Builder extends BindConvertBuilder<AppCompatSpinner> {
+    @Override
+    public String string(String name) {
+
+        if (name != null){
+            return JexlUtil.run(name, "select", nowValue);
+        }
+        return null;
+    }
+
+    @Override
+    public String pwd(String name) {
+        return null;
+    }
+
+    @Override
+    public int intValue(String name) {
+        return 0;
+    }
+
+    public static class Builder extends BindConvertBuilder<Spinner> {
 
         private GetCaller caller;
 
@@ -93,7 +115,7 @@ public class UnionSpinnerConvert extends BindConvert<AppCompatSpinner, Object, O
         }
 
         @Override
-        public BindConvert<AppCompatSpinner, ?, ?> build(AppCompatSpinner appCompatSpinner) {
+        public BindConvert<Spinner, ?, ?> build(Spinner appCompatSpinner) {
             return new UnionSpinnerConvert(appCompatSpinner, caller);
         }
     }

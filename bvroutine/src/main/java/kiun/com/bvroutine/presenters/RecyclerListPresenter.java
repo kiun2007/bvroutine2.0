@@ -28,15 +28,31 @@ import kiun.com.bvroutine.views.adapter.RecyclerSimpleAdapter;
 public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends LoadStartAdapter>
         extends RecyclerView.OnScrollListener implements ListViewPresenter<T,Q,Req>, SwipeRefreshLayout.OnRefreshListener {
 
+    /**
+     * 列表视图
+     */
     protected View mListView;
+
+    /**
+     * 下拉控件
+     */
     protected SwipeRefreshLayout mRefreshLayout;
+
+    /**
+     * 请求View
+     */
     protected Req mRequestView;
+
+    /**
+     *
+     */
     protected Q rootRequest;
     protected RequestBindingPresenter presenter;
     protected ADA loadAdapter;
     protected ExceptionCatcher catcher;
     int errLayout = 0;
     protected View footerView;
+    private boolean loading = false;
 
     public RecyclerListPresenter(View listView, SwipeRefreshLayout refreshLayout){
 
@@ -65,6 +81,7 @@ public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends L
 
     @Override
     public void start(ListHandler<T> handler, int itemLayout, int dataBr, RequestBindingPresenter p) {
+
         presenter = p;
         errLayout = handler.getErrorLayout();
         loadAdapter = getRecyclerAdapter(itemLayout, dataBr, handler);
@@ -104,13 +121,19 @@ public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends L
     @Override
     public void reload() {
 
+        if (loading) return;
+
+        loading = true;
         loadAdapter.clear();
         if(rootRequest instanceof PagerBean) {
             ((PagerBean) rootRequest).setPageNum(1);
         }
 
         refreshing();
-        presenter.addRequest(this::requestStart, this::onDataComplete, catcher::onCatch);
+        presenter.addRequest(this::requestStart, this::onDataComplete, (ex)-> {
+            loading = false;
+            catcher.onCatch(ex);
+        });
     }
 
     private List<T> requestStart() throws Exception {
@@ -178,6 +201,7 @@ public class RecyclerListPresenter<T,Q,Req extends ListRequestView,ADA extends L
 
     protected void onDataComplete(List<T> v){
 
+        loading = false;
         PagerBean pager = rootRequest instanceof PagerBean ? (PagerBean) rootRequest : null;
         if (pager != null){
             if (v != null) {

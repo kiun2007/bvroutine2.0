@@ -3,6 +3,9 @@
     <data>
         <import type="android.view.View"/>
         <import type="android.text.TextUtils" />
+        <variable
+            name="binding"
+            type="androidx.databinding.ViewDataBinding" />
         <variable name="barItem" type="kiun.com.bvroutine.views.viewmodel.ActionBarItem" />
     </data>
     <LinearLayout
@@ -55,7 +58,6 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-
                 android:text="@{barItem.rightTitle}"
                 android:textSize="17sp" />
         </RelativeLayout>

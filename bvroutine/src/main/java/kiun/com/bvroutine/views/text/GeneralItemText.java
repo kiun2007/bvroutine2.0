@@ -22,9 +22,11 @@ import kiun.com.bvroutine.BR;
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.AttrBind;
 import kiun.com.bvroutine.base.BVBaseActivity;
+import kiun.com.bvroutine.base.binding.ValChangedListener;
 import kiun.com.bvroutine.base.binding.ValListener;
 import kiun.com.bvroutine.interfaces.GeneralItemTextListener;
 import kiun.com.bvroutine.interfaces.callers.GetCaller;
+import kiun.com.bvroutine.interfaces.callers.ObjectSetCaller;
 import kiun.com.bvroutine.interfaces.view.ItemValue;
 import kiun.com.bvroutine.interfaces.view.TypedView;
 import kiun.com.bvroutine.utils.ViewUtil;
@@ -36,7 +38,9 @@ import kiun.com.bvroutine.views.dialog.MCDialogManager;
  * 创建日期: 2020/5/25 18:23
  * 说明: 通用选项文本
  */
-public class GeneralItemText extends AppCompatTextView implements TypedView, View.OnClickListener, ValListener {
+public class GeneralItemText extends AppCompatTextView implements TypedView, View.OnClickListener, ValListener, ValChangedListener {
+
+
 
     @FunctionalInterface
     public interface GetParamCaller extends GetCaller<GeneralItemText, Object>{}
@@ -79,6 +83,8 @@ public class GeneralItemText extends AppCompatTextView implements TypedView, Vie
     Object params;
 
     GetParamCaller paramGetter;
+
+    ObjectSetCaller caller;
 
     public GeneralItemText(Context context) {
         super(context);
@@ -158,6 +164,10 @@ public class GeneralItemText extends AppCompatTextView implements TypedView, Vie
                 if (listener != null){
                     listener.onChange();
                 }
+
+                if (caller != null){
+                    caller.call(getVal());
+                }
             });
             mcDialogManager.show();
         }else if (clz != null){
@@ -203,6 +213,11 @@ public class GeneralItemText extends AppCompatTextView implements TypedView, Vie
                 });
             }
         }
+    }
+
+    @Override
+    public void setListener(ObjectSetCaller caller) {
+        this.caller = caller;
     }
 
     @BindingAdapter("listener")

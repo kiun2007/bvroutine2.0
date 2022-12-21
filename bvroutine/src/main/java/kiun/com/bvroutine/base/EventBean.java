@@ -154,7 +154,7 @@ public abstract class EventBean extends BaseObservable implements Serializable {
             }
         }
 
-        if (problemExports.isEmpty()) return;
+        if (problemExports == null || problemExports.isEmpty()) return;
 
         if (fieldName == null){
             fieldName = findFieldName();

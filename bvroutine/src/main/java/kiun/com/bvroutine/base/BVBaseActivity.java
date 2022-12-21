@@ -70,7 +70,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     private Map<Fragment, EventPutCall> fragmentSetCallerMap = new HashMap<>();
 
     //原返回值
-    private Intent resultIntent = null;
+    protected Intent resultIntent = null;
 
     //原返回Code
     private int resultCode = Activity.RESULT_CANCELED;

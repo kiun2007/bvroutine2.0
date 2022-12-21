@@ -256,6 +256,16 @@ public class NavigatorBar extends LinearLayout implements TypedView, TransmitVie
         navigatorBar.barItem.setTitle(title);
     }
 
+    @BindingAdapter("barRightTitle")
+    public static void setBarRightTitle(NavigatorBar navigatorBar, String title){
+        navigatorBar.barItem.setRightTitle(title);
+    }
+
+    @BindingAdapter("barRightImage")
+    public static void setBarRightImage(NavigatorBar navigatorBar, Drawable drawable){
+        navigatorBar.rightButton.setCompoundDrawables(drawable, null, null, null);
+    }
+
     @Override
     public View child() {
         return rightButton;

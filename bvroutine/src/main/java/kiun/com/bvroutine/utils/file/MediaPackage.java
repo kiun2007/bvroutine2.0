@@ -101,13 +101,18 @@ public class MediaPackage {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(uri);
 
-            String[] projection = {MediaStore.MediaColumns.DATA};
+            String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME, MediaStore.Images.Media.DATA};
             Cursor metaCursor = context.getContentResolver().query(uri, projection, null,null, null);
 
             String fileName = uri.getPath();
             if (metaCursor != null && metaCursor.moveToFirst()){
-                if (metaCursor.getColumnCount() > 0 && metaCursor.getString(0) != null){
-                    fileName = metaCursor.getString(0);
+
+                //查询相关字段找到文件名
+                for (int i = 0; i < metaCursor.getColumnCount(); i++) {
+                    if (metaCursor.getString(i) != null){
+                        fileName = metaCursor.getString(i);
+                        break;
+                    }
                 }
                 metaCursor.close();
             }

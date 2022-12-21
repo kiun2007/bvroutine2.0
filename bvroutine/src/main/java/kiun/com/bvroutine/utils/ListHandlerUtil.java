@@ -10,8 +10,6 @@ public class ListHandlerUtil {
         if (listHandler == null){
             return;
         }
-        if (listHandler.getTag() instanceof Refresher){
-            ((Refresher) listHandler.getTag()).refresh();
-        }
+        listHandler.refresh();
     }
 }

@@ -31,8 +31,8 @@ public class ServiceGenerator {
     private Retrofit.Builder builder;
     private Retrofit retrofit;
     private String basePrefix;
-    private Interceptor interceptor;
-    private OkHttpClient okHttpClient;
+    private final Interceptor interceptor;
+    private final OkHttpClient okHttpClient;
 
     private String convertTo(String prefix){
         if (prefix.startsWith("shared://")){
@@ -94,9 +94,7 @@ public class ServiceGenerator {
         httpClient.cache(new Cache(Environment.getDataDirectory(), 8 * 1024 * 1024));
         httpClient.addInterceptor(interceptor);
         httpClient.retryOnConnectionFailure(true);
-
         okHttpClient = httpClient.build();
-
         builder = new Retrofit.Builder().baseUrl(basePrefix); //
         this.interceptor = interceptor;
     }
@@ -159,6 +157,11 @@ public class ServiceGenerator {
     }
 
     public static String getUrl(String path){
+        if (path == null) return null;
+
+        if (path.startsWith("http://") || path.startsWith("https://")){
+            return path;
+        }
         return getBasePrefix(MAIN) + path;
     }
 

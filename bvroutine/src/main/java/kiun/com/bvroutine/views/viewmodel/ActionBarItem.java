@@ -2,6 +2,8 @@ package kiun.com.bvroutine.views.viewmodel;
 
 import android.graphics.drawable.Drawable;
 
+import androidx.databinding.Bindable;
+
 import kiun.com.bvroutine.base.EventBean;
 import kiun.com.bvroutine.handlers.ActionBarHandler;
 
@@ -72,6 +74,7 @@ public class ActionBarItem extends EventBean {
         onChanged();
     }
 
+    @Bindable
     public Drawable getRightImage() {
         return rightImage;
     }

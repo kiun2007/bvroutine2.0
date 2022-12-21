@@ -161,6 +161,7 @@ public class ListUtil {
      * @return
      */
     public static <T> T find(List<T> src, CompareCaller<T> caller){
+        if (src == null) return null;
         return ListUtil.first(ListUtil.filter(src, caller));
     }
 

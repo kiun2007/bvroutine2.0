@@ -3,8 +3,11 @@ package kiun.com.bvroutine.base.binding;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
@@ -24,10 +27,12 @@ import kiun.com.bvroutine.base.BVBaseActivity;
 import kiun.com.bvroutine.base.EventBean;
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.base.RequestBVFragment;
+import kiun.com.bvroutine.base.TransmitAgentType;
 import kiun.com.bvroutine.base.TransmitView;
 import kiun.com.bvroutine.base.binding.value.BindConvert;
 import kiun.com.bvroutine.base.binding.value.BindConvertBuilder;
 import kiun.com.bvroutine.data.verify.Problem;
+import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.callers.FormViewCaller;
 import kiun.com.bvroutine.interfaces.callers.GetIntentCaller;
 import kiun.com.bvroutine.interfaces.callers.IntentResult;
@@ -37,7 +42,9 @@ import kiun.com.bvroutine.interfaces.callers.StringArrayCaller;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.wrap.DataWrap;
 import kiun.com.bvroutine.presenters.TextViewLoadingPresenter;
+import kiun.com.bvroutine.presenters.listener.ListenerController;
 import kiun.com.bvroutine.utils.DataUtil;
+import kiun.com.bvroutine.utils.ListHandlerUtil;
 import kiun.com.bvroutine.utils.ListUtil;
 import kiun.com.bvroutine.utils.ViewUtil;
 import kiun.com.bvroutine.views.events.ActionListener;
@@ -77,11 +84,14 @@ public class ActionBinding {
 
         if (button instanceof TransmitView){
             View source = button;
-            button = ((TransmitView) button).child();
-            if (button == null) return;
+            //代理全部业务, 直接替换对象
+            if (((TransmitView) button).agentType() == TransmitAgentType.ALL){
+                button = ((TransmitView) button).child();
+                if (button == null) return;
 
-            if (source.getTag() != null){
-                button.setTag(source.getTag());
+                if (source.getTag() != null){
+                    button.setTag(source.getTag());
+                }
             }
         }
 
@@ -124,16 +134,25 @@ public class ActionBinding {
         view.setTag(R.id.tagActionHandler, handler);
     }
 
-    @BindingAdapter("android:startIntent")
-    public static void startIntent(View button, Intent intent){
+    @BindingAdapter("android:actionArgument")
+    public static void setActionArgument(View view, Object[] argument){
+        view.setTag(R.id.tagActionArgument, argument);
+    }
 
-        if (button.getContext() instanceof Activity && intent != null){
+    @BindingAdapter(value = {"android:startIntent", "android:listHandler"}, requireAll = false)
+    public static void startIntent(View button, Intent intent, ListHandler listHandler){
+
+        if (button.getContext() instanceof BVBaseActivity && intent != null){
             if (button instanceof TransmitView && ((TransmitView) button).child() != null){
                 button = ((TransmitView) button).child();
             }
 
+            BVBaseActivity bvBaseActivity = (BVBaseActivity) button.getContext();
+
             button.setOnClickListener((view)-> {
-                view.getContext().startActivity(intent);
+                bvBaseActivity.startForResult(intent, (intent1)->{
+                    ListHandlerUtil.refresh(listHandler);
+                });
             });
         }
     }
@@ -210,6 +229,17 @@ public class ActionBinding {
         }else{
             view.setTag(R.id.tagViewValue, value);
         }
+    }
+
+    @BindingAdapter("android:broadcast")
+    public static void setBroadcast(View view, String broadcast){
+
+        view.getContext().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                ListenerController.execClick(null, view);
+            }
+        }, new IntentFilter(broadcast));
     }
 
     @InverseBindingAdapter(attribute = "android:val", event = "android:valAttrChanged")

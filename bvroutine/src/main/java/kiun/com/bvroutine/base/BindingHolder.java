@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
+import kiun.com.bvroutine.BR;
+
 public class BindingHolder extends RecyclerView.ViewHolder {
 
     private ViewDataBinding binding;
@@ -33,6 +35,7 @@ public class BindingHolder extends RecyclerView.ViewHolder {
         }else{
             binding.setVariable(br, data);
         }
+        binding.setVariable(BR.binding, binding);
         item = data;
     }
 }

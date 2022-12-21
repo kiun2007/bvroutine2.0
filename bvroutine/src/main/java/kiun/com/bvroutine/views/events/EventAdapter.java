@@ -4,20 +4,33 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import androidx.appcompat.widget.AppCompatSpinner;
+
+import kiun.com.bvroutine.base.binding.ChangedListener;
+import kiun.com.bvroutine.base.binding.ValChangedListener;
+import kiun.com.bvroutine.base.binding.ValListener;
+import kiun.com.bvroutine.interfaces.callers.ObjectSetCaller;
 import kiun.com.bvroutine.presenters.listener.ListenerController;
 
-public class EventAdapter implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+/**
+ * 事件适配器
+ */
+public class EventAdapter implements View.OnClickListener, AdapterView.OnItemSelectedListener, ObjectSetCaller {
 
     private View view;
-
     private View.OnClickListener listener;
 
     public EventAdapter(View view) {
         this.view = view;
+        if (view instanceof ChangedListener){
+            ((ChangedListener) view).setListener(this);
+            return;
+        }
+
         ListenerController.regListener(view, this);
         if (view instanceof Spinner){
             ((Spinner) view).setOnItemSelectedListener(this);
-        }else {
+        } else {
             view.setOnClickListener(this);
         }
     }
@@ -44,6 +57,13 @@ public class EventAdapter implements View.OnClickListener, AdapterView.OnItemSel
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+        int a = 0;
+    }
 
+    @Override
+    public void call(Object v) {
+        if (listener != null){
+            listener.onClick(view);
+        }
     }
 }

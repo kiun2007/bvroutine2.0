@@ -29,7 +29,11 @@ public class ServiceVariableSet extends VariableBinding<Service> implements Serv
 
     @Override
     public void end() {
-        context.unbindService(this);
+        try{
+            context.unbindService(this);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override

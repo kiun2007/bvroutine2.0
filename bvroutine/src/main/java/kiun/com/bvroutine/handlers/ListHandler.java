@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import kiun.com.bvroutine.base.BaseHandler;
+import kiun.com.bvroutine.presenters.list.Refresher;
 
 public class ListHandler<T> extends BaseHandler<T> {
 
@@ -182,5 +183,11 @@ public class ListHandler<T> extends BaseHandler<T> {
 
     public void setInitStart(boolean initStart) {
         this.initStart = initStart;
+    }
+
+    public void refresh(){
+        if (getTag() instanceof Refresher){
+            ((Refresher) getTag()).refresh();
+        }
     }
 }

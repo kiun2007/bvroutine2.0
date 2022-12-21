@@ -14,12 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import kiun.com.bvroutine.R;
+import kiun.com.bvroutine.base.binding.ActionAnim;
 import kiun.com.bvroutine.utils.ViewUtil;
 import kiun.com.bvroutine.views.loadingdrawable.render.LoadingDrawable;
 import kiun.com.bvroutine.views.loadingdrawable.render.circle.rotate.LevelLoadingRenderer;
 import kiun.com.bvroutine.views.text.CenterImageSpan;
 
-public class TextViewLoadingPresenter {
+public class TextViewLoadingPresenter implements ActionAnim {
 
     private Context context;
     private TextView textView;
@@ -44,7 +45,13 @@ public class TextViewLoadingPresenter {
         context = view.getContext();
         sourceText = view.getText().toString();
         size = ViewUtil.dp2px(context, 18);
-        lastDrawables = textView.getCompoundDrawables();
+
+        if (textView.getTag(R.id.tagLastDrawables) instanceof Drawable[]){
+            lastDrawables = (Drawable[]) textView.getTag(R.id.tagLastDrawables);
+        } else {
+            lastDrawables = textView.getCompoundDrawables();
+            textView.setTag(R.id.tagLastDrawables, lastDrawables);
+        }
     }
 
     public void begin(){

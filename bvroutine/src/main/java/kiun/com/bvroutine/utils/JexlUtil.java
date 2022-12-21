@@ -5,6 +5,7 @@ import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.MapContext;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,12 +65,12 @@ public class JexlUtil {
         return result;
     }
 
-    public static<T> T run(String exeStr, Object... argument){
+    public static <T> T runArray(String exeStr, List<Object> argument){
 
         JexlContext jc = RuntimeContext.runTime().clone();
-        for (int i = 0; i < argument.length; i += 2) {
-            String name = argument[i] instanceof String ? (String) argument[i] : null;
-            Object value = (i + 1) < argument.length ? argument[i + 1]: null;
+        for (int i = 0; i < argument.size(); i += 2) {
+            String name = argument.get(i) instanceof String ? (String) argument.get(i) : null;
+            Object value = (i + 1) < argument.size() ? argument.get(i + 1): null;
 
             if(name == null){
                 break;
@@ -87,6 +88,10 @@ public class JexlUtil {
             ex.printStackTrace();
         }
         return (T) ret;
+    }
+
+    public static<T> T run(String exeStr, Object... argument){
+        return runArray(exeStr, Arrays.asList(argument));
     }
 
     public static Object convertToCode(String jexlExp, Map<String, Object> map) {

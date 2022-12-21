@@ -17,6 +17,9 @@ import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.utils.RetrofitUtil;
 import retrofit2.Call;
 
+/**
+ * 服务器列表驱动器
+ */
 public class NetListProvider extends ListProvider<PagerBean>{
 
     private static int itemBr = BR.item;

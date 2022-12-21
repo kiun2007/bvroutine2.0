@@ -13,6 +13,8 @@
     <item name="tagViewValue" type="id" />
     <item name="tagExtra" type="id" />
     <item name="tagActionHandler" type="id" />
+    <item name="tagActionArgument" type="id" />
+    <item name="tagLastDrawables" type="id" />
 
     <item name="tagListener" type="id" />
     <item name="tagEventIsRun" type="id" />

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.TypedValue;
@@ -336,6 +337,7 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
      */
     private void uploadUri(Uri uri, View v, T item, int index){
 
+        Drawable drawable = v.getBackground();
         new AgileThread(activity, (thread)->{
 
             mediaPackage.packageFromUri(v, uri);
@@ -365,8 +367,8 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
 
                 Call exeCall = networkCall;
                 thread.into(()->{
-                    startAnim(v);
 
+                    startAnim(v);
                     RequestBindingPresenter p = activity.getRequestPresenter();
                     p.addRequest(()->p.execute(exeCall), (value)->{
 
@@ -384,8 +386,9 @@ public class OnClickUploadPresenter<T> extends GridHandler<T> implements UploadP
                             }
                         }else{
                             Toast.makeText(activity, value == null ? "网络错误,文件提交失败" : value.getMsg(), Toast.LENGTH_LONG).show();
+                            v.setBackground(drawable);
                         }
-                    });
+                    }, Throwable::printStackTrace);
                 });
             }
         }).start();

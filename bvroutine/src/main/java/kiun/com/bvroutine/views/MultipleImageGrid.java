@@ -85,7 +85,7 @@ public class MultipleImageGrid extends GridView implements TypedView, UploadView
     private String mediaType = "image/*";
 
     @AttrBind
-    private int gridItemLayout = R.layout.item_uplaod_view;
+    private int gridItemLayout = R.layout.item_upload_view;
 
     GridPresenter<String> gridPresenter;
 

@@ -5,6 +5,7 @@ import android.util.TypedValue;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.databinding.BindingAdapter;
 
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.RequestBVActivity;
+import kiun.com.bvroutine.base.binding.value.BindConvert;
 import kiun.com.bvroutine.base.binding.value.UnionSpinnerConvert;
 import kiun.com.bvroutine.base.binding.variable.AutoImport;
 import kiun.com.bvroutine.base.binding.variable.ViewLoadVariableSet;
@@ -109,13 +111,12 @@ public class SpinnerUnion implements ViewLoadHandler {
                         ArrayAdapter<Object> adapter = new ArrayAdapter<Object>(union.activity, spinnerItemTextLayoutId);
                         adapter.setDropDownViewResource(dropdownItemLayoutId);
 
-                        List<?> list = data;
-                        if (empty != null && list.size() > 1){
+                        if (empty != null && data.size() > 1){
                             adapter.add(new Empty(empty));
                         }
 
-                        for (Object item : list) {
-                            adapter.add(item);
+                        for (Object item : data) {
+                            adapter.add(item == null ? new Empty("无") : item);
                         }
                         spinner.setAdapter(adapter);
                     }
@@ -139,6 +140,15 @@ public class SpinnerUnion implements ViewLoadHandler {
     public static void setUnion(Spinner spinner, SpinnerUnion union, Integer sort, PagerCaller caller, String empty){
 
         if (union != null){
+            Object convert = spinner.getTag(R.id.tagBinConvert);
+            if (convert == null || (!(convert instanceof UnionSpinnerConvert) && convert instanceof BindConvert)){
+                BindConvert newConvert = new UnionSpinnerConvert(spinner, (obj)-> obj);
+                if (convert != null){
+                    ((BindConvert) convert).replace(newConvert);
+                }
+                spinner.setTag(R.id.tagBinConvert, newConvert);
+            }
+
             union.spinnerViewMap.put(sort, new UnionSrc(union){{
                 setSpinner(spinner);
                 setCaller(caller);

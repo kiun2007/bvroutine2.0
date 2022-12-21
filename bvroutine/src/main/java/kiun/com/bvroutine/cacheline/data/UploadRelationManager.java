@@ -119,7 +119,9 @@ public class UploadRelationManager {
             //被动查找.
             for (String key : params.keySet()){
                 Object value = params.get(key);
-                relationId[0] = pullValue(key, value.toString());
+                if (value != null){
+                    relationId[0] = pullValue(key, value.toString());
+                }
             }
         }
 
