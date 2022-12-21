@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/lbsapi.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fd4a4de19daa05784af874c8b8278e96/jetified-lbsapi/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fd4a4de19daa05784af874c8b8278e96/jetified-lbsapi/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fd4a4de19daa05784af874c8b8278e96/jetified-lbsapi/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

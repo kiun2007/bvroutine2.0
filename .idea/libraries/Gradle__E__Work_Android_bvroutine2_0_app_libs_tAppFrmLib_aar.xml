@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/tAppFrmLib.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cd1a960fda60976938b0f2eec63209c8/jetified-tAppFrmLib/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cd1a960fda60976938b0f2eec63209c8/jetified-tAppFrmLib/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cd1a960fda60976938b0f2eec63209c8/jetified-tAppFrmLib/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

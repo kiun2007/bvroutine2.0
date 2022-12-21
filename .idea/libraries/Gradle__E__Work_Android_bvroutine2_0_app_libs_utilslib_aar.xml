@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/utilslib.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9dbcf6e578e9e8e7a6a8c5cb192c4490/jetified-utilslib/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9dbcf6e578e9e8e7a6a8c5cb192c4490/jetified-utilslib/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9dbcf6e578e9e8e7a6a8c5cb192c4490/jetified-utilslib/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

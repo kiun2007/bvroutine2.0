@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/msgtransport.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8f1c35c1f9f4ff51c697acb41b7efbae/jetified-msgtransport/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8f1c35c1f9f4ff51c697acb41b7efbae/jetified-msgtransport/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8f1c35c1f9f4ff51c697acb41b7efbae/jetified-msgtransport/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

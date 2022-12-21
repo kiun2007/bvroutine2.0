@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/mylog.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ad2c72b6ba9cdb3480c497d1d189bdbd/jetified-mylog/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ad2c72b6ba9cdb3480c497d1d189bdbd/jetified-mylog/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ad2c72b6ba9cdb3480c497d1d189bdbd/jetified-mylog/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

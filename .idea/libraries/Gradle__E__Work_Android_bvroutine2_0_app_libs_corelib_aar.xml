@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/corelib.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/jars/libs/gson.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/jars/libs/htmlcleaner.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/jars/libs/saxon-dom.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/jars/libs/saxon-xpath.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/jars/libs/saxon.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/jars/libs/volley.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/73bb688d735e5a45482e83c25cb11a44/jetified-corelib/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

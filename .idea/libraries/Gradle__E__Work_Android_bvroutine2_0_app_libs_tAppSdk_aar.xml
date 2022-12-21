@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/tAppSdk.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/948a74ecf31ad61f0ba5c78263aec8be/jetified-tAppSdk/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/948a74ecf31ad61f0ba5c78263aec8be/jetified-tAppSdk/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/948a74ecf31ad61f0ba5c78263aec8be/jetified-tAppSdk/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

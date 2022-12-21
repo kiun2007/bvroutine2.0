@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/bodyCamera.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b97344fff2840eeee9b3d272a8e461d2/jetified-bodyCamera/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b97344fff2840eeee9b3d272a8e461d2/jetified-bodyCamera/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b97344fff2840eeee9b3d272a8e461d2/jetified-bodyCamera/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

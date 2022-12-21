@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/constants.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f53cec7905d73429302209a3424d831/jetified-constants/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f53cec7905d73429302209a3424d831/jetified-constants/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f53cec7905d73429302209a3424d831/jetified-constants/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

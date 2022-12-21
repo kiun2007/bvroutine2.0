@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/frmCommon.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/96d5e9c678914d19cddacef5d39e3f65/jetified-frmCommon/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/96d5e9c678914d19cddacef5d39e3f65/jetified-frmCommon/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/96d5e9c678914d19cddacef5d39e3f65/jetified-frmCommon/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

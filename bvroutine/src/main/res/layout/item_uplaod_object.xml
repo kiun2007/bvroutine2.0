@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".cacheline.UploadTaskActivity">
+    <data>
+        <import type="android.view.View" />
+        <import type="kiun.com.bvroutine.media.MediaBrowsingActivityHandler" />
+        <import type="kiun.com.bvroutine.utils.MCString" />
+        <import type="kiun.com.bvroutine.utils.image.DrawableUtil" />
+
+        <variable name="item" type="kiun.com.bvroutine.cacheline.data.beans.UploadObject" />
+        <variable name="index" type="kiun.com.bvroutine.views.adapter.Indexer" />
+        <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler"/>
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="任务名称: 提交盘点"
+                    app:html="@string/keyValueAndColor"
+                    android:argument="@{MCString.asArray(`任务名称:`, item.title, `#666666`)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="任务标识: TAK1909213280890"
+                    app:html="@string/keyValueAndColor"
+                    android:argument="@{MCString.asArray(`任务标识:`, item.keyValue, `#666666`)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    tools:text="保存时间: 2022年10月20日22时30分"
+                    app:html="@string/keyValueAndColor"
+                    android:argument="@{MCString.asArray(`任务标识:`, item.getEditTime(`yyyy年MM月dd日 HH:mm`), `#666666`)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <kiun.com.bvroutine.views.text.HtmlTextView
+                    app:html="@string/keyValueAndColor"
+                    tools:text="错误描述: 盘点计划不存在"
+                    android:show="@{item.errorMsg != null}"
+                    android:argument="@{MCString.asArray(`错误描述:`, item.errorMsg, `#FF0000`)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <ImageView
+                android:show="@{item.isUpload()}"
+                tools:visibility="gone"
+                android:src="@drawable/ic_svg_checked"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+            <ImageButton
+                tools:src="@drawable/bg_anim_upload"
+                android:background="@null"
+                android:show="@{!item.isUpload()}"
+                android:onClick="@{()-> handler.onClick(context, 1, item)}"
+                android:src="@{DrawableUtil.anim(@drawable/bg_anim_upload, item.uploading)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:show="@{!index.last}"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#E0E0E0"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+    </LinearLayout>
+</layout>

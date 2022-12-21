@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/eContactsProvider.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/58e7046848c44caa9e5b984815d4b83f/jetified-eContactsProvider/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/58e7046848c44caa9e5b984815d4b83f/jetified-eContactsProvider/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/58e7046848c44caa9e5b984815d4b83f/jetified-eContactsProvider/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

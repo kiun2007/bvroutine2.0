@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/tmsapi.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b94130e736966112687d96303d2660f7/jetified-tmsapi/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b94130e736966112687d96303d2660f7/jetified-tmsapi/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b94130e736966112687d96303d2660f7/jetified-tmsapi/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

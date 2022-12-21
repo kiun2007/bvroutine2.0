@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/dclib.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/71da5bc44af3368b59b03fb0422c2039/jetified-dclib/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/71da5bc44af3368b59b03fb0422c2039/jetified-dclib/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/71da5bc44af3368b59b03fb0422c2039/jetified-dclib/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

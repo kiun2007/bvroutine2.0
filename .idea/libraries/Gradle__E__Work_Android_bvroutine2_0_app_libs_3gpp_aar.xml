@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/3gpp.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/76267c43b7eeb5158e7c64a5ac83c03b/jetified-3gpp/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/76267c43b7eeb5158e7c64a5ac83c03b/jetified-3gpp/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/76267c43b7eeb5158e7c64a5ac83c03b/jetified-3gpp/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

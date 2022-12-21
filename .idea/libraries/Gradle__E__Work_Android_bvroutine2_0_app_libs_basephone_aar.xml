@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/basephone.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/32d70b5443dced77763c450487a8d345/jetified-basephone/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/32d70b5443dced77763c450487a8d345/jetified-basephone/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/32d70b5443dced77763c450487a8d345/jetified-basephone/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

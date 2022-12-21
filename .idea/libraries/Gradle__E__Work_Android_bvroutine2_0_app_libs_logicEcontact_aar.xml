@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/logicEcontact.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a02149ba824041b3dfb81aa645ff0654/jetified-logicEcontact/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a02149ba824041b3dfb81aa645ff0654/jetified-logicEcontact/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a02149ba824041b3dfb81aa645ff0654/jetified-logicEcontact/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

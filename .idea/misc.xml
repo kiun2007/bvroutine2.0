@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable-hdpi/ic_baseline_keyboard_arrow_right_18.xml" value="0.3020833333333333" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/check_button_bg.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/ic_baseline_assignment_returned_24.xml" value="0.3020833333333333" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/ic_baseline_assignment_turned_in_24.xml" value="0.3020833333333333" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/ic_baseline_expand_more_18.xml" value="0.3723076923076923" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/ic_monitor.xml" value="0.1" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/ic_playlist_add_check_black_24dp.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/sel_check_chose.xml" value="0.3723076923076923" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/sel_grid_tree.xml" value="0.378125" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/shape_radius_blue_bg.xml" value="0.378125" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/shape_spinner_bg.xml" value="0.3723076923076923" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/drawable/svg_remove.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_attendance_apply.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_attendance_apply_detail.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_attendance_commit.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_attendance_main.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_attendance_overtime.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_attendance_replace_leave.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_grid_person_choose_list.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_list_monitor.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_mine_about.xml" value="0.35" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_mine_pwd.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_river_detail.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_river_patrol.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_root_guide.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_root_login.xml" value="0.3572916666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_root_main.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_special_patrol_map.xml" value="0.2859375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_special_task.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_step_tree_grid.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_submit_publicity.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/activity_workorder_detail.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/dialog_filter_his_order.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_address.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_attendance_apply.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_attendance_clock.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_attendance_setting.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_dashboard.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_grid_visit.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_home.xml" value="0.2859375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/fragment_mine.xml" value="0.35" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_address.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_apply.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_approval_replace.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_department_multiple.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_grid_tree.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_grid_visit.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_other_post.xml" value="0.14351851851851852" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_other_uplaod_view.xml" value="0.1" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_river_plain.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/item_river_problem.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/layout_apply_replace.xml" value="0.3734375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/layout_disposal_depart.xml" value="0.2859375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/layout_row_head.xml" value="0.2859375" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/list_error_normal.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/app/src/main/res/layout/popup_menu_special_types.xml" value="0.1875" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/drawable/ic_svg_checked.xml" value="0.3723076923076923" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/drawable/svg_down_arrow.xml" value="0.3296296296296296" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/drawable/svg_left_arrow.xml" value="0.3296296296296296" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/layout/action_bar.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/layout/activity_video_record.xml" value="0.25" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/layout/item_uplaod_object.xml" value="0.33425925925925926" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/layout/layout_loading_page.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/layout/spinner_normal_dropdown_item.xml" value="0.3619791666666667" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/layout/spinner_normal_item_text.xml" value="0.325" />
+        <entry key="..\:/Work/Android/bvroutine2.0/bvroutine/src/main/res/layout/view_footer.xml" value="0.325" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

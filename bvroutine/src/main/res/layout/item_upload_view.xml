@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+
+        <import type="kiun.com.bvroutine.media.MediaBrowsingActivityHandler" />
+
+        <variable name="item" type="String" />
+        <variable name="index" type="kiun.com.bvroutine.views.adapter.Indexer" />
+        <variable name="handler" type="kiun.com.bvroutine.presenters.OnClickUploadPresenter"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:backgroundUrl="@{handler.getItem(item)}"
+                android:background="@{handler.getItem(item)==null?@drawable/bg_auto_dash_plus:null}"
+                android:scaleType="center"
+                android:onClick="@{(v)->handler.onClick(v, item, index.index)}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:visibility="@{item==null?View.GONE:View.VISIBLE}"
+                android:src="@drawable/ic_eye_black_24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="3dp"
+                android:onClick="@{()->MediaBrowsingActivityHandler.openActivityNormal(context, item)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:visibility="@{item==null||!handler.editMode?View.GONE:View.VISIBLE}"
+                android:src="@drawable/ic_delete_forever_red_24dp"
+                android:onClick="@{()->handler.removeAt(index.index)}"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/smsapi.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ee57ba5964073807fdef07aa40bd067a/jetified-smsapi/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ee57ba5964073807fdef07aa40bd067a/jetified-smsapi/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ee57ba5964073807fdef07aa40bd067a/jetified-smsapi/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

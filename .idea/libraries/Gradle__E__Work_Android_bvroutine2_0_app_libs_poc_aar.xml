@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/poc.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eed2c4e2c0d667535f5ccfc1b067aaac/jetified-poc/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eed2c4e2c0d667535f5ccfc1b067aaac/jetified-poc/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eed2c4e2c0d667535f5ccfc1b067aaac/jetified-poc/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

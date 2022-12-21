@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/mdmclient.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/48948e30849c3bd4ce0fd61d8167a386/jetified-mdmclient/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/48948e30849c3bd4ce0fd61d8167a386/jetified-mdmclient/jars/libs/mpsimdmapi2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/48948e30849c3bd4ce0fd61d8167a386/jetified-mdmclient/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/48948e30849c3bd4ce0fd61d8167a386/jetified-mdmclient/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

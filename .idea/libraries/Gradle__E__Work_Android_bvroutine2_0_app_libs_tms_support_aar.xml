@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/tms-support.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/50a737294c2be9c71a9ded445fa9274b/jetified-tms-support/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/50a737294c2be9c71a9ded445fa9274b/jetified-tms-support/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/50a737294c2be9c71a9ded445fa9274b/jetified-tms-support/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: E./Work/Android/bvroutine2.0/app/libs/tmsplt.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eb3597c816cb5029796f0cfbf9cc1928/jetified-tmsplt/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eb3597c816cb5029796f0cfbf9cc1928/jetified-tmsplt/jars/libs/asmack-android-8-4.0.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eb3597c816cb5029796f0cfbf9cc1928/jetified-tmsplt/jars/libs/jzmq.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eb3597c816cb5029796f0cfbf9cc1928/jetified-tmsplt/jars/libs/pb-2.4.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eb3597c816cb5029796f0cfbf9cc1928/jetified-tmsplt/jars/libs/ubp_jzmq.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eb3597c816cb5029796f0cfbf9cc1928/jetified-tmsplt/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/eb3597c816cb5029796f0cfbf9cc1928/jetified-tmsplt/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

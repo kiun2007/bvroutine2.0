@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gusustreet.iml" filepath="$PROJECT_DIR$/.idea/modules/gusustreet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/gusustreet.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/gusustreet.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/gusustreet.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/gusustreet.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/gusustreet.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/gusustreet.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/gusustreet.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/gusustreet.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.iml" filepath="$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.main.iml" filepath="$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/bvroutine/gusustreet.bvroutine.unitTest.iml" />
+    </modules>
+  </component>
+</project>
